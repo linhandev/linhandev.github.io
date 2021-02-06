@@ -217,7 +217,7 @@ lineStyles:
 # - height: height of image
 # - align: alignment of image
 #
-imageTag: "![{alt}]({src})"
+imageTag: "![{alt}](/{src})"
 # Use relative path to image from the opened file
 relativeImagePath: false
 # Rename copyed image based on title/alt
