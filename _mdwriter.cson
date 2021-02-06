@@ -13,7 +13,7 @@
 
 # Static engine of your blog
 # - One of: general, html, jekyll, octopress, hexo
-siteEngine: "general"
+siteEngine: "jekyll"
 # Website URL of your blog
 siteUrl: "https://linhandev.github.io"
 
@@ -26,7 +26,7 @@ siteDraftsDir: "_drafts/"
 sitePostsDir: "_posts/{year}/"
 # Directory to images from siteLocalDir
 # - E.g. to use the current filename directory, can use {directory}
-siteImagesDir: "images/{year}/{month}/"
+siteImagesDir: "/assets/img/{directory}/{slug}"
 
 # URLs to tags/posts/categories JSON files
 # https://github.com/zhuochun/md-writer/wiki/Settings-for-Front-Matters
@@ -39,7 +39,7 @@ frontMatterNameTags: "tags"
 frontMatterNameCategories: "categories"
 
 # Filename format of new drafts created
-newDraftFileName: "{month}-{day}-{slug}{extension}"
+newDraftFileName: "{month}-{day}-{extension}"
 # Filename format of new posts created
 newPostFileName: "{year}-{month}-{day}-{slug}{extension}"
 
@@ -221,7 +221,7 @@ imageTag: "![{alt}]({src})"
 # Use relative path to image from the opened file
 relativeImagePath: false
 # Rename copyed image based on title/alt
-renameImageOnCopy: false
+renameImageOnCopy: true
 
 # Inline link tag template
 linkInlineTag: "[{text}]({url})"
@@ -240,7 +240,7 @@ footnoteDefinitionTag: "[^{label}]: {content}"
 footnoteInsertPosition: "paragraph"
 
 # Table default alignments: "empty", "left", "right", "center"
-tableAlignment: "empty"
+tableAlignment: "left"
 # Insert extra pipes at the beginning and the end of table rows
 tableExtraPipes: false
 

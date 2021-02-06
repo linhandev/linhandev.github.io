@@ -1,15 +1,3 @@
-# Chirpy
-更新需要保留文件：
-- _posts
-- _drafts
-- README.md
-- assets/img
-- tools/build.sh
-- _mdwriter.cson
-- _config.yml
-
-build.sh
-```shell
 jekyll build
 
 git add *
@@ -27,4 +15,3 @@ git commit -m "add"
 git push
 
 git checkout main
-```
