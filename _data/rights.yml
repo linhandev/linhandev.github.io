@@ -1,11 +1,11 @@
 #  License data
 
 license:
-  name: CC BY 4.0
-  link: "https://creativecommons.org/licenses/by/4.0/"
+  name: Copyright (C) Lin Han - All Rights Reserved
+  link:
 
-brief: Some rights reserved.
+brief: 禁止转载！
 
 verbose: >-
-  Except where otherwise noted, the blog posts on this site are licensed
-  under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.
+  其实也想用CC的，但是我实在是太讨厌转载了，所以：
+  本博客为非营利性个人原创网站，除明确署明的作品外，所刊登的所有作品的著作权均为本人所有，本人保留所有法定权利。违者必究
