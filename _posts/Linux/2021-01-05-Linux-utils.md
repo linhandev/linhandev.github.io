@@ -7,7 +7,7 @@ categories:
 tags:
   - Shell
   - Git
-  - Linux
+  - Archive
   - TODO
 ---
 
@@ -33,42 +33,55 @@ df
 git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之后添加上修改过的那一行
 
 相关完整教程 [Github Git Handbook](https://guides.github.com/introduction/git-handbook/)
-## 基本文件
+
+## 重要文件
 - .git：git的历史记录都放在这里，这个文件夹删掉了，这个项目copy中的历史就没了，这个路径也就不在是一个repo
 - .gitignore：让git不跟踪一些文件，比如py代码的package都会生成一个目录，但是没必要推到服务器上，所以就可以忽略这些文件
 - README.md：所有其他开发者看到这个项目一般都会先读readme
 - LICENSE：项目采用的协议，如果不加可能一些注意版权的人会不敢用你的项目
 
-
 - repo：一个包含.git的目录
 - commit：对所有代码在不同时间的snapshot历史
 - branch：历史中的一根链
 
+## 基础用法
+
 ```shell
 git config --global user.name "Lin Han"
-git config --global user.email "linhandev@qq.com" # 这个就是git在历史文件里记的东西，跟什么github账户都没有关系。但是最好保持一致，之前遇到过在百度pr需要签协议，因为不同的用户名需要签两遍
+git config --global user.email "linhandev@qq.com" # 这个只是git在历史文件里记的东西，邮箱写什么Github都推的上去，但是最好和自己的Github账户保持一致。之前遇到过在百度pr需要签协议，因为一个commit邮箱写的不一样需要签两份贡献协议
 
 git init # 初始化一个repo
+git add * # 跟踪当前路径下所有文件
+git commit -m "Initial Commit" # 创建一个commit记录
+
 git clone # 从服务器上拉一个项目下来
 
-git status # 查看当前修改的状态
-git add # stage对文件的修改
-git rm --cached file # 一定要加cache，否则可能带着文件系统中的文件一起删
-git commit # 将一些修改保存成一个snapshot
-
+git status # 查看当前修改，commit的状态
+git rm --cached file # 加cache是从最后一条commit中删除file的记录
+git rm file # 从commit记录和文件系统中删除一个文件
 
 git branch # 创建一个branch
-git checkout # 切换到另一个branch
+git checkout # 切换到一个branch
+# 在branch a中添加文件，branch b中也会多出这个文件；在branch a中删除文件，brnach b中不会跟着删除
+git branch -m <new name> # 对一个branch改名
+
 git merge
 #TODO: 研究在merge的时候压缩所有commit
-#TODO: 如果删除commit记录
 
-git remote add origin 服务器项目网址
-git push --set-upstream origin my-branch # 推到origin的一个branch里
+git remote add origin <服务器项目网址> # 添加服务器上项目的repo
+git push --set-upstream origin <remote-branch> # 推到origin的一个branch里
 
 git config credential.helper store
 git config --global http.proxy 'socks5://127.0.0.1:2333' # 设置proxy，加速下载
 ```
+
+## 删除记录
+https://itextpdf.com/en/blog/technical-notes/how-completely-remove-file-git-repository
+[删除所有commit](https://gist.github.com/stephenhardy/5470814)
+
+## 修改branch名
+
+https://linuxize.com/post/how-to-rename-local-and-remote-git-branch/
 
 # 压缩
 ## tar
