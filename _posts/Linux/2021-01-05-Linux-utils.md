@@ -61,9 +61,11 @@ git rm --cached file # 加cache是从最后一条commit中删除file的记录
 git rm file # 从commit记录和文件系统中删除一个文件
 
 git branch # 创建一个branch
-git checkout # 切换到一个branch
+git checkout # 切换到一个branch，在当前branch的修改如果commit了就不会带到另一个branch，否则会跟着过去
 # 在branch a中添加文件，branch b中也会多出这个文件；在branch a中删除文件，brnach b中不会跟着删除
 git branch -m <new name> # 对一个branch改名
+git branch -d <local branch name>
+git push origin --delete <remove branch name>
 
 git merge
 #TODO: 研究在merge的时候压缩所有commit
