@@ -9,8 +9,10 @@ tags:
   - Gitea
   - Gogs
   - GitLab
+  - SelfHost
   - TODO
 ---
+
 Github是全球最大的开源社区，一般把自己的开源项目放到Github上可以让更多开发者看到，也不用担心项目丢失。但是一些场景下可能也会希望自己部署Git，比如在国内访问Github一般很慢，如果希望频繁地push和pull那么在国内租服务器架上Git速度可以快上几百倍；看往网上的评价如果希望使用一些CI/CD功能，可能Github不支持或者收费，这时候自己部署更灵活或者可以降低成本。这个Post记录自己安装[Gitea](https://gitea.io/)，[Gogs](https://gogs.io/)和[GitLab](https://about.gitlab.com/)的过程，(目前主要发现这三个比较方便的方案，后期发现其他会继续添加)以及一些体验感受。
 
 ## Gitea
