@@ -1,9 +1,11 @@
 ---
 title: Manjaro折腾笔记
 author: Lin Han
-date: 2021-01-05 23:24:00 +8
-categories: [Linux]
-tags: [Manjaro]
+date: 2021-01-05T15:24:00.000Z
+categories:
+  - Linux
+tags:
+  - Manjaro
 math: true
 ---
 
