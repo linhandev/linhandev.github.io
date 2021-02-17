@@ -4,7 +4,7 @@
   <id>https://blog.linhan.ml/</id>
   <title>Lin Han' Blog</title>
   <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
-  <updated>2021-02-17T18:39:32+08:00</updated>
+  <updated>2021-02-17T18:40:17+08:00</updated>
   <author>
     <name>Lin Han</name>
     <uri>https://blog.linhan.ml/</uri>
@@ -24,7 +24,7 @@
     <link href="https://blog.linhan.ml/posts/Personal-Mail/" rel="alternate" type="text/html" title="Centos Postfix 邮件服务器" />
     <published>2021-02-17T01:04:00+08:00</published>
   
-    <updated>2021-02-17T17:15:57+08:00</updated>
+    <updated>2021-02-17T18:39:33+08:00</updated>
   
     <id>https://blog.linhan.ml/posts/Personal-Mail/</id>
     <content src="https://blog.linhan.ml/posts/Personal-Mail/" />
@@ -167,7 +167,7 @@ apm config set https-proxy "http://127.0...
     <link href="https://blog.linhan.ml/posts/Manjaro-env-setup/" rel="alternate" type="text/html" title="Manjaro折腾笔记" />
     <published>2021-01-05T23:24:00+08:00</published>
   
-    <updated>2021-01-05T23:24:00+08:00</updated>
+    <updated>2021-02-17T18:39:33+08:00</updated>
   
     <id>https://blog.linhan.ml/posts/Manjaro-env-setup/</id>
     <content src="https://blog.linhan.ml/posts/Manjaro-env-setup/" />
