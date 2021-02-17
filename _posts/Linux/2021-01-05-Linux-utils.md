@@ -11,25 +11,25 @@ tags:
   - TODO
 ---
 
-# 查看系统资源占用
+## 查看系统资源占用
 linux有很多manylinux的工具可以查看系统中资源的使用情况
-## 网络
+### 网络
 https://www.binarytides.com/linux-commands-monitor-network/
 nload
 
-## CPU
+### CPU
 top
 
-## GPU
+### GPU
 nvidia-smi
 
-## 内存
+### 内存
 
-## 磁盘
+### 磁盘
 du
 df
 
-# Git
+## Git
 git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之后添加上修改过的那一行
 
 相关完整教程 [Github Git Handbook](https://guides.github.com/introduction/git-handbook/)

@@ -11,7 +11,7 @@ categories:
 ---
 邮件作为一个关键的服务非常需要稳定，因此用一个大厂提供的邮箱是个很好的选择。但是可能出于隐私，免费/付费邮箱服务的各种限制等原因你会希望自己部署一个邮件服务器(Gmail还是很难抢到一个自己喜欢的用户名的)。因为是构建服务器自用，我选择的方案类似一个最小化安装，Postfix MTA + Dovecot IMap + RoundCube网页浏览(可以直接用本地客户端，不装这个)，目标是尽最大可能把系统资源用在刀刃上，不搞那些花里糊少的功能。
 
-# 系统要求
+## 系统要求
 - Centos 7
 - 1 CPU
 - 1G 内存
@@ -20,12 +20,12 @@ categories:
   - SMTP协议发邮件走25端口，阿里云，腾讯云和Linode都是禁25端口的，需要额外步骤不推荐
   - Vultr的服务器默认禁25端口，但是提工单可以解封
 
-# 原理
+## 原理
 用大厂的邮箱服务发邮件很简单但是背后还是涉及不少步骤，稍作了解很有必要。[这篇文章](https://www.pepipost.com/blog/email-works-behind-scenes-developers-perspective/)介绍的很通俗易懂。
 
 ![mail-process](/assets/img/_drafts/Tool/mail/mail-process.png)
 
-# 邮件服务器
+## 邮件服务器
 这部分的内容主要根据[这篇教程](https://www.krizna.com/centos/setup-mail-server-centos-7/)整理，Lionode上还有一篇基本相同但是更详细的[教程](https://www.linode.com/docs/guides/email-with-postfix-dovecot-and-mariadb-on-centos-7/)。主要根据前面这篇是因为他用Linux的帐号系统，第二篇写进SQL更灵活但是也更复杂。加密的部分采用第二篇。
 
 首先需要一个自己的域名，并解析到服务器上。
@@ -169,7 +169,7 @@ passwd me
 ```
 到这里邮件服务器部分就已经起来了，配置客户端过程中IMAP应该是143端口，SMTP 587。
 
-# 客户端
+## 客户端
 邮件客户端很多，Thunderbird，MailTime都是不错的选择，谷歌一下根据需要选就行。本地客户端不占用服务器资源但是有个网页客户端做backup总是好的。查了一圈[mailpile](https://www.mailpile.is/)，[rainloop](http://www.rainloop.net/)和[roundcube](https://roundcube.net/)都是不错的选择。mailpile是star最多的，但是貌似团队不是很健全开发很慢。
 
 [rainloop centos7](https://www.vultr.com/docs/how-to-install-rainloop-webmail-on-centos-7)
@@ -178,8 +178,8 @@ passwd me
 
 [//]: # (TODO:记录一个webmail安装方法)
 
-# 备份
+## 备份
 自己搭建的服务可能会出现一些错误，时常进行备份十分重要。
 
-# spam
+## spam
 [//]: # (TODO:如何过滤垃圾邮件)
