@@ -70,6 +70,9 @@ cd username.github.io # 进到项目里
 之后我们给编译出来的网页文件单独创建一个branch，防止git的记录过多导致项目过大。
 ```shell
 git branch gh-page
+git checkout gh-page # 切换到新branch
+git rm -r *
+git commit -m "clean up"
 ```
 
 git push --set-upstream origin gh-page
