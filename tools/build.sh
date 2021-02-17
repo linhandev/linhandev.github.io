@@ -12,7 +12,7 @@ rm -rf *
 mv .site/* .
 rm -rf .site
 
-curl -H 'Content-Type:text/plain' --data-binary @overview/url.txt "http://data.zz.baidu.com/urls?site=https://linhandev.github.io&token=dpk3OOLJVr4bmarA"
+# curl -H 'Content-Type:text/plain' --data-binary @overview/url.txt "http://data.zz.baidu.com/urls?site=https://linhandev.github.io&token=dpk3OOLJVr4bmarA"
 
 git add *
 git commit -m "add"
