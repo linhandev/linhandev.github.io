@@ -1,13 +1,3 @@
-
-https://linhandev.github.io/posts/personal-Git/
-
-https://linhandev.github.io/posts/Atom/
-
-https://linhandev.github.io/posts/Manjaro-env-setup/
-
-https://linhandev.github.io/posts/Centos-env-setup/
-
-https://linhandev.github.io/posts/Linux-utils/
-
-https://linhandev.github.io/posts/Jekyll-Github-Page/
-
+{% for post in site.posts %}
+{{ site.url }}{{ post.url }}
+{% endfor %}

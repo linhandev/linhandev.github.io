@@ -1,29 +1,10 @@
+---
+layout: null
+---
 {
     "tags": [
-        
-        "Blog",
-        
-        "Jekyll",
-        
-        "Shell",
-        
-        "Git",
-        
-        "Archive",
-        
-        "TODO",
-        
-        "Centos",
-        
-        "Manjaro",
-        
-        "Atom",
-        
-        "Gitea",
-        
-        "Gogs",
-        
-        "GitLab"
-        
+        {% for tag in site.tags %}
+        "{{ tag | first }}"{% unless forloop.last %},{% endunless %}
+        {% endfor %}
     ]
 }

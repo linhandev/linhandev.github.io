@@ -1,41 +1,14 @@
+---
+layout: null
+---
 {
     "posts": [
-        
+        {% for post in site.posts %}
         {
-            "title": "通用Linux功能",
-            "url": "https://linhandev.github.io/posts/personal-Git/",
-            "date": "2021-02-07T19:02:00+08:00"
-        },
-        
-        {
-            "title": "Atom编辑器配置",
-            "url": "https://linhandev.github.io/posts/Atom/",
-            "date": "2021-01-13T12:56:08+08:00"
-        },
-        
-        {
-            "title": "Manjaro折腾笔记",
-            "url": "https://linhandev.github.io/posts/Manjaro-env-setup/",
-            "date": "2021-01-05T23:24:00+08:00"
-        },
-        
-        {
-            "title": "Centos环境配置",
-            "url": "https://linhandev.github.io/posts/Centos-env-setup/",
-            "date": "2021-01-05T23:22:16+08:00"
-        },
-        
-        {
-            "title": "通用Linux功能",
-            "url": "https://linhandev.github.io/posts/Linux-utils/",
-            "date": "2021-01-05T22:02:00+08:00"
-        },
-        
-        {
-            "title": "Jekyll折腾笔记",
-            "url": "https://linhandev.github.io/posts/Jekyll-Github-Page/",
-            "date": "2019-08-08T11:33:00+08:00"
-        }
-        
+            "title": "{{ post.title | xml_escape }}",
+            "url": "{{ site.url }}{{ post.url }}",
+            "date": "{{ post.date | date_to_xmlschema }}"
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
     ]
 }
