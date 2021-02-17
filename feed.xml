@@ -4,7 +4,7 @@
   <id>https://blog.linhan.ml/</id>
   <title>Lin Han' Blog</title>
   <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
-  <updated>2021-02-17T18:31:18+08:00</updated>
+  <updated>2021-02-17T18:37:44+08:00</updated>
   <author>
     <name>Lin Han</name>
     <uri>https://blog.linhan.ml/</uri>
@@ -221,7 +221,7 @@ sudo pacman -S fcitx-configtool # 安装图形化配置工具
     <link href="https://blog.linhan.ml/posts/Centos-env-setup/" rel="alternate" type="text/html" title="Centos环境配置" />
     <published>2021-01-05T23:22:16+08:00</published>
   
-    <updated>2021-01-05T23:22:16+08:00</updated>
+    <updated>2021-02-17T18:35:36+08:00</updated>
   
     <id>https://blog.linhan.ml/posts/Centos-env-setup/</id>
     <content src="https://blog.linhan.ml/posts/Centos-env-setup/" />

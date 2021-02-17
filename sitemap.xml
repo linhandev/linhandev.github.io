@@ -2,7 +2,7 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://blog.linhan.ml/posts/Jekyll-Github-Page/</loc>
-<lastmod>2021-02-17T18:22:17+08:00</lastmod>
+<lastmod>2021-02-17T18:31:19+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/posts/Linux-utils/</loc>
@@ -10,7 +10,7 @@
 </url>
 <url>
 <loc>https://blog.linhan.ml/posts/Centos-env-setup/</loc>
-<lastmod>2021-01-05T23:22:16+08:00</lastmod>
+<lastmod>2021-02-17T18:35:36+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/posts/Manjaro-env-setup/</loc>
@@ -30,19 +30,19 @@
 </url>
 <url>
 <loc>https://blog.linhan.ml/categories/</loc>
-<lastmod>2021-02-17T18:31:18+08:00</lastmod>
+<lastmod>2021-02-17T18:37:44+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/tags/</loc>
-<lastmod>2021-02-17T18:31:18+08:00</lastmod>
+<lastmod>2021-02-17T18:37:44+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/archives/</loc>
-<lastmod>2021-02-17T18:31:18+08:00</lastmod>
+<lastmod>2021-02-17T18:37:44+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/about/</loc>
-<lastmod>2021-02-17T18:31:18+08:00</lastmod>
+<lastmod>2021-02-17T18:37:44+08:00</lastmod>
 </url>
 <url>
 <loc>https://blog.linhan.ml/</loc>
@@ -82,6 +82,9 @@
 </url>
 <url>
 <loc>https://blog.linhan.ml/tags/gitlab/</loc>
+</url>
+<url>
+<loc>https://blog.linhan.ml/tags/selfhost/</loc>
 </url>
 <url>
 <loc>https://blog.linhan.ml/tags/centos7/</loc>
