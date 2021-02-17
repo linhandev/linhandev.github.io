@@ -4,7 +4,7 @@
   <id>https://blog.linhan.ml/</id>
   <title>Lin Han' Blog</title>
   <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
-  <updated>2021-02-17T18:40:17+08:00</updated>
+  <updated>2021-02-17T22:14:37+08:00</updated>
   <author>
     <name>Lin Han</name>
     <uri>https://blog.linhan.ml/</uri>
@@ -120,7 +120,7 @@ us...
     <link href="https://blog.linhan.ml/posts/Atom/" rel="alternate" type="text/html" title="Atom编辑器配置" />
     <published>2021-01-13T12:56:08+08:00</published>
   
-    <updated>2021-02-17T16:22:55+08:00</updated>
+    <updated>2021-02-17T22:11:39+08:00</updated>
   
     <id>https://blog.linhan.ml/posts/Atom/</id>
     <content src="https://blog.linhan.ml/posts/Atom/" />

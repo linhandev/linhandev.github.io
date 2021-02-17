@@ -40,7 +40,7 @@
 <meta name="twitter:creator" content="@Lin Han" />
 <meta name="google-site-verification" content="google_meta_tag_verification" />
 <script type="application/ld+json">
-{"url":"https://blog.linhan.ml/posts/Atom/","author":{"@type":"Person","name":"Lin Han"},"description":"A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.","@type":"BlogPosting","headline":"Atom编辑器配置","dateModified":"2021-02-17T16:22:55+08:00","datePublished":"2021-01-13T12:56:08+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.linhan.ml/posts/Atom/"},"@context":"https://schema.org"}</script>
+{"url":"https://blog.linhan.ml/posts/Atom/","author":{"@type":"Person","name":"Lin Han"},"description":"A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.","@type":"BlogPosting","headline":"Atom编辑器配置","dateModified":"2021-02-17T22:11:39+08:00","datePublished":"2021-01-13T12:56:08+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.linhan.ml/posts/Atom/"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -434,7 +434,7 @@
   
     data-toggle="tooltip"
     data-placement="bottom"
-    title="Wed, Feb 17, 2021,  4:22 PM +0800"
+    title="Wed, Feb 17, 2021, 10:11 PM +0800"
   >
 
   
@@ -444,7 +444,7 @@
     Feb 17
   
 
-  <i class="unloaded">2021-02-17T16:22:55+08:00</i>
+  <i class="unloaded">2021-02-17T22:11:39+08:00</i>
 
 </span>
 
@@ -466,7 +466,7 @@
 
 
 <!-- return element -->
-<span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1661 words">9 min</span>
+<span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1691 words">9 min</span>
 
 
           <!-- page views -->
@@ -535,7 +535,7 @@ apm config delete https-proxy <span class="c"># 取消proxy</span>
     <span class="s1">'prefix'</span>: <span class="s1">'jk'</span>
     <span class="s1">'body'</span>:<span class="s1">'''
 ---
-title:
+title: ${1: Default Title}
 author: Lin Han
 date:  +8
 categories: []
@@ -547,7 +547,7 @@ math: true
 <p>.md代表这个模板只在.md文件中生效；jk head 是补全列表里显示的标题；prefix是你打出这个字符串就进行这个联想；body部分如果只有一行，’内容’ 这种格式就可以，这里因为是需要多行所以是 ‘’‘<br />
 这样 <br />
 ‘’‘<br />
-的。</p>
+的。最后内容部分可以写$1，${2:default}这样的光标位置，而且可以带默认值。</p>
 
 <p>一个单行的例子，用于在md文件中插入不会被render的TODO</p>
 
@@ -599,7 +599,6 @@ math: true
 <p>Ctrl - G 跳转到制定行，报错有行号直接用这个找过去。
 Ctrl - R 会打一个函数名的列表，选哪个跳转到哪个函数。
 Ctrl - Shift - F 可以全项目搜索。</p>
-
 
 
       </div>
@@ -729,6 +728,16 @@ Ctrl - Shift - F 可以全项目搜索。</p>
         
         
         
+        <li><a href="/posts/Linux-utils/">通用Linux功能</a></li>
+      
+        
+        
+        
+        <li><a href="/posts/Atom/">Atom编辑器配置</a></li>
+      
+        
+        
+        
         <li><a href="/posts/Manjaro-env-setup/">Manjaro折腾笔记</a></li>
       
         
@@ -740,16 +749,6 @@ Ctrl - Shift - F 可以全项目搜索。</p>
         
         
         <li><a href="/posts/Personal-Git/">部署个人Git</a></li>
-      
-        
-        
-        
-        <li><a href="/posts/Centos-env-setup/">Centos环境配置</a></li>
-      
-        
-        
-        
-        <li><a href="/posts/Jekyll-Github-Page/">Jekyll折腾笔记</a></li>
       
 
       </ul>
