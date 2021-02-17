@@ -75,9 +75,38 @@ git branch gh-page
 git checkout gh-page # 切换到新branch
 git rm -r *
 git commit -m "clean up"
-```
-
 git push --set-upstream origin gh-page
+git checkout main # 返回Jekyll项目的branch
+```
+分支创建完成了，尝试进行build并推到 Github 上。
+```shell
+git checkout main # 时刻确认好branch，否则可能有神奇的事情发生
+
+jekyll build # md转html
+
+# 在 main 分支 push
+git add *
+git commit -m "modify"
+git push
+
+# 将 _site 中生成的html网站放到 gh-page 分支的根目录里
+git checkout gh-page
+mv _site .site
+rm -rf *
+mv .site/* .
+rm -rf .site
+ls
+
+# 在 gh-page 分支 push
+git add *
+git commit -m "add"
+git push
+
+git checkout main
+```
+到这复杂的部分基本就完成了，最后到Github项目的Settings里，找到 GitHub Pages 的部分，将 Source 设成 gh-page，/root，保存。网站应该就可以访问了。
+![page](/assets/img/_posts/Tool/Jekyll-Github-Page/page.png)
+
 
 # 评论
 给文章添加评论功能有很多种方案，但是所有添加评论的方案都不可能是纯静态的，所以光靠Github Page是实现不了。一些可能的方法包括
