@@ -15,7 +15,7 @@
 # - One of: general, html, jekyll, octopress, hexo
 siteEngine: "jekyll"
 # Website URL of your blog
-siteUrl: "https://linhandev.github.io"
+siteUrl: "https://linhan.ml"
 
 # Root directory to your blog
 # - Leave it empty to use the current project path (recommended)
@@ -30,9 +30,9 @@ siteImagesDir: "/assets/img/{directory}/{slug}"
 
 # URLs to tags/posts/categories JSON files
 # https://github.com/zhuochun/md-writer/wiki/Settings-for-Front-Matters
-urlForPosts: "https://linhandev.github.io/overview/posts.json"
-urlForTags: "https://linhandev.github.io/overview/tags.json"
-urlForCategories: "https://linhandev.github.io/overview/categories.json"
+urlForPosts: "https://linhan.ml/overview/posts.json"
+urlForTags: "https://linhan.ml/overview/tags.json"
+urlForCategories: "https://linhan.ml/overview/categories.json"
 
 # The front matter key name
 frontMatterNameTags: "tags"

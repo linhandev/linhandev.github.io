@@ -1,9 +1,11 @@
 ---
 title: Centos环境配置
 author: Lin Han
-date: 2021-01-05 23:22:16 +8
-categories: [Linux]
-tags: [Centos]
+date: 2021-01-05T15:22:16.000Z
+categories:
+  - Linux
+tags:
+  - Centos
 math: true
 ---
 
