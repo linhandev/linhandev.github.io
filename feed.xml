@@ -1,60 +1,275 @@
----
-layout: compress
-# Atom Feed, reference: https://validator.w3.org/feed/docs/atom.html
----
 
-{% capture source %}
+
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>{{ "/" | absolute_url }}</id>
-  <title>{{ site.title }}</title>
-  <subtitle>{{ site.description }}</subtitle>
-  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>https://linhandev.github.io/</id>
+  <title>Lin Han' Blog</title>
+  <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
+  <updated>2021-02-17T13:06:35+08:00</updated>
   <author>
-    <name>{{ site.author }}</name>
-    <uri>{{ "/" | absolute_url }}</uri>
+    <name>Lin Han</name>
+    <uri>https://linhandev.github.io/</uri>
   </author>
-  <link rel="self" type="application/atom+xml" href="{{ page.url | absolute_url }}"/>
-  <link rel="alternate" type="text/html" hreflang="{{ site.lang | default: 'en' }}"
-    href="{{ '/' | absolute_url }}"/>
-  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
-  <rights> © {{ 'now' | date: '%Y' }} {{ site.author }} </rights>
-  <icon>{{ site.baseurl }}/assets/img/favicons/favicon.ico</icon>
-  <logo>{{ site.baseurl }}/assets/img/favicons/favicon-96x96.png</logo>
+  <link rel="self" type="application/atom+xml" href="https://linhandev.github.io/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en-US"
+    href="https://linhandev.github.io/"/>
+  <generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator>
+  <rights> © 2021 Lin Han </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
-{% for post in site.posts limit: 5 %}
-  {% assign post_absolute_url = post.url | absolute_url %}
+
+  
   <entry>
-    <title>{{ post.title }}</title>
-    <link href="{{ post_absolute_url }}" rel="alternate" type="text/html" title="{{ post.title }}" />
-    <published>{{ post.date | date_to_xmlschema }}</published>
-  {% if post.last_modified_at %}
-    <updated>{{ post.last_modified_at | date_to_xmlschema }}</updated>
-  {% else %}
-    <updated>{{ post.date | date_to_xmlschema }}</updated>
-  {% endif %}
-    <id>{{ post_absolute_url }}</id>
-    <content src="{{ post_absolute_url }}" />
+    <title>通用Linux功能</title>
+    <link href="https://linhandev.github.io/posts/personal-Git/" rel="alternate" type="text/html" title="通用Linux功能" />
+    <published>2021-02-07T19:02:00+08:00</published>
+  
+    <updated>2021-02-07T19:02:00+08:00</updated>
+  
+    <id>https://linhandev.github.io/posts/personal-Git/</id>
+    <content src="https://linhandev.github.io/posts/personal-Git/" />
     <author>
-      <name>{{ site.author }}</name>
+      <name>Lin Han</name>
     </author>
 
-  {% if post.categories %}
-    {% for category in post.categories %}
-    <category term="{{ category }}" />
-    {% endfor %}
-  {% endif %}
+  
+    
+    <category term="Git" />
+    
+  
 
-  {% if post.summary %}
-    <summary>{{ post.summary | strip }}</summary>
-  {% else %}
+  
     <summary>
-      {% include no-linenos.html content=post.content %}
-      {{ content  | strip_html | truncate: 400 }}
+      
+
+
+
+
+
+      Github是全球最大的开源社区，一般把自己的开源项目放到Github上可以让更多开发者看到，也不用担心项目丢失。但是一些场景下可能也会希望自己部署Git，比如在国内访问Github一般很慢，如果希望频繁地push和pull那么在国内租服务器架上Git速度可以快上几百倍；看往网上的评价如果希望使用一些CI/CD功能，可能Github不支持或者收费，这时候自己部署更灵活或者可以降低成本。这个Post记录自己安装Gitea，Gogs和GitLab的过程，(目前主要发现这三个比较方便的方案，后期发现其他会继续添加)以及一些体验感受。
+
+Gitea
+Gitea由Golang编写。
+
+安装步骤基本按照这篇教程。
+# 升级系统并安装必要的包
+yum update
+yum install -y wget git epel-release tree
+
+# 给gitea服务添加用户和存项目的目录
+us...
     </summary>
-  {% endif %}
+  
 
   </entry>
-{% endfor %}
+
+  
+  <entry>
+    <title>Atom编辑器配置</title>
+    <link href="https://linhandev.github.io/posts/Atom/" rel="alternate" type="text/html" title="Atom编辑器配置" />
+    <published>2021-01-13T12:56:08+08:00</published>
+  
+    <updated>2021-02-06T22:20:58+08:00</updated>
+  
+    <id>https://linhandev.github.io/posts/Atom/</id>
+    <content src="https://linhandev.github.io/posts/Atom/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+    <category term="Tool" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+
+Atom是Github开发的一个文本编辑器，十分简洁，基本只内置了文字编辑和Git的功能，通过插件灵活扩展。这个Post记录自己的Atom配置，主题，插件之类，也是方便重做系统后恢复环境。目前主要用途包括Python和Web开发，写Markdown，远程代码边加。
+
+首先从官网安装Atom。
+
+apm
+Atom安装主题和插件用的都是apm(Atom Package Manager)，它安装东西的时候都是用npm下载，国内大概率速度会比较慢。可以通过换源或者proxy进行加速。
+# 换源
+npm config set registry https://registry.npm.taobao.org # 设置淘宝镜像
+npm config get registry # 查看是否设置成功
+
+# proxy
+apm config set https-proxy "http://127.0...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Manjaro折腾笔记</title>
+    <link href="https://linhandev.github.io/posts/Manjaro-env-setup/" rel="alternate" type="text/html" title="Manjaro折腾笔记" />
+    <published>2021-01-05T23:24:00+08:00</published>
+  
+    <updated>2021-01-05T23:24:00+08:00</updated>
+  
+    <id>https://linhandev.github.io/posts/Manjaro-env-setup/</id>
+    <content src="https://linhandev.github.io/posts/Manjaro-env-setup/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+    <category term="Linux" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。
+
+镜像
+首先万能的清华源有Manjaro的iso，下载稍快。Etcher非常适合做任何linux distro的iso，用起来很简单，一般都是一次成功。
+
+开始安装
+选驱动的时候不要选免费的，我这装了两回显卡驱动都不好使，休眠之后在唤醒屏幕不亮。
+
+安装过程中我主要在格盘和装软件上有问题。
+
+  磁盘格式推荐ext4
+  如果软件依赖有冲突避免安装前换源
+
+
+中文输入法
+sudo pacman -S fcitx-googlepinyin
+sudo pacman -S fcitx-im # 选择全部安装
+sudo pacman -S fcitx-configtool # 安装图形化配置工具
+# sudo pacman -S fcitx-sk...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Centos环境配置</title>
+    <link href="https://linhandev.github.io/posts/Centos-env-setup/" rel="alternate" type="text/html" title="Centos环境配置" />
+    <published>2021-01-05T23:22:16+08:00</published>
+  
+    <updated>2021-01-05T23:22:16+08:00</updated>
+  
+    <id>https://linhandev.github.io/posts/Centos-env-setup/</id>
+    <content src="https://linhandev.github.io/posts/Centos-env-setup/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+    <category term="Linux" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。
+
+httpd
+从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。
+
+yum install -y httpd # httpd安装
+systemctl start httpd # 启动
+systemctl status https
+systemctl enable httpd # 开机自动启动
+systemctl stop httpd # 关闭服务
+
+
+Centos下，httpd的配置在 /etc/httpd/conf/httpd.conf 下，用 httpd -t 可以校验修改后的配置有无语法错误。默认网页文件root在 /var/www/html
+现在为了保证安全，很多服务会强制要求https，比如微信小程序不能做ht...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>通用Linux功能</title>
+    <link href="https://linhandev.github.io/posts/Linux-utils/" rel="alternate" type="text/html" title="通用Linux功能" />
+    <published>2021-01-05T22:02:00+08:00</published>
+  
+    <updated>2021-02-16T23:17:38+08:00</updated>
+  
+    <id>https://linhandev.github.io/posts/Linux-utils/</id>
+    <content src="https://linhandev.github.io/posts/Linux-utils/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+    <category term="Linux" />
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      查看系统资源占用
+linux有很多manylinux的工具可以查看系统中资源的使用情况
+网络
+https://www.binarytides.com/linux-commands-monitor-network/
+nload
+
+CPU
+top
+
+GPU
+nvidia-smi
+
+内存
+
+磁盘
+du
+df
+
+Git
+git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之后添加上修改过的那一行
+
+相关完整教程 Github Git Handbook
+
+重要文件
+
+  .git：git的历史记录都放在这里，这个文件夹删掉了，这个项目copy中的历史就没了，这个路径也就不在是一个repo
+  .gitignore：让git不跟踪一些文件，比如py代码的package都会生成一个目录，但是没必要推到服务器上，所以就可以忽略这些文件
+  README.md：所有其他开发者...
+    </summary>
+  
+
+  </entry>
+
 </feed>
-{% endcapture %}
-{{ source | replace: '&', '&amp;' }}
+
+

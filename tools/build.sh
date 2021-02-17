@@ -1,3 +1,5 @@
+git checkout main
+
 jekyll build
 
 git add *
@@ -15,3 +17,5 @@ git commit -m "add"
 git push
 
 git checkout main
+
+curl -H 'Content-Type:text/plain' --data-binary @_site/overview/url.txt "http://data.zz.baidu.com/urls?site=https://linhandev.github.io&token=dpk3OOLJVr4bmarA"

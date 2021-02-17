@@ -188,3 +188,12 @@ ip addr show
 ip link set eth10 up
 ip route show
 ```
+
+
+# 防火墙
+```shell
+systemctl start firewalld
+sudo firewall-cmd --zone=public --permanent --add-port=59966/tcp
+sudo firewall-cmd --zone=public --permanent --add-service=http
+sudo firewall-cmd --reload
+```

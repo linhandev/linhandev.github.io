@@ -1,17 +1,94 @@
----
-layout: compress
----
-
 [
-  {% for post in site.posts %}
+  
   {
-    "title": "{{ post.title | escape }}",
-    "url": "{{ site.baseurl }}{{ post.url }}",
-    "categories": "{{ post.categories | join: ', '}}",
-    "tags": "{{ post.tags | join: ', ' }}",
-    "date": "{{ post.date }}",
-    {% include no-linenos.html content=post.content %}
-    "snippet": "{{ content | strip_html | strip_newlines | remove_chars | escape | truncate: 300 | replace: '\', '\\\\' }}"
-  }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
+    "title": "通用Linux功能",
+    "url": "/posts/personal-Git/",
+    "categories": "Git",
+    "tags": "Git, Gitea, Gogs, GitLab, TODO",
+    "date": "2021-02-07 19:02:00 +0800",
+    
+
+
+
+
+
+    "snippet": "Github是全球最大的开源社区，一般把自己的开源项目放到Github上可以让更多开发者看到，也不用担心项目丢失。但是一些场景下可能也会希望自己部署Git，比如在国内访问Github一般很慢，如果希望频繁地push和pull那么在国内租服务器架上Git速度可以快上几百倍；看往网上的评价如果希望使用一些CI/CD功能，可能Github不支持或者收费，这时候自己部署更灵活或者可以降低成本。这个Post记录自己安装Gitea，Gogs和GitLab的过程，(目前主要发现这三个比较方便的方案，后期发现其他会继续添加)以及一些体验感受。GiteaGitea由Golang编写。安装步骤基本按照这篇教..."
+  },
+  
+  {
+    "title": "Atom编辑器配置",
+    "url": "/posts/Atom/",
+    "categories": "Tool",
+    "tags": "Atom",
+    "date": "2021-01-13 12:56:08 +0800",
+    
+
+
+
+
+
+    "snippet": "Atom是Github开发的一个文本编辑器，十分简洁，基本只内置了文字编辑和Git的功能，通过插件灵活扩展。这个Post记录自己的Atom配置，主题，插件之类，也是方便重做系统后恢复环境。目前主要用途包括Python和Web开发，写Markdown，远程代码边加。首先从官网安装Atom。apmAtom安装主题和插件用的都是apm(Atom Package Manager)，它安装东西的时候都是用npm下载，国内大概率速度会比较慢。可以通过换源或者proxy进行加速。# 换源npm config set registry https://registry.npm.taobao.org # ..."
+  },
+  
+  {
+    "title": "Manjaro折腾笔记",
+    "url": "/posts/Manjaro-env-setup/",
+    "categories": "Linux",
+    "tags": "Manjaro",
+    "date": "2021-01-05 23:24:00 +0800",
+    
+
+
+
+
+
+    "snippet": "装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。镜像首先万能的清华源有Manjaro的iso，下载稍快。Etcher非常适合做任何linux distro的iso，用起来很简单，一般都是一次成功。开始安装选驱动的时候不要选免费的，我这装了两回显卡驱动都不好使，休眠之后在唤醒屏幕不亮。安装过程中我主要在格盘和装软件上有问题。  磁盘格式推荐ext4  如果软件依赖有冲突避免安装前换源中文输入法sudo pacman -S fcitx-googlepinyinsudo pacman -S fci..."
+  },
+  
+  {
+    "title": "Centos环境配置",
+    "url": "/posts/Centos-env-setup/",
+    "categories": "Linux",
+    "tags": "Centos",
+    "date": "2021-01-05 23:22:16 +0800",
+    
+
+
+
+
+
+    "snippet": "记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。httpd从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。yum install -y httpd # httpd安装systemctl start httpd # 启动systemctl status httpssystemctl enable httpd # 开机自动启动systemctl stop httpd # 关闭服务Centos下，httpd的配置在 /etc/httpd/conf/httpd.conf 下，用 ..."
+  },
+  
+  {
+    "title": "通用Linux功能",
+    "url": "/posts/Linux-utils/",
+    "categories": "Linux",
+    "tags": "Shell, Git, Archive, TODO",
+    "date": "2021-01-05 22:02:00 +0800",
+    
+
+
+
+
+
+    "snippet": "查看系统资源占用linux有很多manylinux的工具可以查看系统中资源的使用情况网络https://www.binarytides.com/linux-commands-monitor-network/nloadCPUtopGPUnvidia-smi内存磁盘dudfGitgit以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之后添加上修改过的那一行相关完整教程 Github Git Handbook重要文件  .git：git的历史记录都放在这里，这个文件夹删掉了，这个项目copy中的历史就没了，这个路径也就不在是一个repo  .gitignore：让git..."
+  },
+  
+  {
+    "title": "Jekyll折腾笔记",
+    "url": "/posts/Jekyll-Github-Page/",
+    "categories": "Tool",
+    "tags": "Blog, Jekyll",
+    "date": "2019-08-08 11:33:00 +0800",
+    
+
+
+
+
+
+    "snippet": "这个Post记录Github Page的折腾过程。目标是用比较简单和鲁棒的方法快速部署一个功能齐全的博客。首先一点背景知识：Jekyll是一个从文字生成静态网站或博客的工具，ruby编写。Github Page 是 Github 推出的静态网站托管服务，每个用户有一个Repo可以放静态网页文件，之后Github给你免费托管，其他人可以通过网址访问。这里注意Github Page托管的是静态网页，不是Jekyll主题文件，这点后面有用。这两者组合就可以零成本部署一个个人博客。主题选择一个博客最明显的特征应该就是主题，选择一个功能丰富的主题可以省去自己一点点添加功能的麻烦。有很多Jekyll..."
+  }
+  
 ]
+
