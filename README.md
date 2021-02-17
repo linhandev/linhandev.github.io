@@ -28,3 +28,13 @@ git push
 
 git checkout main
 ```
+
+
+<script src="https://utteranc.es/client.js"
+  repo="linhandev/linhandev.github.io"
+  issue-term="title"
+  label="Comment"
+  theme="github-dark"
+  crossorigin="anonymous"
+  async>
+</script>

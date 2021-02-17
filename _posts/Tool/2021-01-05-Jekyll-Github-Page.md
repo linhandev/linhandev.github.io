@@ -7,7 +7,7 @@ tags: [Blog, Jekyll]
 math: true
 image: /assets/img/sample/devices-mockup.png
 ---
-这个Post记录Github Page的折腾过程。目标是用比较**简单**和**鲁棒**的方法**快速**部署一个**功能齐全**的博客。首先一点背景知识：[Jekyll](https://jekyllrb.com/)是一个从文字生成静态网站或博客的工具，ruby编写。Github Page 是 Github 推出的静态网站托管服务，每个用户有一个Repo可以放静态网页文件，之后Github给你免费托管，其他人可以通过网址访问。这里注意Github Page托管的是静态网页，不是Jekyll主题文件，这点后面有用。这两者组合就可以零成本部署一个个人博客。
+这个Post记录Github Page的折腾过程。目标是用比较**简单**和**鲁棒**的方法**快速**部署一个**功能齐全**的博客。首先一点背景知识：[Jekyll](https://jekyllrb.com/)是一个从文字生成静态网站的工具，ruby编写。Github Page 是 Github 推出的静态网站托管服务，每个用户有一个Repo可以放静态网页文件，Github提供免费托管，用户可以通过一个网址访问。这里注意Github Page托管的是静态网页，不是Jekyll主题的那些文件(所以也是可以自己写一个静态的网页扔到Github上展示的，不一定要用Jekyll)。这两者组合就可以零成本部署一个个人博客。
 
 # 主题选择
 一个博客最明显的特征应该就是主题，选择一个功能丰富的主题可以省去自己一点点添加功能的麻烦。有很多Jekyll主题列表网站比如

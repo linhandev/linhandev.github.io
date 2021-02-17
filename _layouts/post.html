@@ -75,19 +75,8 @@ layout: default
             {{- tag -}}
           </a>
           {% endfor %}
-        </div>
+          </div>
         {% endif %}
-        <br><br>
-
-        <script src="https://utteranc.es/client.js"
-          repo="linhandev/linhandev.github.io"
-          issue-term="title"
-          label="Comment"
-          theme="github-dark"
-          crossorigin="anonymous"
-          async>
-        </script>
-
 
         <div class="post-tail-bottom
           d-flex justify-content-between align-items-center mt-3 pt-5 pb-2">
@@ -107,6 +96,7 @@ layout: default
 
     </div> <!-- .post -->
 
+
   </div> <!-- #post-wrapper -->
 
   {% assign enable_toc = false %}
@@ -117,10 +107,11 @@ layout: default
     {% endif %}
   {% endif %}
 
+  {% assign enable_toc = true %}
+
   {% include panel.html toc=enable_toc %}
 
 </div> <!-- .row -->
-
 
 <div class="row">
   <div class="col-12 col-lg-11 col-xl-8">
@@ -130,7 +121,10 @@ layout: default
 
     {% include post-nav.html %}
 
-    
+    {% if site.disqus.comments and page.comments %}
+      {% include disqus.html %}
+    {% endif %}
+
     </div> <!-- #post-extend-wrapper -->
 
   </div> <!-- .col-* -->
