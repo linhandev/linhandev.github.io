@@ -749,7 +749,6 @@ passwd me
         <div class="post-meta mb-3">
           <i class="far fa-folder-open fa-fw mr-1"></i>
           
-            <a href='/categories/linux/'>Linux</a>,
             <a href='/categories/tool/'>Tool</a>
         </div>
         
@@ -764,6 +763,9 @@ passwd me
           
           <a href="/tags/mail/"
             class="post-tag no-text-decoration" >Mail</a>
+          
+          <a href="/tags/selfhost/"
+            class="post-tag no-text-decoration" >SelfHost</a>
           
           </div>
         
@@ -871,6 +873,11 @@ passwd me
         
         
         
+        <li><a href="/posts/Personal-Git/">部署个人Git</a></li>
+      
+        
+        
+        
         <li><a href="/posts/Centos-env-setup/">Centos环境配置</a></li>
       
         
@@ -882,11 +889,6 @@ passwd me
         
         
         <li><a href="/posts/Linux-utils/">通用Linux功能</a></li>
-      
-        
-        
-        
-        <li><a href="/posts/Personal-Git/">部署个人Git</a></li>
       
         
         
@@ -1016,6 +1018,79 @@ passwd me
     
     
     
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
   
     
     
@@ -1233,69 +1308,6 @@ passwd me
     
     
     
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-        
-        
-
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
     
   
     
@@ -1325,6 +1337,9 @@ passwd me
         <a class="post-tag" href="/tags/git/">Git</a>
       
         
+        <a class="post-tag" href="/tags/selfhost/">SelfHost</a>
+      
+        
         <a class="post-tag" href="/tags/todo/">TODO</a>
       
         
@@ -1347,9 +1362,6 @@ passwd me
       
         
         <a class="post-tag" href="/tags/gitlab/">GitLab</a>
-      
-        
-        <a class="post-tag" href="/tags/gogs/">Gogs</a>
       
 
       </div>
@@ -1498,6 +1510,49 @@ passwd me
       
       
       <div class="card">
+        <a href="/posts/Personal-Git/">
+          <div class="card-body">
+            <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago small"
+  >
+
+  
+  
+
+  
+    Feb  7
+  
+
+  <i class="unloaded">2021-02-07T19:02:00+08:00</i>
+
+</span>
+
+            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>部署个人Git</h3>
+            <div class="text-muted small">
+              <p>
+                
+
+
+
+
+
+                Github是全球最大的开源社区，一般把自己的开源项目放到Github上可以让更多开发者看到，也不用担心项目丢失。但是一些场景下可能也会希望自己部署Git，比如在国内访问Github一般很慢，如果希望频繁地push和pull那么在国内租服务器架上Git速度可以快上几百倍；看往网上的评价如果希望使用一些CI/CD功能，可能Github不支持或者收费，这时候自己部署更灵活或者可以降低成本。这个P...
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    
+      
+      
+      <div class="card">
         <a href="/posts/Jekyll-Github-Page/">
           <div class="card-body">
             <!--
@@ -1543,7 +1598,7 @@ passwd me
       
       
       <div class="card">
-        <a href="/posts/Linux-utils/">
+        <a href="/posts/Atom/">
           <div class="card-body">
             <!--
   Date format snippet
@@ -1560,14 +1615,14 @@ passwd me
   
 
   
-    Jan  5
+    Jan 13
   
 
-  <i class="unloaded">2021-01-05T22:02:00+08:00</i>
+  <i class="unloaded">2021-01-13T12:56:08+08:00</i>
 
 </span>
 
-            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>通用Linux功能</h3>
+            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>Atom编辑器配置</h3>
             <div class="text-muted small">
               <p>
                 
@@ -1576,76 +1631,14 @@ passwd me
 
 
 
-                查看系统资源占用
-linux有很多manylinux的工具可以查看系统中资源的使用情况
-网络
-https://www.binarytides.com/linux-commands-monitor-network/
-nload
-
-CPU
-top
-
-GPU
-nvidia-smi
-
-内存
-
-磁盘
-du
-df
-
-Git
-git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之...
-              </p>
-            </div>
-          </div>
-        </a>
-      </div>
-    
-      
-      
-      <div class="card">
-        <a href="/posts/Centos-env-setup/">
-          <div class="card-body">
-            <!--
-  Date format snippet
--->
-
-
-
-
-
-<span class="timeago small"
-  >
-
-  
-  
-
-  
-    Jan  5
-  
-
-  <i class="unloaded">2021-01-05T23:22:16+08:00</i>
-
-</span>
-
-            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>Centos环境配置</h3>
-            <div class="text-muted small">
-              <p>
                 
 
+Atom是Github开发的一个文本编辑器，十分简洁，基本只内置了文字编辑和Git的功能，通过插件灵活扩展。这个Post记录自己的Atom配置，主题，插件之类，也是方便重做系统后恢复环境。目前主要用途包括Python和Web开发，写Markdown，远程代码边加。
 
+首先从官网安装Atom。
 
-
-
-                记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。
-
-httpd
-从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。
-
-yum install -y httpd # httpd安装
-systemctl start httpd # 启动
-systemctl status https...
+apm
+Atom安装主题和插件用的都是apm(Atom Package Manager)，它安...
               </p>
             </div>
           </div>
@@ -1862,6 +1855,79 @@ systemctl status https...
     
     
     
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
   
     
     
@@ -2079,69 +2145,6 @@ systemctl status https...
     
     
     
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-        
-        
-
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
     
   
     
@@ -2166,6 +2169,9 @@ systemctl status https...
         <a class="post-tag" href="/tags/git/">Git</a>
       
         
+        <a class="post-tag" href="/tags/selfhost/">SelfHost</a>
+      
+        
         <a class="post-tag" href="/tags/todo/">TODO</a>
       
         
@@ -2188,9 +2194,6 @@ systemctl status https...
       
         
         <a class="post-tag" href="/tags/gitlab/">GitLab</a>
-      
-        
-        <a class="post-tag" href="/tags/gogs/">Gogs</a>
       
 
     </div>
