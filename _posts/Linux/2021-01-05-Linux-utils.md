@@ -85,8 +85,8 @@ https://itextpdf.com/en/blog/technical-notes/how-completely-remove-file-git-repo
 
 https://linuxize.com/post/how-to-rename-local-and-remote-git-branch/
 
-# 压缩
-## tar
+## 压缩
+### tar
 tar是linux用来创建备份文件的命令，好像zip至少也要1级压缩，可能不能只打包，对于需要重复解包的数据比较快。应该是能保存linux的权限，这对一些web应用来说很方便。 详细的命令菜鸟上有介绍。
 ```shell
 # 创建一个包
@@ -107,7 +107,7 @@ tar -rvf name.tar file
 tar -xvf name.tar file
 ```
 
-## gzip
+### gzip
 感觉gzip是用着最方便的，而且像平时做医学影响，nii和nii.gz都可以直接读。
 ```shell
 # 分别压缩目录下没一个文件成一个 gz
@@ -116,7 +116,7 @@ gzip *
 gunzip filename
 ```
 
-## zip
+### zip
 zip感觉一般如果想让windows也能用才用到这个。zip用起来，没有gzip方便，如果一个目录下每个文件想单独打一个包需要写for。
 ```shell
 zip archive.zip filename
@@ -134,7 +134,7 @@ zipsplit -n ...(这块是b为单位的) a.zip # 已经压缩好的包拆卷
 #  10737418240 是10g，拆包之前会告诉一共拆几个包
 ```
 
-## 7zip
+### 7zip
 7zip压缩率高，win/linux上都有，也是个很受欢迎的格式。一般linux不预装。7z和gzip或zip相比一个优点是压缩的时候会先扫所有文件，在压缩过程中给一个进度条，而且应该是会根据压缩算法估计最终的文件大小，对盘不够大的情况可以避免压了很久最后放不下。
 ```shell
 yum install -y p7zip p7zip-plugins
@@ -143,6 +143,9 @@ yum install -y p7zip p7zip-plugins
 7z a -t7z -mx=9 -mfb=273 -ms -md=31 -myx=9 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0 archive.7z inputfileordir # 文档中的最优设置
 7z a -ttar name.tar folder # 创建tar包
 ```
+
+### 中文解压
+windows上压缩的zip经常使用GBK编码，到Linux上解压就是乱码。zip标准还没有给文件名格式留位置所以这个问题基本没有好的通用解决方法。但是如果你直到这个文件大概率是gbk的可以试试这个[脚本](https://gist.github.com/wangjiezhe/7841a350983a147b6d7e)。
 
 
 # crontab
