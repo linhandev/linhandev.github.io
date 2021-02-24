@@ -1,4 +1,8 @@
 
+https://blog.linhan.ml/posts/personal-passwords/
+
+https://blog.linhan.ml/posts/protocol-parsing/
+
 https://blog.linhan.ml/posts/Personal-Mail/
 
 https://blog.linhan.ml/posts/Personal-Git/

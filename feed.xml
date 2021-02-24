@@ -4,7 +4,7 @@
   <id>https://blog.linhan.ml/</id>
   <title>Lin Han' Blog</title>
   <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
-  <updated>2021-02-17T22:14:37+08:00</updated>
+  <updated>2021-02-24T22:33:27+08:00</updated>
   <author>
     <name>Lin Han</name>
     <uri>https://blog.linhan.ml/</uri>
@@ -17,6 +17,83 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>自建密码存粗服务</title>
+    <link href="https://blog.linhan.ml/posts/personal-passwords/" rel="alternate" type="text/html" title="自建密码存粗服务" />
+    <published>2021-02-24T13:46:00+08:00</published>
+  
+    <updated>2021-02-24T13:46:00+08:00</updated>
+  
+    <id>https://blog.linhan.ml/posts/personal-passwords/</id>
+    <content src="https://blog.linhan.ml/posts/personal-passwords/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      https://help.passbolt.com/hosting/install/ce/centos-7
+
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>协议解析和订阅制作</title>
+    <link href="https://blog.linhan.ml/posts/protocol-parsing/" rel="alternate" type="text/html" title="协议解析和订阅制作" />
+    <published>2021-02-23T11:58:00+08:00</published>
+  
+    <updated>2021-02-23T11:58:00+08:00</updated>
+  
+    <id>https://blog.linhan.ml/posts/protocol-parsing/</id>
+    <content src="https://blog.linhan.ml/posts/protocol-parsing/" />
+    <author>
+      <name>Lin Han</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      ss
+格式
+ss://method:password@server:port#comment
+其中 method:password@server:port 部分是urlsafe base64编码，# 后面是urlencode
+
+对一个链接进行解析
+from urllib import parse
+import base64
+link = "ss://YWVzLTI1Ni1nY206Q1VuZFNabllzUEtjdTZLajhUSFZNQkhEQDgyLjEwMi4xNi45OTozOTc3Mg==#%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0"
+protocol, content = link.split("//")
+content_split = content.split("#")
+if len(content_split) != 1:
+  comm...
+    </summary>
+  
+
+  </entry>
 
   
   <entry>
@@ -156,105 +233,6 @@ npm config get registry # 查看是否设置成功
 
 # proxy
 apm config set https-proxy "http://127.0...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Manjaro折腾笔记</title>
-    <link href="https://blog.linhan.ml/posts/Manjaro-env-setup/" rel="alternate" type="text/html" title="Manjaro折腾笔记" />
-    <published>2021-01-05T23:24:00+08:00</published>
-  
-    <updated>2021-02-17T18:39:33+08:00</updated>
-  
-    <id>https://blog.linhan.ml/posts/Manjaro-env-setup/</id>
-    <content src="https://blog.linhan.ml/posts/Manjaro-env-setup/" />
-    <author>
-      <name>Lin Han</name>
-    </author>
-
-  
-    
-    <category term="Linux" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。
-
-镜像
-首先万能的清华源有Manjaro的iso，下载稍快。Etcher非常适合做任何linux distro的iso，用起来很简单，一般都是一次成功。
-
-开始安装
-选驱动的时候不要选免费的，我这装了两回显卡驱动都不好使，休眠之后在唤醒屏幕不亮。
-
-安装过程中我主要在格盘和装软件上有问题。
-
-  磁盘格式推荐ext4
-  如果软件依赖有冲突避免安装前换源
-
-
-中文输入法
-sudo pacman -S fcitx-googlepinyin
-sudo pacman -S fcitx-im # 选择全部安装
-sudo pacman -S fcitx-configtool # 安装图形化配置工具
-# sudo pacman -S fcitx-sk...
-    </summary>
-  
-
-  </entry>
-
-  
-  <entry>
-    <title>Centos环境配置</title>
-    <link href="https://blog.linhan.ml/posts/Centos-env-setup/" rel="alternate" type="text/html" title="Centos环境配置" />
-    <published>2021-01-05T23:22:16+08:00</published>
-  
-    <updated>2021-02-17T18:35:36+08:00</updated>
-  
-    <id>https://blog.linhan.ml/posts/Centos-env-setup/</id>
-    <content src="https://blog.linhan.ml/posts/Centos-env-setup/" />
-    <author>
-      <name>Lin Han</name>
-    </author>
-
-  
-    
-    <category term="Linux" />
-    
-  
-
-  
-    <summary>
-      
-
-
-
-
-
-      记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。
-
-httpd
-从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。
-
-yum install -y httpd # httpd安装
-systemctl start httpd # 启动
-systemctl status https
-systemctl enable httpd # 开机自动启动
-systemctl stop httpd # 关闭服务
-
-
-Centos下，httpd的配置在 /etc/httpd/conf/httpd.conf 下，用 httpd -t 可以校验修改后的配置有无语法错误。默认网页文件root在 /var/www/html
-现在为了保证安全，很多服务会强制要求https，比如微信小程序不能做ht...
     </summary>
   
 
