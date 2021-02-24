@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Centos Postfix 邮件服务器
 date: '2021-02-17 01:04'
 tags:

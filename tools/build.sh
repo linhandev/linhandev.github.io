@@ -1,6 +1,6 @@
 git checkout main
 
-jekyll build
+JEKYLL_ENV=production jekyll build
 
 git add *
 git commit -m "modify"
