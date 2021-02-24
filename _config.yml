@@ -52,7 +52,7 @@ google_analytics:
   pv:
     # The Google Analytics pageviews switch.
     # DO NOT enable it unless you know how to deploy the Google Analytics superProxy.
-    enabled: true
+    enabled: false
     # the next options only valid when `google_analytics.pv` is enabled.
     proxy_url: 'https://model-axe-250517.appspot.com'
     proxy_endpoint: 'https://model-axe-250517.appspot.com/query?id=ahJqfm1vZGVsLWF4ZS0yNTA1MTdyFQsSCEFwaVF1ZXJ5GICAgOjXh4EKDA'
