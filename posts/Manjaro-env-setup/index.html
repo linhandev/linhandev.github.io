@@ -1,60 +1,585 @@
-<!DOCTYPE html><html lang="en-US" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="pv-cache-enabled" content="false"><meta name="generator" content="Jekyll v4.2.0" /><meta property="og:title" content="Manjaro折腾笔记" /><meta name="author" content="Lin Han" /><meta property="og:locale" content="en_US" /><meta name="description" content="装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。" /><meta property="og:description" content="装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。" /><link rel="canonical" href="https://blog.linhan.ml/posts/Manjaro-env-setup/" /><meta property="og:url" content="https://blog.linhan.ml/posts/Manjaro-env-setup/" /><meta property="og:site_name" content="Lin Han’ Blog" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2021-01-05T23:24:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Manjaro折腾笔记" /><meta name="twitter:site" content="@twitter_username" /><meta name="twitter:creator" content="@Lin Han" /><meta name="google-site-verification" content="kk4jmBVTI3Msg_3O4S9o0WvFwXgNSPsIKB0Kvm7Zkm0" /> <script type="application/ld+json"> {"url":"https://blog.linhan.ml/posts/Manjaro-env-setup/","author":{"@type":"Person","name":"Lin Han"},"description":"装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。","@type":"BlogPosting","headline":"Manjaro折腾笔记","dateModified":"2021-02-17T18:39:33+08:00","datePublished":"2021-01-05T23:24:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.linhan.ml/posts/Manjaro-env-setup/"},"@context":"https://schema.org"}</script><title>Manjaro折腾笔记 | Lin Han' Blog</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-DK9PPYG6FZ"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-DK9PPYG6FZ'); }); </script> <script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?0c8a4ea82619b673da4a7c0343ade16e"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="https://linhandev.github.io/assets/img/avatar.png" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Lin Han' Blog</a></div><div class="site-subtitle font-italic">Coder by Choice</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/linhandev" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/twitter_username" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['me','linhan.ml'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Manjaro折腾笔记</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Manjaro折腾笔记</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Tue, Jan 5, 2021, 11:24 PM +0800" > Jan 5 <i class="unloaded">2021-01-05T23:24:00+08:00</i> </span> by <span class="author"> Lin Han </span></div><div> <span> Updated <span class="timeago lastmod" data-toggle="tooltip" data-placement="bottom" title="Wed, Feb 17, 2021, 6:39 PM +0800" > Feb 17 <i class="unloaded">2021-02-17T18:39:33+08:00</i> </span> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1814 words">10 min</span></div></div><div class="post-content"><p>装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。</p><h1 id="镜像">镜像</h1><p>首先万能的清华源有Manjaro的iso，下载稍快。Etcher非常适合做任何linux distro的iso，用起来很简单，一般都是一次成功。</p><h1 id="开始安装">开始安装</h1><p>选驱动的时候不要选免费的，我这装了两回显卡驱动都不好使，休眠之后在唤醒屏幕不亮。</p><p>安装过程中我主要在格盘和装软件上有问题。</p><ul><li>磁盘格式推荐ext4<li>如果软件依赖有冲突避免安装前换源</ul><h1 id="中文输入法">中文输入法</h1><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<!DOCTYPE html>
+
+
+
+<html lang="en-US" 
+  
+    mode="dark"
+  
+>
+
+  <!--
+  The Head
+-->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    <meta name="pv-cache-enabled" content="false">
+
+    
+  
+
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Manjaro折腾笔记" />
+<meta name="author" content="Lin Han" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。" />
+<meta property="og:description" content="装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。" />
+<link rel="canonical" href="https://blog.linhan.ml/posts/Manjaro-env-setup/" />
+<meta property="og:url" content="https://blog.linhan.ml/posts/Manjaro-env-setup/" />
+<meta property="og:site_name" content="Lin Han’ Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-05T23:24:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Manjaro折腾笔记" />
+<meta name="twitter:site" content="@twitter_username" />
+<meta name="twitter:creator" content="@Lin Han" />
+<meta name="google-site-verification" content="kk4jmBVTI3Msg_3O4S9o0WvFwXgNSPsIKB0Kvm7Zkm0" />
+<script type="application/ld+json">
+{"url":"https://blog.linhan.ml/posts/Manjaro-env-setup/","author":{"@type":"Person","name":"Lin Han"},"description":"装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。","@type":"BlogPosting","headline":"Manjaro折腾笔记","dateModified":"2021-02-17T18:39:33+08:00","datePublished":"2021-01-05T23:24:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.linhan.ml/posts/Manjaro-env-setup/"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <title>Manjaro折腾笔记 | Lin Han' Blog
+  </title>
+
+  <!--
+  The Favicons for Web, Android, Microsoft, and iOS (iPhone and iPad) Apps
+  Generated by: https://www.favicon-generator.org/
+-->
+
+
+
+<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon">
+
+<link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png">
+<link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png">
+<link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png">
+
+<link rel="icon" type="image/png" sizes="192x192"  href="/assets/img/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png">
+
+<link rel="manifest" href="/assets/img/favicons/manifest.json">
+<meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'>
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+  <!-- GA -->
+  
+
+  <!-- jsDelivr CDN -->
+  <link rel="preconnect" href="cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="cdn.jsdelivr.net">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"
+    integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
+    crossorigin="anonymous">
+
+  <!--
+  CSS selector for site.
+-->
+
+<link rel="stylesheet" href="/assets/css/style.css">
+
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css">
+
+
+
+  <!-- JavaScripts -->
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+  <script defer
+    src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script>
+
+  <!--
+  JS selector for site.
+-->
+
+
+  
+
+
+
+
+
+<script defer src="/assets/js/dist/post.min.js"></script>
+
+
+  <!-- MathJax -->
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+</head>
+
+
+  <body data-spy="scroll" data-target="#toc">
+
+    <!--
+  The Side Bar
+-->
+
+<div id="sidebar" class="d-flex flex-column align-items-end">
+
+  <div class="profile-wrapper text-center">
+    <div id="avatar">
+      <a href="/" alt="avatar" class="mx-auto">
+        
+        <img src="https://linhandev.github.io/assets/img/avatar.png" alt="avatar" onerror="this.style.display='none'">
+      </a>
+    </div>
+
+    <div class="site-title mt-3">
+      <a href="/">Lin Han' Blog</a>
+    </div>
+
+    <div class="site-subtitle font-italic">Coder by Choice</div>
+
+  </div><!-- .profile-wrapper -->
+
+  <ul class="w-100">
+    <!-- home -->
+    <li class="nav-item">
+      <a href="/" class="nav-link">
+        <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i>
+        <span>HOME</span>
+      </a>
+    </li>
+    <!-- the real tabs -->
+    
+    <li class="nav-item">
+      <a href="/categories/" class="nav-link">
+        <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i>
+        <span>CATEGORIES</span>
+      </a>
+    </li> <!-- .nav-item -->
+    
+    <li class="nav-item">
+      <a href="/tags/" class="nav-link">
+        <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i>
+        <span>TAGS</span>
+      </a>
+    </li> <!-- .nav-item -->
+    
+    <li class="nav-item">
+      <a href="/archives/" class="nav-link">
+        <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i>
+        <span>ARCHIVES</span>
+      </a>
+    </li> <!-- .nav-item -->
+    
+    <li class="nav-item">
+      <a href="/about/" class="nav-link">
+        <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i>
+        <span>ABOUT</span>
+      </a>
+    </li> <!-- .nav-item -->
+    
+
+  </ul> <!-- ul.nav.flex-column -->
+
+  <div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center">
+
+    
+      
+
+      
+      <a href="https://github.com/linhandev" aria-label="github"
+        
+        target="_blank" rel="noopener">
+        <i class="fab fa-github-alt"></i>
+      </a>
+      
+
+    
+      
+
+      
+      <a href="https://twitter.com/twitter_username" aria-label="twitter"
+        
+        target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+      
+
+    
+      
+
+      
+      <a href="
+          javascript:location.href = 'mailto:' + ['me','linhan.ml'].join('@')" aria-label="email"
+        
+        >
+        <i class="fas fa-envelope"></i>
+      </a>
+      
+
+    
+      
+
+      
+      <a href="/feed.xml" aria-label="rss"
+        
+        >
+        <i class="fas fa-rss"></i>
+      </a>
+      
+
+    
+
+    
+
+  </div> <!-- .sidebar-bottom -->
+
+</div><!-- #sidebar -->
+
+
+    <!--
+  The Top Bar
+-->
+
+<div id="topbar-wrapper" class="row justify-content-center topbar-down">
+  <div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between">
+    <span id="breadcrumb">
+
+    
+
+    
+
+      
+
+        
+          
+
+        
+
+      
+
+        
+        <span>
+          
+          
+          <a href="/">
+            Posts
+          </a>
+        </span>
+
+        
+
+      
+
+        
+          <span>Manjaro折腾笔记</span>
+
+        
+
+      
+
+    
+
+    </span><!-- endof #breadcrumb -->
+
+    <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i>
+
+    <div id="topbar-title">
+      Post
+    </div>
+
+    <i id="search-trigger" class="fas fa-search fa-fw"></i>
+    <span id="search-wrapper" class="align-items-center">
+      <i class="fas fa-search fa-fw"></i>
+      <input class="form-control" id="search-input" type="search"
+        aria-label="search" placeholder="Search...">
+      <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i>
+    </span>
+    <span id="search-cancel" >Cancel</span>
+  </div>
+
+</div>
+
+
+    <div id="main-wrapper">
+      <div id="main">
+
+        <!--
+  Refactor the HTML structure.
+-->
+
+
+
+<!--
+  In order to allow a wide table to scroll horizontally,
+  we suround the markdown table with `<div class="table-wrapper">` and `</div>`
+-->
+
+
+<!--
+  Fixed kramdown code highlight rendering:
+  https://github.com/penibelst/jekyll-compress-html/issues/101
+  https://github.com/penibelst/jekyll-compress-html/issues/71#issuecomment-188144901
+-->
+
+
+<!-- Add attribute 'hide-bullet' to the checkbox list -->
+
+
+
+
+<!-- return -->
+<div class="row">
+
+  <div id="post-wrapper" class="col-12 col-lg-11 col-xl-8">
+
+    <div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+      <h1 data-toc-skip>Manjaro折腾笔记</h1>
+
+      <div class="post-meta text-muted d-flex flex-column">
+        <!-- Published date and author -->
+        <div>
+          <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago "
+  
+    data-toggle="tooltip"
+    data-placement="bottom"
+    title="Tue, Jan  5, 2021, 11:24 PM +0800"
+  >
+
+  
+  
+
+  
+    Jan  5
+  
+
+  <i class="unloaded">2021-01-05T23:24:00+08:00</i>
+
+</span>
+
+          by
+          <span class="author">
+            Lin Han
+          </span>
+        </div>
+
+        <div>
+          <!-- lastmod -->
+          
+          <span>
+            Updated
+            <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago lastmod"
+  
+    data-toggle="tooltip"
+    data-placement="bottom"
+    title="Wed, Feb 17, 2021,  6:39 PM +0800"
+  >
+
+  
+  
+
+  
+    Feb 17
+  
+
+  <i class="unloaded">2021-02-17T18:39:33+08:00</i>
+
+</span>
+
+          </span>
+          
+
+          <!-- read time -->
+          <!--
+  Calculate the post's reading time, and display the word count in tooltip
+ -->
+
+
+<!-- words per minute  -->
+
+
+
+
+
+
+
+<!-- return element -->
+<span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1814 words">10 min</span>
+
+
+          <!-- page views -->
+          
+
+        </div>
+
+      </div> <!-- .post-meta -->
+
+      <div class="post-content">
+
+        
+
+        <p>装软件的时候或多或少都会装上一些不用的东西，在加上一些其他的原因电脑容易越来越卡。个人比较喜欢干净所以最近重装了一次系统。觉得重要的地方做些记录。</p>
+
+<h1 id="镜像">镜像</h1>
+<p>首先万能的清华源有Manjaro的iso，下载稍快。Etcher非常适合做任何linux distro的iso，用起来很简单，一般都是一次成功。</p>
+
+<h1 id="开始安装">开始安装</h1>
+<p>选驱动的时候不要选免费的，我这装了两回显卡驱动都不好使，休眠之后在唤醒屏幕不亮。</p>
+
+<p>安装过程中我主要在格盘和装软件上有问题。</p>
+<ul>
+  <li>磁盘格式推荐ext4</li>
+  <li>如果软件依赖有冲突避免安装前换源</li>
+</ul>
+
+<h1 id="中文输入法">中文输入法</h1>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
-</pre><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> fcitx-googlepinyin
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> fcitx-googlepinyin
 <span class="nb">sudo </span>pacman <span class="nt">-S</span> fcitx-im <span class="c"># 选择全部安装</span>
 <span class="nb">sudo </span>pacman <span class="nt">-S</span> fcitx-configtool <span class="c"># 安装图形化配置工具</span>
 <span class="c"># sudo pacman -S fcitx-skin-material</span>
-</pre></table></code></div></div><p>主要包括两部分，fcitx是小企鹅输入框架，所以要装fcitx的东西，如果装好之后打字的时候能看到输入框，但是框里面没有文字都是方框应该是缺中文语言包。 在开始菜单打fcitx启动之后就可以用了。</p><p>貌似所有qt4的软件都需要特殊设置，之前wps一般还是不能用fcitx的。在 /etc/profile 最后添加</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>主要包括两部分，fcitx是小企鹅输入框架，所以要装fcitx的东西，如果装好之后打字的时候能看到输入框，但是框里面没有文字都是方框应该是缺中文语言包。 在开始菜单打fcitx启动之后就可以用了。</p>
+
+<p>貌似所有qt4的软件都需要特殊设置，之前wps一般还是不能用fcitx的。在 /etc/profile 最后添加</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre><td class="rouge-code"><pre><span class="nb">export </span><span class="nv">GTK_IM_MODULE</span><span class="o">=</span>fcitx
+</pre></td><td class="rouge-code"><pre><span class="nb">export </span><span class="nv">GTK_IM_MODULE</span><span class="o">=</span>fcitx
 <span class="nb">export </span><span class="nv">QT_IM_MODULE</span><span class="o">=</span>fcitx
 <span class="nb">export </span><span class="nv">XMODIFIERS</span><span class="o">=</span>@im<span class="o">=</span>fcitx
-</pre></table></code></div></div><p>但是最近WPS好像针对这个有更新，[TODO]确定一下</p><h1 id="vi">vi</h1><p>默认的vi键位很奇特，不熟悉的话会觉得很奇怪，一般vim对新手比较友好。</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> vim
-</pre></table></code></div></div><p>之后可以在需要编辑东西的时候打vim或者直接在 /usr/bin 里把vi删了，用vim替代。</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>但是最近WPS好像针对这个有更新，[TODO]确定一下</p>
+
+<h1 id="vi">vi</h1>
+<p>默认的vi键位很奇特，不熟悉的话会觉得很奇怪，一般vim对新手比较友好。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> vim
+</pre></td></tr></tbody></table></code></div></div>
+<p>之后可以在需要编辑东西的时候打vim或者直接在 /usr/bin 里把vi删了，用vim替代。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre><td class="rouge-code"><pre><span class="nb">cd</span> /usr/bin
+</pre></td><td class="rouge-code"><pre><span class="nb">cd</span> /usr/bin
 <span class="nb">sudo rm </span>vi
 <span class="nb">ln</span> <span class="nt">-s</span> vim vi
-</pre></table></code></div></div><h1 id="yay">yay</h1><p>yay是一个十分好用的包管理工具，他是调用pacman的，命令行参数也基本一样，主要是多了aur的支持，aur里东西很多，基本用的上的软件都能找到。</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+
+<h1 id="yay">yay</h1>
+<p>yay是一个十分好用的包管理工具，他是调用pacman的，命令行参数也基本一样，主要是多了aur的支持，aur里东西很多，基本用的上的软件都能找到。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
 5
 6
 7
-</pre><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> yay <span class="c"># 安装yay</span>
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> yay <span class="c"># 安装yay</span>
 yay package_name <span class="c"># 如果是pacman是需要准确的包名，但是直接yay第一步是搜索，所以不需要准确</span>
 yay <span class="nt">-S</span> pkg_name <span class="c"># 和pacman一样是直接安装这个包</span>
 yay <span class="nt">-R</span> pkg_name <span class="c"># 删除一个包</span>
 yay  <span class="c"># 更新所有的包</span>
 
 vi /etc/makepkg.conf <span class="c"># PKGEXT 把后面的 .xz 去掉，这样本地编译的包不需要压缩直接安装，快很多</span>
-</pre></table></code></div></div><p>如果安装的过程中报一些找不到或者缺少fakeroot，build utils之类的binary，是因为缺少一些依赖，装上就好使。</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> base-devel
-</pre></table></code></div></div><h1 id="显卡相关">显卡相关</h1><p>做深度学习和游戏开发都用到显卡，驱动也是给我折腾的死去活来。首先和驱动无关的一个软件，inxi 是查看硬件信息的，我的笔记本是一个集显一个独显(再买一定不买带集显的…..)</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>如果安装的过程中报一些找不到或者缺少fakeroot，build utils之类的binary，是因为缺少一些依赖，装上就好使。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">sudo </span>pacman <span class="nt">-S</span> base-devel
+</pre></td></tr></tbody></table></code></div></div>
+
+<h1 id="显卡相关">显卡相关</h1>
+<p>做深度学习和游戏开发都用到显卡，驱动也是给我折腾的死去活来。首先和驱动无关的一个软件，inxi 是查看硬件信息的，我的笔记本是一个集显一个独显(再买一定不买带集显的…..)</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre><td class="rouge-code"><pre>inxi <span class="nt">-G</span>
+</pre></td><td class="rouge-code"><pre>inxi <span class="nt">-G</span>
 inxi <span class="nt">-MCmdAGn</span>
-</pre></table></code></div></div><p>因为我之前已经折腾过很多次驱动，所以环境并不干净。清理环境的做法是暴力的在 添加删除软件 里面卸掉了所有名字带 nvidia optimus bumblebee 的软件，之后重启。因为有软件依赖这些东西所以一起被卸掉了，小心不要误删。</p><p>在 Manjaro 动驱动最推荐的方式是 mhwd</p><p>mhwd # 显示所有可以安装的驱动版本 sudo mhwd -i pci video-hybrid-intel-nvidia-440xx-prime # 到20年4月这个是最新的驱动 跑深度学习都需要cuda环境，之前centos+tensorflow的时候显卡是给我折腾的死去活来。这次也有点小问题但是找到了 optimus-manager ，感觉比单用bumblebee 好用。我也不是很在乎一个session的开着独显费电，一行代码搞定才省头发不是。介绍的原文在这</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>因为我之前已经折腾过很多次驱动，所以环境并不干净。清理环境的做法是暴力的在 添加删除软件 里面卸掉了所有名字带 nvidia optimus bumblebee 的软件，之后重启。因为有软件依赖这些东西所以一起被卸掉了，小心不要误删。</p>
+
+<p>在 Manjaro 动驱动最推荐的方式是 mhwd</p>
+
+<p>mhwd # 显示所有可以安装的驱动版本
+sudo mhwd -i pci video-hybrid-intel-nvidia-440xx-prime # 到20年4月这个是最新的驱动
+跑深度学习都需要cuda环境，之前centos+tensorflow的时候显卡是给我折腾的死去活来。这次也有点小问题但是找到了 optimus-manager ，感觉比单用bumblebee 好用。我也不是很在乎一个session的开着独显费电，一行代码搞定才省头发不是。介绍的原文在这</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre><td class="rouge-code"><pre>optimus-manager <span class="nt">--switch</span> nvidia  <span class="nt">--no-confirm</span>
+</pre></td><td class="rouge-code"><pre>optimus-manager <span class="nt">--switch</span> nvidia  <span class="nt">--no-confirm</span>
 optimus-manager <span class="nt">--switch</span> intel  <span class="nt">--no-confirm</span>
 optimus-manager <span class="nt">--status</span> <span class="c"># 查看当前使用的显卡</span>
-</pre></table></code></div></div><p>在装cuda的时候遇到一个问题，提示 /tmp 分区的空间不够了。cuda编译过程中需要的暂存目录空间比较大。查网上的资料，cuda是可以指定这个 tempdir 的，但是编辑 buildfile 因为版本不同好像参数格式也不一样。于是尝试对 /tmp 目录做手脚。可以给 tmp 目录更大的空间，但是我这尝试了 umount 占用。于是直接简单粗暴发挥两块固态的优势，把平时存数据的固态mount 到 /tmp 上。</p><p>fdisk -l # 先要知道要mount的盘叫什么 mount /dev/urdiskname /tmp # 注意替换盘的名称</p><h1 id="亮度调节">亮度调节</h1><p>装完显卡驱动之后终于能在本机上跑深度学习了，但是坑爹的是新的驱动下屏幕亮度调节坏了，又不想重装显卡驱动，因此通过命令行调节屏幕亮度。首先查看屏幕亮度的最大值</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>在装cuda的时候遇到一个问题，提示 /tmp 分区的空间不够了。cuda编译过程中需要的暂存目录空间比较大。查网上的资料，cuda是可以指定这个 tempdir 的，但是编辑 buildfile 因为版本不同好像参数格式也不一样。于是尝试对 /tmp 目录做手脚。可以给 tmp 目录更大的空间，但是我这尝试了 umount 占用。于是直接简单粗暴发挥两块固态的优势，把平时存数据的固态mount 到 /tmp 上。</p>
+
+<p>fdisk -l  # 先要知道要mount的盘叫什么
+mount /dev/urdiskname /tmp # 注意替换盘的名称</p>
+
+<h1 id="亮度调节">亮度调节</h1>
+<p>装完显卡驱动之后终于能在本机上跑深度学习了，但是坑爹的是新的驱动下屏幕亮度调节坏了，又不想重装显卡驱动，因此通过命令行调节屏幕亮度。首先查看屏幕亮度的最大值</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
-</pre><td class="rouge-code"><pre><span class="nb">cat</span>  /sys/class/backlight/intel_backlight/max_brightness
+</pre></td><td class="rouge-code"><pre><span class="nb">cat</span>  /sys/class/backlight/intel_backlight/max_brightness
 <span class="c"># 我这是7500</span>
 <span class="c"># 之后写入一个你觉得可以的值，范围是1到上面显示的最大值。注意这里可能需要却换到root执行，sudo在我这不好使</span>
 <span class="nb">echo </span>800 <span class="o">&gt;&gt;</span> /sys/class/backlight/intel_backlight/brightness
-</pre></table></code></div></div><p>闪瞎双眼的亮度终于降下来了。。。</p><h1 id="安装deb包">安装deb包</h1><p>很多软件发布的时候都只提供deb和rpm这种主流distro的安装包，debtap可以作出arch的安装包之后就可以直接安装deb包了。大多数情况下是好使的</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td></tr></tbody></table></code></div></div>
+<p>闪瞎双眼的亮度终于降下来了。。。</p>
+
+<h1 id="安装deb包">安装deb包</h1>
+<p>很多软件发布的时候都只提供deb和rpm这种主流distro的安装包，debtap可以作出arch的安装包之后就可以直接安装deb包了。大多数情况下是好使的</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -74,7 +599,7 @@ optimus-manager <span class="nt">--status</span> <span class="c"># 查看当前�
 18
 19
 20
-</pre><td class="rouge-code"><pre><span class="c"># 安装debtap</span>
+</pre></td><td class="rouge-code"><pre><span class="c"># 安装debtap</span>
 yay <span class="nt">-S</span> debtap
 
 <span class="c"># 换源</span>
@@ -94,8 +619,1541 @@ https://mirrors.tuna.tsinghua.edu.cn/ubuntu/dists/
 
 <span class="c"># 利用pacman安装</span>
 <span class="nb">sudo </span>pacman <span class="nt">-U</span> x.tar.xz
-</pre></table></code></div></div><h1 id="磁盘挂载">磁盘挂载</h1><p>https://www.cnblogs.com/along21/p/7410619.html function md() { sudo mount /dev/nvme1n1p1 /data/ }</p><h1 id="声音">声音</h1><p>发现电脑外放音量正常，但是插耳机或者连蓝牙都没声。肯定是驱动或者设置的问题，网上找到一个方案</p><p>echo “options snd-hda-intel model=auto” » /etc/modprobe.d/alsa-base.conf 之后重启，插线应该就好使了。如果连接蓝牙之后还是在外放声音，打开Volume Control，里面的output device看看是不是设成 Headphone(Unplugged)，可能只是电脑没有把声音交给蓝牙耳机。</p><p>可能有时候看的视频声音特别小，这个插件可以让音量超过100%，慎用可能损坏硬件，但是如果你确定音量全程都很小问题不大</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre><td class="rouge-code"><pre>yay xfce4-pulseaudio-plugin
-</pre></table></code></div></div><h1 id="数学">数学</h1><p>mathpix可以截屏识别数学公式，打印的基本都没问题，手写的公整也可以。</p><div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre><td class="rouge-code"><pre>yay mathpix
-</pre></table></code></div></div><p>mathpix是需要截屏的，如果是想直接用鼠标写然后识别可以用myscript网页版</p><p>画函数图像可以用desmos</p><p>不同设备之间发送文字可以用 clipboard.ninja</p><h1 id="conda">Conda</h1><h1 id="软件">软件</h1><p>freedownload manager下载很方便</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/linux/'>Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/manjaro/" class="post-tag no-text-decoration" >Manjaro</a></div><br><br> <script src="https://utteranc.es/client.js" repo="linhandev/linhandev.github.io" issue-term="title" label="Comment" theme="github-dark" crossorigin="anonymous" async> </script><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="">Copyright (C) Lin Han - All Rights Reserved</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Manjaro折腾笔记 - Lin Han' Blog&url=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Manjaro折腾笔记 - Lin Han' Blog&u=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Manjaro折腾笔记 - Lin Han' Blog&url=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Personal-Mail/">Centos Postfix 邮件服务器</a><li><a href="/posts/Linux-utils/">通用Linux功能</a><li><a href="/posts/Atom/">Atom编辑器配置</a><li><a href="/posts/Manjaro-env-setup/">Manjaro折腾笔记</a><li><a href="/posts/Personal-Git/">部署个人Git</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/git/">Git</a> <a class="post-tag" href="/tags/selfhost/">SelfHost</a> <a class="post-tag" href="/tags/todo/">TODO</a> <a class="post-tag" href="/tags/archive/">Archive</a> <a class="post-tag" href="/tags/atom/">Atom</a> <a class="post-tag" href="/tags/blog/">Blog</a> <a class="post-tag" href="/tags/centos7/">Centos7</a> <a class="post-tag" href="/tags/centos/">Centos</a> <a class="post-tag" href="/tags/gitea/">Gitea</a> <a class="post-tag" href="/tags/gitlab/">GitLab</a></div></div></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Linux-utils/"><div class="card-body"> <span class="timeago small" > Jan 5 <i class="unloaded">2021-01-05T22:02:00+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>通用Linux功能</h3><div class="text-muted small"><p> 查看系统资源占用 linux有很多manylinux的工具可以查看系统中资源的使用情况 网络 https://www.binarytides.com/linux-commands-monitor-network/ nload CPU top GPU nvidia-smi 内存 磁盘 du df Git git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之...</p></div></div></a></div><div class="card"> <a href="/posts/Centos-env-setup/"><div class="card-body"> <span class="timeago small" > Jan 5 <i class="unloaded">2021-01-05T23:22:16+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Centos环境配置</h3><div class="text-muted small"><p> 记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。 httpd 从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。 yum install -y httpd # httpd安装 systemctl start httpd # 启动 systemctl status https...</p></div></div></a></div><div class="card"> <a href="/posts/Personal-Mail/"><div class="card-body"> <span class="timeago small" > Feb 17 <i class="unloaded">2021-02-17T01:04:00+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Centos Postfix 邮件服务器</h3><div class="text-muted small"><p> 邮件作为一个关键的服务非常需要稳定，因此用一个大厂提供的邮箱是个很好的选择。但是可能出于隐私，免费/付费邮箱服务的各种限制等原因你会希望自己部署一个邮件服务器(Gmail还是很难抢到一个自己喜欢的用户名的)。因为是构建服务器自用，我选择的方案类似一个最小化安装，Postfix MTA + Dovecot IMap + RoundCube网页浏览(可以直接用本地客户端，不装这个)，目标是尽最大...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Centos-env-setup/" class="btn btn-outline-primary" prompt="Older"><p>Centos环境配置</p></a> <a href="/posts/Atom/" class="btn btn-outline-primary" prompt="Newer"><p>Atom编辑器配置</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://github.com/linhandev">Lin Han</a>. <span data-toggle="tooltip" data-placement="top" title="其实也想用CC的，但是我实在是太讨厌转载了，所以： 本博客为非营利性个人原创网站，除明确署明的作品外，所刊登的所有作品的著作权均为本人所有，本人保留所有法定权利。违者必究">禁止转载！</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/git/">Git</a> <a class="post-tag" href="/tags/selfhost/">SelfHost</a> <a class="post-tag" href="/tags/todo/">TODO</a> <a class="post-tag" href="/tags/archive/">Archive</a> <a class="post-tag" href="/tags/atom/">Atom</a> <a class="post-tag" href="/tags/blog/">Blog</a> <a class="post-tag" href="/tags/centos7/">Centos7</a> <a class="post-tag" href="/tags/centos/">Centos</a> <a class="post-tag" href="/tags/gitea/">Gitea</a> <a class="post-tag" href="/tags/gitlab/">GitLab</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://blog.linhan.ml{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>
+</pre></td></tr></tbody></table></code></div></div>
+
+<h1 id="磁盘挂载">磁盘挂载</h1>
+<p>https://www.cnblogs.com/along21/p/7410619.html
+function md() {
+        sudo mount /dev/nvme1n1p1 /data/
+}</p>
+
+<h1 id="声音">声音</h1>
+<p>发现电脑外放音量正常，但是插耳机或者连蓝牙都没声。肯定是驱动或者设置的问题，网上找到一个方案</p>
+
+<p>echo “options snd-hda-intel model=auto” » /etc/modprobe.d/alsa-base.conf
+之后重启，插线应该就好使了。如果连接蓝牙之后还是在外放声音，打开Volume Control，里面的output device看看是不是设成 Headphone(Unplugged)，可能只是电脑没有把声音交给蓝牙耳机。</p>
+
+<p>可能有时候看的视频声音特别小，这个插件可以让音量超过100%，慎用可能损坏硬件，但是如果你确定音量全程都很小问题不大</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yay xfce4-pulseaudio-plugin
+</pre></td></tr></tbody></table></code></div></div>
+
+<h1 id="数学">数学</h1>
+<p>mathpix可以截屏识别数学公式，打印的基本都没问题，手写的公整也可以。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>yay mathpix
+</pre></td></tr></tbody></table></code></div></div>
+<p>mathpix是需要截屏的，如果是想直接用鼠标写然后识别可以用myscript网页版</p>
+
+<p>画函数图像可以用desmos</p>
+
+<p>不同设备之间发送文字可以用 clipboard.ninja</p>
+
+<h1 id="conda">Conda</h1>
+
+<h1 id="软件">软件</h1>
+<p>freedownload manager下载很方便</p>
+
+
+      </div>
+
+      <div class="post-tail-wrapper text-muted">
+
+        <!-- categories -->
+        
+        <div class="post-meta mb-3">
+          <i class="far fa-folder-open fa-fw mr-1"></i>
+          
+            <a href='/categories/linux/'>Linux</a>
+        </div>
+        
+
+        <!-- tags -->
+        
+        <div class="post-tags">
+          <i class="fa fa-tags fa-fw mr-1"></i>
+          
+          <a href="/tags/manjaro/"
+            class="post-tag no-text-decoration" >Manjaro</a>
+          
+          </div>
+        
+
+        <br><br>
+        <script src="https://utteranc.es/client.js"
+          repo="linhandev/linhandev.github.io"
+          issue-term="title"
+          label="Comment"
+          theme="github-dark"
+          crossorigin="anonymous"
+          async>
+        </script>
+
+        <div class="post-tail-bottom
+          d-flex justify-content-between align-items-center mt-3 pt-5 pb-2">
+          
+          <div class="license-wrapper">
+            This post is licensed under
+            <a href="">Copyright (C) Lin Han - All Rights Reserved</a>
+            by the author.
+          </div>
+          
+
+          <!--
+ Post sharing snippet
+-->
+
+<div class="share-wrapper">
+  <span class="share-label text-muted mr-1">Share</span>
+  <span class="share-icons">
+    
+    
+
+    
+      
+        <a href="https://twitter.com/intent/tweet?text=Manjaro折腾笔记 - Lin Han' Blog&url=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top"
+          title="Twitter" target="_blank" rel="noopener" aria-label="Twitter">
+          <i class="fa-fw fab fa-twitter"></i>
+        </a>
+    
+      
+        <a href="https://www.facebook.com/sharer/sharer.php?title=Manjaro折腾笔记 - Lin Han' Blog&u=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top"
+          title="Facebook" target="_blank" rel="noopener" aria-label="Facebook">
+          <i class="fa-fw fab fa-facebook-square"></i>
+        </a>
+    
+      
+        <a href="https://telegram.me/share?text=Manjaro折腾笔记 - Lin Han' Blog&url=https://blog.linhan.ml/posts/Manjaro-env-setup/" data-toggle="tooltip" data-placement="top"
+          title="Telegram" target="_blank" rel="noopener" aria-label="Telegram">
+          <i class="fa-fw fab fa-telegram"></i>
+        </a>
+    
+
+    <i class="fa-fw fas fa-link small" onclick="copyLink()"
+        data-toggle="tooltip" data-placement="top" title="Copy link"></i>
+
+  </span>
+</div>
+
+
+        </div><!-- .post-tail-bottom -->
+
+      </div><!-- div.post-tail -->
+
+    </div> <!-- .post -->
+
+
+  </div> <!-- #post-wrapper -->
+
+  
+
+  
+
+  <!--
+  The Pannel on right side (Desktop views)
+-->
+
+<div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down">
+
+  <div class="access">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+    <div id="access-lastmod" class="post">
+      <span>Recent Update</span>
+      <ul class="post-content pl-0 pb-1 ml-1 mt-2">
+
+      
+        
+        
+        
+        <li><a href="/posts/Personal-Mail/">Centos Postfix 邮件服务器</a></li>
+      
+        
+        
+        
+        <li><a href="/posts/Linux-utils/">通用Linux功能</a></li>
+      
+        
+        
+        
+        <li><a href="/posts/Atom/">Atom编辑器配置</a></li>
+      
+        
+        
+        
+        <li><a href="/posts/Manjaro-env-setup/">Manjaro折腾笔记</a></li>
+      
+        
+        
+        
+        <li><a href="/posts/Personal-Git/">部署个人Git</a></li>
+      
+
+      </ul>
+    </div> <!-- #access-lastmod -->
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  
+    <div id="access-tags">
+      <span>Trending Tags</span>
+      <div class="d-flex flex-wrap mt-3 mb-1 mr-3">
+
+      
+        
+        <a class="post-tag" href="/tags/git/">Git</a>
+      
+        
+        <a class="post-tag" href="/tags/selfhost/">SelfHost</a>
+      
+        
+        <a class="post-tag" href="/tags/todo/">TODO</a>
+      
+        
+        <a class="post-tag" href="/tags/archive/">Archive</a>
+      
+        
+        <a class="post-tag" href="/tags/atom/">Atom</a>
+      
+        
+        <a class="post-tag" href="/tags/blog/">Blog</a>
+      
+        
+        <a class="post-tag" href="/tags/centos7/">Centos7</a>
+      
+        
+        <a class="post-tag" href="/tags/centos/">Centos</a>
+      
+        
+        <a class="post-tag" href="/tags/gitea/">Gitea</a>
+      
+        
+        <a class="post-tag" href="/tags/gitlab/">GitLab</a>
+      
+
+      </div>
+    </div>
+  
+  </div> <!-- .access -->
+
+  
+
+</div> <!-- #panel-wrapper -->
+
+
+</div> <!-- .row -->
+
+<div class="row">
+  <div class="col-12 col-lg-11 col-xl-8">
+    <div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
+
+    <!--
+ Recommend the other 3 posts according to the tags and categories of the current post,
+ if the number is not enough, use the other latest posts to supplement.
+-->
+
+<!-- The total size of related posts  -->
+
+
+<!-- An random integer that bigger than 0  -->
+
+
+<!-- Equals to TAG_SCORE / {max_categories_hierarchy}  -->
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+
+<!-- Fill with the other newlest posts  -->
+
+
+
+
+  
+    
+    
+      
+      
+        
+        
+        
+          
+
+
+
+
+
+  <div id="related-posts" class="mt-5 mb-2 mb-sm-4">
+    <h3 class="pt-2 mt-1 mb-4 ml-1"
+      data-toc-skip>Further Reading</h3>
+    <div class="card-deck mb-4">
+    
+      
+      
+      <div class="card">
+        <a href="/posts/Linux-utils/">
+          <div class="card-body">
+            <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago small"
+  >
+
+  
+  
+
+  
+    Jan  5
+  
+
+  <i class="unloaded">2021-01-05T22:02:00+08:00</i>
+
+</span>
+
+            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>通用Linux功能</h3>
+            <div class="text-muted small">
+              <p>
+                
+
+
+
+
+
+                查看系统资源占用
+linux有很多manylinux的工具可以查看系统中资源的使用情况
+网络
+https://www.binarytides.com/linux-commands-monitor-network/
+nload
+
+CPU
+top
+
+GPU
+nvidia-smi
+
+内存
+
+磁盘
+du
+df
+
+Git
+git以行为单位追踪更改，比如在一行文本里改了一个字，那么git看作删掉这一行之...
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    
+      
+      
+      <div class="card">
+        <a href="/posts/Centos-env-setup/">
+          <div class="card-body">
+            <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago small"
+  >
+
+  
+  
+
+  
+    Jan  5
+  
+
+  <i class="unloaded">2021-01-05T23:22:16+08:00</i>
+
+</span>
+
+            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>Centos环境配置</h3>
+            <div class="text-muted small">
+              <p>
+                
+
+
+
+
+
+                记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。
+
+httpd
+从最好装的开始。Apache httpd 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。
+
+yum install -y httpd # httpd安装
+systemctl start httpd # 启动
+systemctl status https...
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    
+      
+      
+      <div class="card">
+        <a href="/posts/Personal-Mail/">
+          <div class="card-body">
+            <!--
+  Date format snippet
+-->
+
+
+
+
+
+<span class="timeago small"
+  >
+
+  
+  
+
+  
+    Feb 17
+  
+
+  <i class="unloaded">2021-02-17T01:04:00+08:00</i>
+
+</span>
+
+            <h3 class="pt-0 mt-1 mb-3" data-toc-skip>Centos Postfix 邮件服务器</h3>
+            <div class="text-muted small">
+              <p>
+                
+
+
+
+
+
+                邮件作为一个关键的服务非常需要稳定，因此用一个大厂提供的邮箱是个很好的选择。但是可能出于隐私，免费/付费邮箱服务的各种限制等原因你会希望自己部署一个邮件服务器(Gmail还是很难抢到一个自己喜欢的用户名的)。因为是构建服务器自用，我选择的方案类似一个最小化安装，Postfix MTA + Dovecot IMap + RoundCube网页浏览(可以直接用本地客户端，不装这个)，目标是尽最大...
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    
+    </div> <!-- .card-deck -->
+  </div> <!-- #related-posts -->
+
+
+
+    <!--
+  Navigation buttons at the bottom of the post.
+-->
+
+<div class="post-navigation d-flex justify-content-between">
+  
+  <a href="/posts/Centos-env-setup/" class="btn btn-outline-primary"
+    prompt="Older">
+    <p>Centos环境配置</p>
+  </a>
+  
+
+  
+  <a href="/posts/Atom/" class="btn btn-outline-primary"
+    prompt="Newer">
+    <p>Atom编辑器配置</p>
+  </a>
+  
+
+</div>
+
+
+    
+
+    </div> <!-- #post-extend-wrapper -->
+
+  </div> <!-- .col-* -->
+
+</div> <!-- .row -->
+
+
+
+
+
+        <!--
+  The Footer
+-->
+
+<footer class="d-flex w-100 justify-content-center">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="footer-left">
+      <p class="mb-0">
+        © 2021
+        <a href="https://github.com/linhandev">Lin Han</a>.
+        
+        <span data-toggle="tooltip" data-placement="top"
+          title="其实也想用CC的，但是我实在是太讨厌转载了，所以： 本博客为非营利性个人原创网站，除明确署明的作品外，所刊登的所有作品的著作权均为本人所有，本人保留所有法定权利。违者必究">禁止转载！</span>
+        
+      </p>
+    </div>
+
+    <div class="footer-right">
+      <p class="mb-0">
+        Powered by
+        <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>
+        with
+        <a href="https://github.com/cotes2020/jekyll-theme-chirpy"
+          target="_blank" rel="noopener">Chirpy</a>
+        theme.
+      </p>
+    </div>
+
+  </div> <!-- div.d-flex -->
+</footer>
+
+
+      </div>
+
+      <!--
+  The Search results
+-->
+<div id="search-result-wrapper" class="d-flex justify-content-center unloaded">
+  <div class="col-12 col-xl-11 post-content">
+    <div id="search-hints">
+      <h4 class="text-muted mb-4">Trending Tags</h4>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+      
+        
+        <a class="post-tag" href="/tags/git/">Git</a>
+      
+        
+        <a class="post-tag" href="/tags/selfhost/">SelfHost</a>
+      
+        
+        <a class="post-tag" href="/tags/todo/">TODO</a>
+      
+        
+        <a class="post-tag" href="/tags/archive/">Archive</a>
+      
+        
+        <a class="post-tag" href="/tags/atom/">Atom</a>
+      
+        
+        <a class="post-tag" href="/tags/blog/">Blog</a>
+      
+        
+        <a class="post-tag" href="/tags/centos7/">Centos7</a>
+      
+        
+        <a class="post-tag" href="/tags/centos/">Centos</a>
+      
+        
+        <a class="post-tag" href="/tags/gitea/">Gitea</a>
+      
+        
+        <a class="post-tag" href="/tags/gitlab/">GitLab</a>
+      
+
+    </div>
+    <div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div>
+  </div>
+</div>
+
+
+    </div> <!-- #main-wrapper -->
+
+    
+
+    <div id="mask"></div>
+
+    <a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!--
+  Jekyll Simple Search loader
+-->
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script>
+
+<script>
+SimpleJekyllSearch({
+  searchInput: document.getElementById('search-input'),
+  resultsContainer: document.getElementById('search-results'),
+  json: '/assets/js/data/search.json',
+  searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0">  <a href="https://blog.linhan.ml{url}">{title}</a>  <div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1">    <div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div>    <div><i class="fa fa-tag fa-fw"></i>{tags}</div>  </div>  <p>{snippet}</p></div>',
+  noResultsText: '<p class="mt-5">Oops! No result founds.</p>'
+});
+</script>
+
+
+  </body>
+
+</html>
+
