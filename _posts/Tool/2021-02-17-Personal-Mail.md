@@ -23,7 +23,7 @@ categories:
 ## 原理
 用大厂的邮箱服务发邮件很简单但是背后还是涉及不少步骤，稍作了解很有必要。[这篇文章](https://www.pepipost.com/blog/email-works-behind-scenes-developers-perspective/)介绍的很通俗易懂。
 
-![mail-process](/assets/img/posts/Tool/mail/mail-process.png)
+![mail-process](/assets/img/post/Tool/mail/mail-process.png)
 
 ## 邮件服务器
 这部分的内容主要根据[这篇教程](https://www.krizna.com/centos/setup-mail-server-centos-7/)整理，Lionode上还有一篇基本相同但是更详细的[教程](https://www.linode.com/docs/guides/email-with-postfix-dovecot-and-mariadb-on-centos-7/)。主要根据前面这篇是因为他用Linux的帐号系统，第二篇写进SQL更灵活但是也更复杂。加密的部分采用第二篇。
