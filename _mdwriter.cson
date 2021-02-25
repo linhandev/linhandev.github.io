@@ -23,15 +23,15 @@ siteLocalDir: "/home/aistudio/git/blog/linhandev.github.io"
 # Directory to drafts from siteLocalDir
 siteDraftsDir: "_drafts/"
 # Directory to posts from siteLocalDir
-sitePostsDir: "_posts/{year}/"
+sitePostsDir: "_posts/"
 # Directory to images from siteLocalDir
 # - E.g. to use the current filename directory, can use {directory}
-siteImagesDir: "/assets/img/{directory}/{slug}"
+siteImagesDir: "/assets/img/post/{directory}/{slug}"
 
 # URLs to tags/posts/categories JSON files
 # https://github.com/zhuochun/md-writer/wiki/Settings-for-Front-Matters
 urlForPosts: "https://blog.linhan.ml/overview/posts.json"
-urlForTags: "https://blog.linhan.ml/overview/tags.json"
+urlForTags: "{siteUrl}/overview/tags.json"
 urlForCategories: "https://blog.linhan.ml/overview/categories.json"
 
 # The front matter key name
@@ -56,9 +56,10 @@ frontMatter: """
 title: "{title}"
 author: "Lin Han"
 date: "{date}"
-categories: []
-tags: []
+categories:
+tags:
 math: true
+published: false
 ---
 """
 

@@ -7,4 +7,4 @@ tags: []
 math: true
 ---
 一个项目进行过程中，提升结果可能有非常多可以尝试的方法
-![motivations](/assets/img/_draft/DL/structure-dl-project/motivations.png)
+![motivations](/assets/img/post/DL/structure-dl-project/motivations.png)

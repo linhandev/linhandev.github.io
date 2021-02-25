@@ -105,7 +105,7 @@ git push
 git checkout main
 ```
 到这复杂的部分基本就完成了，最后到Github项目的Settings里，找到 GitHub Pages 的部分，将 Source 设成 gh-page，/root，保存。网站应该就可以访问了。
-![page](/assets/img/_posts/Tool/Jekyll-Github-Page/page.png)
+![page](/assets/img/post/Tool/Jekyll-Github-Page/page.png)
 
 
 ## 评论
