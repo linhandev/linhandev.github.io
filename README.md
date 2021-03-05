@@ -1,4 +1,14 @@
 # Chirpy
+
+TODO
+- [ ] 实现 series
+
+根据series字段分系列，根据part字段排序
+文章开头放一个下拉菜单，这篇是一个series的一篇，点击展开文章列表
+左侧加一个series栏，里面用tool展示所有series
+
+- [ ] 找md ctrl b 直接星号的插件
+
 更新需要保留文件：
 - _posts
 - _drafts
