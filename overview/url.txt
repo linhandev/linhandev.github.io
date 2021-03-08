@@ -3,6 +3,8 @@ https://blog.linhan.ml/posts/Personal-Mail/
 
 https://blog.linhan.ml/posts/Personal-Git/
 
+https://blog.linhan.ml/posts/Logistic-Regression/
+
 https://blog.linhan.ml/posts/Atom/
 
 https://blog.linhan.ml/posts/Manjaro-env-setup/
