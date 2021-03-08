@@ -9,25 +9,31 @@ tags:
 math: true
 ---
 
-记录Centos作为服务器，进行软件安装，配置的一些方法和使用技巧。
+Centos是基于RedHat Enterprise Linux开源的一个Linux distro，以极高的稳定性闻名。这个Post讲解将Centos作为服务器，安装软件和进行配置的技巧。
+
+# 购买
+
+# 域名
 
 # httpd
-从最好装的开始。[Apache httpd](http://httpd.apache.org/) 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不差，安装和使用都很简单。
+从这里开始进入安装，从最好装的开始。如果你希望用服务器托管网页或者你的前端程序需要访问服务器上的一些文件，那么httpd是一个很方便的选择。[Apache httpd](http://httpd.apache.org/) 是一个网页服务器，虽然在现在的标准下看起来可能有点老了，但是小规模场景下效果也不错，安装和使用都很简单。
 
 ```shell
 yum install -y httpd # httpd安装
 systemctl start httpd # 启动
-systemctl status https
+systemctl status httpd
 systemctl enable httpd # 开机自动启动
-systemctl stop httpd # 关闭服务
+# systemctl stop httpd # 关闭服务
 ```
 
 Centos下，httpd的配置在 /etc/httpd/conf/httpd.conf 下，用 httpd -t 可以校验修改后的配置有无语法错误。默认网页文件root在 /var/www/html
+
 现在为了保证安全，很多服务会强制要求https，比如微信小程序不能做http的访问。httpd配置https最简单的方法一定是[LetsEncrept](https://letsencrypt.org/) + Cerbot。
 
 官网上cerbot是通过snap安装的，需要先装snap。
 ```shell
-sudo yum install snap
+sudo yum install -y epel-release
+sudo yum install -y snap
 sudo systemctl start snapd
 sudo ln -s /var/lib/snapd/snap /snap # enable classic snap支持
 sudo snap install core; sudo snap refresh core # 更新snap

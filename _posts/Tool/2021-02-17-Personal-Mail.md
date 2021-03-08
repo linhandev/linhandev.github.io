@@ -9,7 +9,7 @@ categories:
   - Tool
 ---
 
-邮件作为一个关键的服务非常需要稳定，因此用一个大厂提供的邮箱是个很好的选择。但是可能出于隐私，免费/付费邮箱服务的各种限制等原因你会希望自己部署一个邮件服务器(Gmail还是很难抢到一个自己喜欢的用户名的)。因为是构建服务器自用，我选择的方案类似一个最小化安装，Postfix MTA + Dovecot IMap + RoundCube网页浏览(可以直接用本地客户端，不装这个)，目标是尽最大可能把系统资源用在刀刃上，不搞那些花里糊少的功能。
+邮件作为一个关键的服务非常需要稳定，因此用一个大厂提供的邮箱是个很好的选择。但是可能出于隐私，免费/付费邮箱服务的各种限制等原因你会希望自己部署一个邮件服务器(Gmail还是很难抢到一个自己喜欢的用户名的)。因为是要搭一个自己用的服务器，我选择的方案类似一个最小化安装，Postfix MTA + Dovecot IMap + RoundCube网页浏览(可以直接用本地客户端，不装这个)，目标是尽最大可能把系统资源用在刀刃上，不搞那些花里糊少的功能。
 
 ## 系统要求
 - Centos 7
@@ -48,7 +48,7 @@ vi /etc/hosts
 ```shell
 yum install -y postfix dovecot epel-release
 yum install -y python2-certbot-nginx nginx
-yum update
+yum update -y
 certbot --nginx
 # 证书都在 /etc/letsencrypt/live/$domain  里
 ```
