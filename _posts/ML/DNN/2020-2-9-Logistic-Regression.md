@@ -8,6 +8,7 @@ tags:
   - Andrew
   - TODO
 math: true
+published: false
 ---
 
 逻辑回归是一种二分类方法

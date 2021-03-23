@@ -8,7 +8,7 @@ tags:
   - Andrew
   - TODO
 math: true
-published: false
+published: true
 ---
 
 # 前言
@@ -29,10 +29,12 @@ published: false
 - $$n^{[l]}_{h}$$：全连接网络第l层节点的数量
 - $$L$$：网络总层数
 - $$x^{(i)}\in \mathbb{R}^{n_{x}\times 1}$$：第i条训练数据，$$n_{x}$$行，1列，每条训练数据，无论是单独写还是放在数组里都是竖着的
-- $$X\in {\mathbb{R}}^{n_{x}\times m}$$：输入数据矩阵，特征数行，数据条数列
+- $$X\in {\mathbb{R}}^{n_{x}\times m}$$：输入数据矩阵，特征数行，数据条数列。在所有的Ｘ和激活函数的输出Ａ数组中，一条数据都是竖着的。
 - $$y^{(i)}\in {\mathbb{R}}^{n_{y}\times 1}$$：第ｉ条数据的输出，$$n_{y}$$行１列，所有数据的输出和输入一样，无论单独写还是在数组里都是竖着的
 - $$Y\in {\mathbb{R}}^{n_{y}\times m}$$：输出矩阵，$$n_{y}$$行ｍ列
-- $$W^{[l]} \in \mathbb{R}^{n^{[l-1]}_{h} \times n^{[l]}_{h}}$$：计算的时候是 $$W^{[l]}\times a^{[l-1]} + b^{[l]}$$，所以$$W^{[l]}$$是$$n^{[l]} \times n^{[l-1]}的$$ !!!这里需要考证
+- $$W^{[l]} \in \mathbb{R}^{n^{[l-1]}_{h} \times n^{[l]}_{h}}$$：计算的时候是 $$W^{[l]}\times a^{[l-1]} + b^{[l]}$$，所以$$W^{[l]}$$是$$n^{[l]} \times n^{[l-1]}的$$。$$W^{l}$$中的一行是第l层中一个节点的权重，所以$$W^{l}$$中的行和第l层的节点个数相同，$$W^{l}$$中的列和第l-1层中的节点个数相同。
+
+
 - $$b^{[l]} \in \mathbb{R}$$：
 - $$\hat{y} \in \mathbb{R}^{n_{y}}$$：
 - $$a^{[L]} \in \mathbb{R}$$：

@@ -62,6 +62,7 @@ vi /etc/postfix/main.cf
 #mydestination = $myhostname, localhost.$mydomain, localhost #--> line no 164
 
 # 之后在这个文件最后添加下面的部分，并按注释修改
+
 # 改成前面设置的hostname
 myhostname = mail.linhan.ml
 # 改成服务器域名
@@ -89,6 +90,7 @@ smtpd_tls_received_header = yes
 smtpd_tls_session_cache_timeout = 3600s
 tls_random_source = dev:/dev/urandom
 ```
+
 ```shell
 vi /etc/postfix/master.cf
 # 在 smtp inet n – n – – smtpd 行下一行添加
@@ -158,7 +160,7 @@ firewall-cmd --reload
 ```
 使用telnet检测端口是否开启
 ```shell
-telnet linhan.ml 465
+telnet linhan.ml 25
 ehlo linhan.ml
 ```
 
@@ -181,5 +183,6 @@ passwd me
 ## 备份
 自己搭建的服务可能会出现一些错误，时常进行备份十分重要。
 
+[//]: # (TODO:如何进行备份)
 ## spam
 [//]: # (TODO:如何过滤垃圾邮件)
