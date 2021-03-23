@@ -163,6 +163,7 @@ firewall-cmd --reload
 # 备份配置
 cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.bk
 
+vi /etc/vsftpd/vsftpd.conf
 # 之后需要修改一些vsftpd的设置
 anonymous_enable=NO             # disable  anonymous login
 local_enable=YES		# permit local logins
@@ -188,14 +189,16 @@ userlist_deny=NO
 # chroot_local_user=YES
 # allow_writeable_chroot=YES
 ```
+userlist_enable=YES + userlist_deny=NO 的意思是只允许 /etc/vsftpd/vsftpd.userlist 中的用户登录。所以将想要允许登录的用户添加到这个文件里，一行一个。
+
 [TODO]:Response:	500 OOPS: cannot read user list file:/etc/vsftpd/vsftpd.userlist    # stores usernames.
 
-之后重启vsftpd服务，如果显示 500 OOPS: bad bool value in config file for: 一个配置变量，那么可能是这行后面有空格之类造成的，可以用下面这行处理一下
+之后重启vsftpd服务，如果显示 500 OOPS: bad bool value in config file for: 某个配置变量，那么可能是这行后面有空格之类造成的，可以用下面这行处理一下
 ```shell
 sed -i 's,\r,,;s, *$,,' /etc/vsftpd/vsftpd.conf
 ```
 
-到这ftp基本就配置好了并做了简单的安全措施。本地链接服务器的软件推荐[FileZilla](https://filezilla-project.org/)。如果ftp协议不好用可以试一下sftp，个人经验sftp比ftp容易成功。ftp能做很多事，如果是生产环境安全方面肯定需要额外差资料研究，这些估计是不够的。
+到这ftp基本就配置好了并做了简单的安全措施。本地链接服务器的软件推荐[FileZilla](https://filezilla-project.org/)。如果ftp协议不好用可以试一下sftp，个人经验sftp比ftp容易成功。ftp能做很多事，如果是生产环境安全方面肯定需要额外差资料研究，这些大概是不够的。
 
 # Mysql
 Mysql需要通过Oracle维护的单独的一个repo安装，可以下载官网的rpm添加repo之后安装，参考[这个](https://www.linode.com/docs/databases/mysql/how-to-install-mysql-on-centos-7/)教程。但是国内一般这种方法都慢到不行，清华源有这个repo的镜像，参考[官方介绍](https://mirrors.tuna.tsinghua.edu.cn/help/mysql/)添加repo，下载速度一般都是很快的。
@@ -396,19 +399,22 @@ yum install -y libffi-devel zlib1g-dev
 yum install zlib* -y
 
 # python.org 下载 .xz 源码压缩包
-VERSION=3.7.9 # 3.7.9, 3.8.6, 3.9.0 测试通过
-wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tar.xz
+VERSION=3.7.9 # 3.7.9, 3.8.8, 3.9.2 测试通过
+# 从python官网下载可能较慢，华为有一个镜像。不带最后的 /
+base_url=https://www.python.org/ftp/python # https://mirrors.huaweicloud.com/python
+wget ${base_url}/${VERSION}/Python-${VERSION}.tar.xz
 tar -xvf Python-${VERSION}.tar.xz # 解压到当前目录
 
 mkdir /usr/local/python3
 
 cd Python-${VERSION}
-./configure --prefix=/usr/local/${VERSION} --enable-optimizations --with-ssl
-[TODO] with-ssl 不好使
-# 第一个指定安装的路径,不指定的话,安装过程中可能软件所需要的文件复制到其他不同目录,删除软件很不方便,复制软件也不方便.
-# 第二个可以提高python10%-20%代码运行速度.
+./configure --prefix=/usr/local/${VERSION} --enable-optimizations
+--with-ssl
+# [TODO] with-ssl 不好使
+# 第一个指定安装的路径，不指定的话，安装过程中可能软件所需要的文件复制到其他不同目录，删除软件很不方便，复制软件也不方便
+# 第二个可以提高python10%-20%代码运行速度
 
-time make && make install # 之后需要编译很长时间
+time make && make install # 之后需要编译很长时间，看起来比较吃CPU和IO
 
 # 编译应该不会出什么问题，如果正常结束了就创建到可执行程序的软链接
 ln -s /usr/local/${VERSION}/bin/python3 /usr/local/bin/python3
