@@ -47,9 +47,15 @@ vi /etc/hosts
 安装软件，申请ssl证书
 ```shell
 yum install -y postfix dovecot epel-release
-yum install -y python2-certbot-nginx nginx
-yum update -y
-certbot --nginx
+sudo yum install -y epel-release
+sudo yum install -y snapd
+sudo systemctl start snapd
+sudo ln -s /var/lib/snapd/snap /snap # enable classic snap support
+sudo snap install core; sudo snap refresh core # 更新snap
+sudo yum remove -y certbot # 确保没有之前安装的cerbot残留
+sudo snap install --classic certbot # 安装cerbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot # 链接到执行路径
+certbot certonly
 # 证书都在 /etc/letsencrypt/live/$domain  里
 ```
 
@@ -58,8 +64,8 @@ certbot --nginx
 vi /etc/postfix/main.cf
 
 # 删掉这两行的 #
-#inet_interfaces = localhost #---> line no 116
-#mydestination = $myhostname, localhost.$mydomain, localhost #--> line no 164
+# inet_interfaces = localhost #---> line no 116
+# mydestination = $myhostname, localhost.$mydomain, localhost #--> line no 164
 
 # 之后在这个文件最后添加下面的部分，并按注释修改
 
