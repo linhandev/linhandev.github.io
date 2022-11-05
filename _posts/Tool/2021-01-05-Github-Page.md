@@ -362,7 +362,7 @@ sitemap顾名思义就是网站的地图，告诉爬虫我这个网站都有些�
 
 如果你的主题不带sitemap也可以自己添加
 
-[//]: # (TODO: 怎么添加sitemap)
+<!-- [//]: # (TODO: 怎么添加sitemap) -->
 
 robots.txt是用来告诉搜索引擎网站上哪些网页该爬，哪些网页不该爬的。可以访问 [github id].github.io/robots.txt 看看自己有没有这个文件。如果没有的话，在项目根目录中加上一个robots.txt文件就行，一个最简单的写法是
 
@@ -406,7 +406,7 @@ robots.txt和sitemap俱全就可以向搜索引擎提交网站了。这里需要
 
 
 ## 流量统计
-[//]: # (TODO: 补全这块)
+<!-- [//]: # (TODO: 补全这块) -->
 
 
 ## 自定义域名
@@ -429,4 +429,4 @@ Pages的默认网址是固定的，比如个人博客都是 用户名.github.io�
 
 到这基本上Github Pages的基本用法就介绍完了。这篇文章还会不断更新进行更正和丰富。如果使用过程中有任何问题也欢迎在下方评论留言。
 
-[//]: # (TODO: 表单 https://formspree.io/plans)
+<!-- [//]: # (TODO: 表单 https://formspree.io/plans) -->

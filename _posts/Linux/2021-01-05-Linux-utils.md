@@ -69,7 +69,7 @@ git branch -d <local branch name>
 git push origin --delete <remove branch name>
 
 git merge
-#TODO: 研究在merge的时候压缩所有commit
+# TODO: 研究在merge的时候压缩所有commit 
 
 git remote add origin <服务器项目网址> # 添加服务器上项目的repo
 git push --set-upstream origin <remote-branch> # 推到origin的一个branch里
