@@ -21,7 +21,7 @@ adrenal gland
   - 前方：下腔静脉
   - 后方：肾前间隙（基本看不到右肾）
   - 右侧：肝右页
-  - 左侧：[//]: # (TODO:)
+  - 左侧：(TODO:)
 
 ![right-adrenal-glad](/assets/img/post/Med/right-adrenal-glad.png)
 

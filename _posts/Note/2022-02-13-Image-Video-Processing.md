@@ -19,7 +19,7 @@ tags:
 - Rod：视杆，亮度，120M
 - Cone：视椎，颜色，6M
 
-[//]: # (TODO:怎么判断三元色选的好不好)
+(TODO:怎么判断三元色选的好不好)
 # 颜色表示
 - 三元色：Trichromatic color mixing
   - RGB
@@ -81,7 +81,7 @@ Committee)美国标准
 
 Gamma Correction：显示的强度和真实的强度是非线性的
 
-[//]: # (TODO:)
+(TODO:)
 
 视频
 - Standard Definition：720x480，4：2，25-30fps，隔行或逐行扫描，8 bit
@@ -116,7 +116,7 @@ Gamma Correction：显示的强度和真实的强度是非线性的
       ![power low](/assets/img/post/Note/power-low.png)
       ![power law example](/assets/img/post/Note/power-law-example.png)
 
-[//]: # (TODO:图片power law)
+(TODO:图片power law)
 - 自适应变换：根据原图和目标的直方图确定函数
   - 直方图增强
   - 原像素变成累积概率分布*最大强度，总能得到一个比较平的histogram
@@ -470,7 +470,7 @@ N维空间里的所有向量都可以用N个线性无关的基底变换得来。
   - $A\cdot B=trace(AB^H)=trace(BA^H)$，trace是主对角线元素和，i,j相等的位置元素和
   - 几何意义是投影
     - $A\cdot B=|A||B|cos<A,B>$
-- 外积 [//]: # (TODO:)
+- 外积 (TODO:)
 - 单位正交基底：线性无关，都是单位长度，两两垂直
 - 共轭转制：$X^H=(X^{*})^T$ hermitian
 - 酉矩阵：单位正交列向量组成的矩阵，unitary matrix
@@ -614,7 +614,7 @@ $$
 T(k)=\sum_{n=0}^{N-1} f(n) h_{k}(n) \\
 f(n)=\sum_{u=0}^{N-1} T(k) h_{k}(n)
 $$
-[//]: # (TODO:整理符号)
+(TODO:整理符号)
 
 单位正交变换的统计性质
 - $t_0=Avg(S)$
@@ -632,7 +632,7 @@ $$
 - P[a,j]是信号各个维度和第j个维度间的方差在第a个基底上的投影
 - P中的第a行是信号各个维度和各个维度的方差在第a个基底上的投影
 - 最后 PU[a,b] 是P的第a行和U的第b列对应位置相乘求和，是把信号的方差在第a个基底上的投影和第b个基底按位置相乘， -->
-[//]: # (TODO:左乘和右乘的含义)
+(TODO:左乘和右乘的含义)
 - 单位正交基底，信号平方和跟系数平方和相同；非单位正交基底，所有信号内的方差和所有系数内的方差和相同
   - 平方是 $\sqrt{(x \times x^*)}$
   - 丢掉一些高频分量，信号每个维度误差的平方和=丢掉的分量的系数平方和

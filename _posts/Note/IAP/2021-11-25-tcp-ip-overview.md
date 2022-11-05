@@ -63,7 +63,7 @@ OSI五层结构
 
 multiplex：多路复用
 - 一个低层协议可以支持多个高层协议，用低层的Frame Type或者端口号之类的区分 eg：IP支持TCP和UDP
-- 一个高层协议可以用多个低层协议 [//]: # (TODO:例子)
+- 一个高层协议可以用多个低层协议 (TODO:例子)
 
 源IP，目标IP，源端口，目标端口，协议。这五个值唯一确定一个程序的数据流
 
@@ -197,7 +197,7 @@ checksum：
 - 计算所有段的和
 - 取反码和数据一起发送
 - 对方按同样的方法对收到的数据求和，把求和结果和收到的checksum值相加，结果应该全是1
-[//]: # (TODO:checksum和crc怎么算)
+(TODO:checksum和crc怎么算)
 
 CRC（cyclic redundancy check）：
 - 确定一个CRC生成数字A

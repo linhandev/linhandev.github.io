@@ -141,7 +141,7 @@ Dynamic Host Configuration Protocol，Server UDP/67，Client UDP/68
 - DHCPDISCOVERY：源IP 0.0.0.0，广播
   - DHCP Relay拓展可以转发Discovery到广播域外，扩大Server管理范围
   - Option 82：支持的设备在Discovery里加地理信息，转到Server，Server可以给附近的设备分接近的IP，简化路由
-[//]: # (TODO:relay细节)
+(TODO:relay细节)
 - DHCPOFFER：收到请求的DHCP服务器都给这个设备分一个IP发过来
   - 可以不进行Discovery，服务器定时给Offer等着host Request
 - DHCPREQUEST：设备广播自己选的IP，Server Identifier标自己选的是哪个服务器的

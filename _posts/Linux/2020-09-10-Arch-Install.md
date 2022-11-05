@@ -536,7 +536,7 @@ reboot
 重启之后应该就能看到一个登陆界面，登陆进去看到桌面就是安装成功了！如果安装过程中有任何问题欢迎在下方留言。有关一些常用软件的安装在[下一篇文章](https://linhandev.github.io/posts/Arch-Apps/)中记录。
 
 
-[//]: # (swap btrfs: truncate -s 0 /swap/swapfile; chattr +C /swap/swapfile; btrfs property set /swap/swapfile compression none; dd if=/dev/zero of=/swap/swapfile bs=1G count=2 status=progress; chmod 600 /swap/swapfile; mkswap /swap/swapfile; swapon /swap/swapfile; vim /etc/fstab； /swap/swapfile none swap defaults 0 0 )
+(swap btrfs: truncate -s 0 /swap/swapfile; chattr +C /swap/swapfile; btrfs property set /swap/swapfile compression none; dd if=/dev/zero of=/swap/swapfile bs=1G count=2 status=progress; chmod 600 /swap/swapfile; mkswap /swap/swapfile; swapon /swap/swapfile; vim /etc/fstab； /swap/swapfile none swap defaults 0 0 )
 
 参考资料：
 

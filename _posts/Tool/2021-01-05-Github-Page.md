@@ -34,7 +34,7 @@ Pages在项目每次更新后会做两件事：
 
 
 ## Github
-[//]: # (TODO:创建项目)
+(TODO:创建项目)
 这段面向之前完全没用过Github和git版本管理工具的纯小白，简单说说如何注册Github，创建项目和git是什么。Github是一个代码托管平台，开发者将代码放在这个平台上面，方便一个项目的多个开发者同步代码，同时也有助于开源项目的传播。注册需要一个邮箱，访问[Github注册](https://github.com/signup)页面，按提示操作就行。
 
 ![github-signup](/assets/img/post/Tool/github-signup.png)
@@ -114,7 +114,7 @@ Pages给了12个主题，做项目主页不建议用这12个之外的。Pages的
 theme: [选择的主题名字]
 ``` -->
 
-[//]: # (TODO:怎么判断有没有gem，怎么找名字，有什么限制)
+(TODO:怎么判断有没有gem，怎么找名字，有什么限制)
 
 
 ## 个人博客
@@ -160,7 +160,7 @@ Jekyll的主要设置都在根目录下的 _config.yml 文件里，比如网站�
 
 ### Action构建
 
-[//]: # (TODO:写示例action)
+(TODO:写示例action)
 Action写起来稍微复杂，不过大多数主题要么自带用Action构建的脚本，要么可以直接用Pages的环境构建。写这部分的目的主要在于方便在博客构建失败的时候Debug，以后可能会更新这个Action具体怎么写。如果主题没提供这个脚本，自己对Action也不熟悉的话，那本地构建会更简单。
 
 Github Action会在项目有一些动作之后触发，比如push，开Issue之类。Action的配置在项目的 .github/workflows 文件夹下。首先一定**看一下主题README.md里有关开始使用的部分**，一些主题会有一个初始化的脚本，之前用Chirpy的时候就因为没仔细看文档走了一堆弯路。
@@ -302,7 +302,7 @@ git push
 
 最开始我是用的第三方评论服务[hyvor](https://talk.hyvor.com/)，当时试运营是免费的但是现在已经收费了。这种服务套餐的量一般都很大，比如hyvor起步的$5/月套餐就有10w page view。估计我有生之年博客都不会有这么大的流量。/笑哭
 
-[//]: # (TODO:添加 gitalk https://github.com/gitalk/gitalk)
+(TODO:添加 gitalk https://github.com/gitalk/gitalk)
 
 Github的服务依旧更加良心。 /笑哭 目前发现了两个基于Github Issue给文章添加评论的项目
 
@@ -362,7 +362,7 @@ sitemap顾名思义就是网站的地图，告诉爬虫我这个网站都有些�
 
 如果你的主题不带sitemap也可以自己添加
 
-<!-- [//]: # (TODO: 怎么添加sitemap) -->
+<!-- (TODO: 怎么添加sitemap) -->
 
 robots.txt是用来告诉搜索引擎网站上哪些网页该爬，哪些网页不该爬的。可以访问 [github id].github.io/robots.txt 看看自己有没有这个文件。如果没有的话，在项目根目录中加上一个robots.txt文件就行，一个最简单的写法是
 
@@ -406,7 +406,7 @@ robots.txt和sitemap俱全就可以向搜索引擎提交网站了。这里需要
 
 
 ## 流量统计
-<!-- [//]: # (TODO: 补全这块) -->
+<!-- (TODO: 补全这块) -->
 
 
 ## 自定义域名
@@ -419,7 +419,7 @@ Pages的默认网址是固定的，比如个人博客都是 用户名.github.io�
 - 找到域名产品
 - 选一个下单
 就可以了。价格跟很多因素有关，比如域名长度，顶级域名是什么，买多久之类的，大概每年几十。如果不想花钱也可以到[Freenom](https://www.freenom.com/)申一个免费的。
-[//]: # (TODO:freenom怎么申请)
+(TODO:freenom怎么申请)
 
 在域名解析的后台将这个域名CNAME解析到 username.github.io，之后在项目的 Settings -> Pages 里面填写自己的域名。这个时候 gh-page branch里会多一个CNAME文件，本地注意pull一下否则会冲突。在main分支的根目录里也加入这个文件。之后就可以使用自己的域名访问了。
 
@@ -429,4 +429,4 @@ Pages的默认网址是固定的，比如个人博客都是 用户名.github.io�
 
 到这基本上Github Pages的基本用法就介绍完了。这篇文章还会不断更新进行更正和丰富。如果使用过程中有任何问题也欢迎在下方评论留言。
 
-<!-- [//]: # (TODO: 表单 https://formspree.io/plans) -->
+<!-- (TODO: 表单 https://formspree.io/plans) -->

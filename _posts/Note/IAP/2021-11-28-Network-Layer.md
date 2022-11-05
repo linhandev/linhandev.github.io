@@ -310,13 +310,13 @@ Open Shortest Path First，IP组播，协议号89
   - Update
   - Acknowledgement
 
-<!-- [//]: # (TODO: 这些消息的细节) -->
+<!-- (TODO: 这些消息的细节) -->
 
 - adjacent：link state dataset相同
 
 ![OSPF-frame](/assets/img/post/IAP/ospf-frame.png)
 
-<!-- [//]: # (TODO:ospf 帧结构) -->
+<!-- (TODO:ospf 帧结构) -->
 
 迪杰斯特拉
 - 已知最短路径的点是一个集合
