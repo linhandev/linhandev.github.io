@@ -10,7 +10,7 @@ categories:
 tags:
   - Med
   - Tumor
-public: false
+published: false
 ---
 
 Belmont Report: Ethical Principles for research involving human subjects
