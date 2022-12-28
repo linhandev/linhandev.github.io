@@ -4,7 +4,6 @@ title: Manjaro/Arch常用软件
 author: Lin Han
 date: 2021-09-10
 published: false
-
 ---
 
 
@@ -108,41 +107,3 @@ yay pulseaudio-bluetooth
 
 打开bluetooth manager会自动在面板上添加一个widget。如果蓝牙是关闭状态搜索bluetooth adapter可以打开。
 
-# 中文支持
-
-如果看到中文都显示方块，是缺少字体。完整[中文字体列表](https://wiki.archlinux.org/title/Localization/Chinese#Fonts)
-
-```shell
-sudo pacman -S adobe-source-han-sans-cn-fonts
-```
-
-安装fcitx中文输入法
-
-```shell
-sudo pacman -Syu fcitx fcitx-googlepinyin fcitx-im fcitx-configtool
-vim ~/.xinitrc
-# 输入
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-```
-
-搜索启动fcitx configuration，添加google pinyin输入法。之后登出用户并重新登录。
-
-# ssh
-
-```shell
-sudo pacman -S openssh
-```
-
-# 邮件
-
-# 解压
-
-# 下载
-
-# python
-
-# shell
-
-# 虚拟机
