@@ -1,6 +1,5 @@
 ---
 title: Arch Linux安装
-author: Lin Han
 categories:
   - Linux
 tags:

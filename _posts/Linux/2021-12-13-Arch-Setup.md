@@ -1,5 +1,5 @@
 ---
-title: Arch常用软件
+title: Arch Linux安装后配置
 categories:
   - Linux
 tags:
