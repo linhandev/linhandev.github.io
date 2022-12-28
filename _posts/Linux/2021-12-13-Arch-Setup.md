@@ -1,6 +1,5 @@
 ---
 title: Arch常用软件
-author: Lin Han
 categories:
   - Linux
 tags:
@@ -110,11 +109,13 @@ yay -Q # 列出所有已安装的包
 yay -Q | grep pacma* # -Q应该是不支持通配符，用 grep 和 * 比较方便
 ```
 
-yay和pacman都默认不在任何情况下自动清理下载的安装包，所以这些文件可能越积越多。清理pacman和yay的cache可以用
+yay 和 pacman 都默认不在任何情况下自动清理下载的安装包，所以这些文件可能越积越多。清理 pacman 和 yay 的 cache 可以用
 
 ```shell
 yay -Scc
 ```
+
+<!-- TODO: mamba -->
 
 [参考](https://herbort.me/posts/automatically-cleaning-pacman-and-yay-cache-in-arch-linux/)
 
@@ -161,9 +162,9 @@ doas systemctl status reflector.timer # Trigger: 可以看到还有多久下次�
 yay -S pass qtpass # 密码管理工具和gui
 ```
 
-此外[passff](https://github.com/passff/passff)是一个在Firefox, LibreWolf中自动填充密码的浏览器插件，需要安装[插件](https://addons.mozilla.org/en-US/firefox/addon/passff/)和一个[本地 app](https://github.com/passff/passff-host)
+此外[passff](https://github.com/passff/passff)是一个在 Firefox, LibreWolf 中自动填充密码的浏览器插件，需要安装[插件](https://addons.mozilla.org/en-US/firefox/addon/passff/)和一个[本地 app](https://github.com/passff/passff-host)
 
-本地 app安装用下面的命令，用哪个浏览器最后写哪个就行
+本地 app 安装用下面的命令，用哪个浏览器最后写哪个就行
 
 ```shell
 curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- [firefox|librewolf|host app支持其他浏览器，但是貌似还没有插件]
@@ -181,7 +182,7 @@ yay -S librewolf-bin
 
 ## Chrome
 
-chromium 阵营 Brave 和 Vivaldi 貌似风评都不是很好，有一个开源的选择 ungoogled-chromium。不过默认设置和chrome差不多，想要一些隐私保护的功能都要自己开，用web store也不是很方便。
+chromium 阵营 Brave 和 Vivaldi 貌似风评都不是很好，有一个开源的选择 ungoogled-chromium。不过默认设置和 chrome 差不多，想要一些隐私保护的功能都要自己开，用 web store 也不是很方便。
 
 ```shell
 yay -S ungoogled-chromium
@@ -327,11 +328,11 @@ https://www.linuxuprising.com/2021/02/noisetorch-is-real-time-microphone.html
 Remove Background Noise Using Audacity and Kdenli
  https://www.youtube.com/watch?v=3nMkMn4--5w -->
 
-## jack 低延迟
+<!-- ## jack 低延迟 -->
 
 <!-- https://madskjeldgaard.dk/posts/audio-setup-arch-2021/ -->
 
-```shell
+<!-- ```shell
 yay -S reaper-bin sws supercollider sc3-plugins jack2 mpv sox qjackctl pulseaudio-bluetooth pulseaudio-jack pulseaudio njconnect flac cadence alsa-firmware alsa-plugins alsa-utils
 
 doas pacman -S realtime-privileges
@@ -378,13 +379,15 @@ doas sysctl vm.swappiness=60
 cat /proc/sys/vm/swappiness
 
 cpu-balanced
-```
+``` -->
 
 <!-- ```shell
 doas pacman -S pulseaudio pavucontrol
 yay -S xfce4-pulseaudio-plugin
 ``` -->
+
 # shell
+
 ## zsh
 
 ```shell
@@ -457,39 +460,12 @@ yay -S deepin-wine-wechat # 之后一路回车选择默认就行
 yay -S --mflags --skipinteg deepin-wine-wechat
 ```
 
-### 腾讯会议
+## 腾讯会议
 
 是一个旧版本的腾讯会议 ubuntu 包，主要的缺点是不能接受别人在屏幕上标画，个人没有遇到其他使用上的问题。
 
 ```shell
 yay -S wemeet-bin
-```
-
-## 压缩
-
-### zip
-
-```shell
-doas pacman -S unzip zip
-```
-
-## conda
-
-从[miniconda 官网](https://docs.conda.io/en/latest/miniconda.html)下载对应的安装脚本，比如 x86 的机器安装脚本应该叫 `Miniconda3-latest-Linux-x86_64.sh`。之后进行安装
-
-```shell
-bash [刚下载的安装脚本]
-```
-
-按照指引安装就行。“Do you wish the installer to initialize Miniconda3 by running conda init? [yes|no]” 我会选 yes，启动比较方便。安装完成后需要退出当前的命令行重新开一个，看到 prompt 最前面有一个 (base) 就是安装成功了。
-
-"TODO:基本使用"
-
-基本使用
-
-```shell
-conda create -n [名字] python=3.9
-conda activate [名字]
 ```
 
 ## 录屏
@@ -608,74 +584,6 @@ doas systemctl start nmb
 
 添加成功后输入用户名密码就能看到文件了。
 
-# 手机
-
-用 usb 在 Arch 和 Android 之间传文件需要 MTP(Media Transfer Protocol)的支持，Arch 默认是不装这个的。
-
-"REF: https://linuxhint.com/connect-android-arch-linux/"
-
-```shell
-doas pacman -S mtpfs jmtpfs gvfs-mtp # android 4+ 需要第二个包
-doas pacman -Sy gvfs-gphoto2 # 照片传输支持
-```
-
-清理 arch
-
-https://averagelinuxuser.com/clean-arch-linux/
-
-重启文件浏览器
-
-thunar -q && thunar
-
-https://linuxhint.com/guide_linux_audio/
-
-# raid
-
-fio --name TEST --eta-newline=5s --filename=temp.file --rw=read --size=100m --io_size=2g --blocksize=1024k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
-
-fio --name TEST --eta-newline=5s --filename=temp.file --rw=write --size=100m --io_size=2g --blocksize=1024k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
-
-fio --name TEST --eta-newline=5s --filename=temp.file --rw=read --size=100m --io_size=2g --blocksize=2k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
-
-fio --name TEST --eta-newline=5s --filename=temp.file --rw=write --size=100m --io_size=2g --blocksize=2k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
-
-# 多内核
-
-Arch 默认的 Linux 内核叫 linux，这个内核一直是最新的。Arch 还有其他几个内核选择
-
-- linux-lts：长期支持，版本旧一点，比 linux bug 少
-- linux-hardened：强调安全，一些包可能不能用
-- linux-zen：最新内核，经过微调。更强调低延迟，更耗电，throughput 比 linux 差
-
-```shell
-uname -r # 查看当前内核版本
-
-# 安装内核，用哪个装哪个
-doas pacman -S linux-lts
-doas pacman -S linux-hardened
-doas pacman -S linux-zen
-doas grub-mkconfig -o /boot/grub/grub.cfg # 重新生成grub配置文件
-```
-
-到这就完事了，切换内核需要重启，之后在 grub 界面进 advanced options，选想用的内核就行。
-
-此外可以修改 grub 配置让 Arch 记住上次选择的内核，下次开机自动选择。
-
-```shell
-doas vim /etc/default/grub
-
-# GRUB_DISABLE_SUBMENU=y # 禁用子菜单，所有内核都直接显示
-# GRUB_DEFAULT=saved # 默认上次选择的内核
-# GRUB_SAVEDEFAULT=true # 记录上次选择的内核
-doas grub-mkconfig -o /boot/grub/grub.cfg # 之后还是要重新生成grub配置文件
-```
-
-![arch advanced options](/assets/img/post/Linux/arch-advanced-options.png)
-
-参考：[Different Types of Kernel for Arch Ldockinux and How to Use Them](https://itsfoss.com/switch-kernels-arch-linux/)
-
-"TODO:和虚拟机放一起"
-
 ## Docker
 
 ```shell
@@ -741,6 +649,103 @@ docker commit [CONTAINER ID] [new name]
 ```
 
 [gui docker](https://github.com/HarGit14/dorowu-docker-ubuntu-vnc-desktop)
+
+# 压缩
+
+## zip
+
+```shell
+doas pacman -S unzip zip
+```
+
+# conda
+
+从[miniconda 官网](https://docs.conda.io/en/latest/miniconda.html)下载对应的安装脚本，比如 x86 的机器安装脚本应该叫 `Miniconda3-latest-Linux-x86_64.sh`。之后进行安装
+
+```shell
+bash [刚下载的安装脚本]
+```
+
+按照指引安装就行。“Do you wish the installer to initialize Miniconda3 by running conda init? [yes|no]” 我会选 yes，启动比较方便。安装完成后需要退出当前的命令行重新开一个，看到 prompt 最前面有一个 (base) 就是安装成功了。
+
+"TODO:基本使用"
+
+基本使用
+
+```shell
+conda create -n [名字] python=3.9
+conda activate [名字]
+```
+
+# 手机
+
+用 usb 在 Arch 和 Android 之间传文件需要 MTP(Media Transfer Protocol)的支持，Arch 默认是不装这个的。
+
+"REF: https://linuxhint.com/connect-android-arch-linux/"
+
+```shell
+doas pacman -S mtpfs jmtpfs gvfs-mtp # android 4+ 需要第二个包
+doas pacman -Sy gvfs-gphoto2 # 照片传输支持
+```
+
+清理 arch
+
+https://averagelinuxuser.com/clean-arch-linux/
+
+重启文件浏览器
+
+thunar -q && thunar
+
+https://linuxhint.com/guide_linux_audio/
+
+<!-- # raid
+
+fio --name TEST --eta-newline=5s --filename=temp.file --rw=read --size=100m --io_size=2g --blocksize=1024k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
+
+fio --name TEST --eta-newline=5s --filename=temp.file --rw=write --size=100m --io_size=2g --blocksize=1024k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
+
+fio --name TEST --eta-newline=5s --filename=temp.file --rw=read --size=100m --io_size=2g --blocksize=2k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting
+
+fio --name TEST --eta-newline=5s --filename=temp.file --rw=write --size=100m --io_size=2g --blocksize=2k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting -->
+
+# 多内核
+
+Arch 默认的 Linux 内核叫 linux，这个内核一直是最新的。Arch 还有其他几个内核选择
+
+- linux-lts：长期支持，版本旧一点，比 linux bug 少
+- linux-hardened：强调安全，一些包可能不能用
+- linux-zen：最新内核，经过微调。更强调低延迟，更耗电，throughput 比 linux 差
+
+```shell
+uname -r # 查看当前内核版本
+
+# 安装内核，用哪个装哪个
+doas pacman -S linux-lts
+doas pacman -S linux-hardened
+doas pacman -S linux-zen
+doas grub-mkconfig -o /boot/grub/grub.cfg # 重新生成grub配置文件
+```
+
+到这就完事了，切换内核需要重启，之后在 grub 界面进 advanced options，选想用的内核就行。
+
+此外可以修改 grub 配置让 Arch 记住上次选择的内核，下次开机自动选择。
+
+```shell
+doas vim /etc/default/grub
+
+# GRUB_DISABLE_SUBMENU=y # 禁用子菜单，所有内核都直接显示
+# GRUB_DEFAULT=saved # 默认上次选择的内核
+# GRUB_SAVEDEFAULT=true # 记录上次选择的内核
+doas grub-mkconfig -o /boot/grub/grub.cfg # 之后还是要重新生成grub配置文件
+```
+
+![arch advanced options](/assets/img/post/Linux/arch-advanced-options.png)
+
+参考：[Different Types of Kernel for Arch Ldockinux and How to Use Them](https://itsfoss.com/switch-kernels-arch-linux/)
+
+"TODO:和虚拟机放一起"
+
+
 
 # zram
 

@@ -288,9 +288,3 @@ group norm：一个sample，一组feature
 
 
 最后我觉得百度是一个重视技术而且实力很强的公司，我也是非常希望能去百度工作，感觉在这个平台上会有机会做很多有意义的事情和不断提升自己。
-
-
-
-
-
-[如流视频会议](https://infoflow.baidu.com/voip/api/meeting/middle/index.html?id=0cf9d71314d662a4ba1ffd26f3109b9f#/pc)
