@@ -7,9 +7,9 @@ order: 4
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip } -->
 
-[LinkedIn](https://www.linkedin.com/in/linhandev) [Github](https://github.com/linhandev)
+Lin Han 
 
-Lin Han
+[LinkedIn](https://www.linkedin.com/in/linhandev) [Github](https://github.com/linhandev)
 
 项目经历
 - 肝脏分割：[Liver segmentation with 2.5D perpendicular UNets

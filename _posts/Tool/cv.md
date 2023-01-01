@@ -27,6 +27,12 @@ convolution
 
 提取特征，输出代表输入和卷积和代表特征的相似性，一个卷积核在整张图上算，复用权重
 
+输出大小：（输入-卷积核大小+1）/ step size
+
+深度可分离卷积：先在每个通道上用3\*3的depthwise 卷积，之后在输出的特征图上用1\*1的pointwise卷积，降低参数量
+
+空洞卷积：相当于在更大的卷积核里面填0，可以在不增加参数量的前提下提升感受野。相比用池化提升感受野可以保持更大的分辨率，有利于提升分割的精度。
+
 pooling
 
 只用卷积，感受野扩大的速度太慢，池化可以扩大感受野
@@ -255,6 +261,26 @@ group norm：一个sample，一组feature
 
 
 
+[awesome-DeepLearning/neuron.md at master · PaddlePaddle/awesome-DeepLearning · GitHub](https://github.com/PaddlePaddle/awesome-DeepLearning/blob/master/docs/tutorials/deep_learning/basic_concepts/neuron.md)
+
+![](/home/lin/.config/marktext/images/2022-12-28-16-06-18-image.png)
+
+[awesome-DeepLearning/single_layer_perceptron.md at master · PaddlePaddle/awesome-DeepLearning · GitHub](https://github.com/PaddlePaddle/awesome-DeepLearning/blob/master/docs/tutorials/deep_learning/basic_concepts/single_layer_perceptron.md)
+
+这是m+1条数据，不是m条
+
+![](/home/lin/.config/marktext/images/2022-12-28-16-30-14-image.png)
+
+[梯度下降算法 &mdash; PaddleEdu documentation](https://paddlepedia.readthedocs.io/en/latest/tutorials/deep_learning/optimizers/gd.html)
+
+![](/home/lin/.config/marktext/images/2022-12-28-16-45-52-image.png)
+
+
+
+
+
+
+
 好的，二位面试官下午好。我叫韩霖，今年23岁，是辽宁大连人。
 
 
@@ -263,11 +289,11 @@ group norm：一个sample，一组feature
 
 
 
-之后我的项目经历的话，我感觉主要是有两个方向。一个是计算机视觉方面的一些数据标注，另一个是医学影像的分割。数据标注这边主要是三个项目，都是跟着咱们PaddleSeg团队做的。首先EISeg是一个用PyQT写的交互式分割的桌面程序；最近主要在搞的PaddleLabel是一个Web端的标注工具，目前是支持分类/检测/语义和实例分割四种项目，近期是在做ocr方向的建设。这个项目除了手动标注以外也是接入了EdgeFlow这种交互式模型和pplcnet和picodet这种自动的推理模型来提升标注效率；第三个标注项目名字比较长叫SlicerEISegMed3D，这个是给3D Slicer，一个专门用来做医学影像标注的软件写的插件，是让用户能在医学影像上用上3D的交互式分割。
+之后我的项目经历的话，我感觉主要是有两个方向。一个是计算机视觉方面的一些数据标注，另一个是医学影像的分割。数据标注这边主要是三个项目，都是跟着PaddleSeg团队做的。首先那个EISeg是用PyQT写的一个交互式分割的桌面程序；最近主要在搞的PaddleLabel是一个Web端的标注工具，目前是支持分类/检测/语义和实例分割四种项目，近期是在做ocr方向的建设。这个项目除了手动标注以外也是接入了EdgeFlow这种交互式模型和pplcnet和picodet这种自动的推理模型来提升标注效率；第三个标注项目名字比较长叫SlicerEISegMed3D，这个是给3D Slicer，一个专门用来做医学影像标注的软件写的插件，是让用户能在医学影像上用上3D的交互式分割。
 
 
 
-在医学影像方面主要是两个我本科期间的项目，我记得当时都是用的Res-Unet模型。第一个做的是肝脏和肝脏肿瘤分割，内容其实也蛮简单的，因为医学影像是3D的数据嘛，所以说就可以从里面取出三种不同方向的横截面，当时是在三个方向上分别训了一个分割模型，最后做了一个结果的投票。此外损失函数上根据ground truth里的边缘信息做了一个权重，就在目标边缘位置的loss给更高的权重，这个是希望网络能更关注边缘的分割效果。当时感觉主要是导师刊选的比较好发了一篇论文，拿了一个国家级大创。第二个项目是我的毕设，是一个针对主动脉瘤这个疾病做筛查的系统，这个系统大概的流程是有三步，首先在CT扫描中分割主动脉，之后是对分割结果进行三维重建，最后是在这个3D模型上去测量主动脉这根血管的直径，超过一定阈值的话患者就是有主动脉瘤的，这个项目是拿了我们那届的优秀毕设。项目这边主要是这些。
+在医学影像方面主要是两个我本科期间的项目，我记得当时都是用的Res-Unet模型。第一个做的是肝脏和肝脏肿瘤分割，内容其实也蛮简单的，因为医学影像是3D的数据嘛，所以说就可以从里面取出三种不同方向的横截面，当时是在三个方向上分别训了一个分割模型，然后做了一个结果的投票。此外损失函数上根据ground truth里的边缘信息做了一个权重，就在目标边缘位置的loss给更高的权重，这个是希望网络能更关注边缘的分割效果。当时感觉主要是导师刊选的比较好发了一篇论文，拿了一个国家级大创。第二个项目是我的毕设，是一个针对主动脉瘤这个疾病做筛查的系统，然后大概的流程是有三步，首先在CT扫描中分割主动脉，之后是对分割结果进行三维重建，最后是在这个3D模型上去测量主动脉这根血管的直径，超过一定阈值的话患者就是有主动脉瘤的，这个项目是拿了我们那届的优秀毕设。项目这边主要是这些。
 
 
 
@@ -276,8 +302,6 @@ group norm：一个sample，一组feature
 
 
 个人能力上感觉我学习能力应该还不错。EISeg，PaddleLabel基本都是从头开始学习的PyQT和Python Web开发，上手都挺快的，这两个项目的话应该完成度也都还算不错。
-
-
 
 沟通能力应该是还比较够用的，比如说在做项目的过程中需要跟很多不同身份和知识背景的人沟通项目设计和实现之类的细节，感觉在这个过程中我都能用一种比较简明，而且对方可以理解的方式去表达我的意思。
 

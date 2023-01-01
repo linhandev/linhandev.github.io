@@ -1,0 +1,197 @@
+---
+layout: post
+title: "Python装饰器"
+permalink: /:title/
+date: 2023-01-01 08:13:03 -0500
+categories:
+tags:
+pin: false
+published: true
+---
+
+- 装饰器是一个函数，接一个函数，返回一个函数
+- 装饰器不改变被装饰函数，可以拓展或修改被装饰函数的功能
+- 函数可以作为参数传递的语言，可以使用装饰器
+
+一些用法
+- 打log
+- 访问控制
+- api调用限速
+- 计时
+
+Py函数是一等对象，可以作为参数传给另一个函数
+```python
+def say_hello(name):
+    return f"Hello {name}"
+
+def be_awesome(name):
+    return f"Yo {name}, together we are the awesomest!"
+
+def greet_bob(greeter_func):
+    return greeter_func("Bob")
+
+greet_bob(say_hello) # 'Hello Bob'
+greet_bob(be_awesome) # 'Yo Bob, together we are the awesomest!'
+
+```
+
+在函数中定义函数
+<!-- # TODO: child不返回是不是没法调用 -->
+
+```python
+def parent():
+    def child():
+        print("child")
+    return child
+
+parent() # <function parent.<locals>.child at 0x7fe1c6921fc0>
+```
+
+Python的for不引入作用域，整段代码除了power里面都是global
+```python
+powers = []
+for i in range(3):
+    def power(x):
+        # i = i+1 # UnboundLocalError: local variable 'i' referenced before assignment
+        return x ** i
+    powers.append(power)
+
+print(i) # 2
+
+for p in powers:
+    print(p(2))
+# 4
+# 4
+# 4
+```
+
+wrapper函数叫做闭包（保存一个函数和其运行环境）。闭包可以保存运行环境，变量绑定参数之后值一直不变
+
+```python
+powers = []
+for i in range(3):
+    def maker(ic): # 参数叫i也一样，局部覆盖全局
+        def power(x):
+            return x ** ic
+        return power
+    powers.append(maker(i))
+
+print(i) # 2
+
+for p in powers:
+    print(p(2))
+# 1
+# 2
+# 4
+```
+
+绑定参数就可以固定变量指
+```python
+powers = []
+for i in range(3):
+    def power(x, i=i):
+        return x ** i
+    powers.append(power)
+
+print(i) # 2
+
+for p in powers:
+    print(p(2))
+# 1
+# 2
+# 4
+```
+
+
+装饰器两种写法
+
+```python
+def decorator(func):
+    def wrapper(*args, **kwargs):
+        print("Before")
+        func(*args, **kwargs)
+        print("After")
+    return wrapper
+
+def add(a, b):
+    print(a+b)
+
+'''
+1. 调用装饰器函数，返回装饰过的函数
+- 可以保留未装饰函数
+'''
+add = decorator(add)
+print(add) # <function decorator.<locals>.wrapper at 0x7fe1c6922290>
+add(2, 3)
+
+'''
+2. @
+- 在定义时立即装饰
+    - 递归也是装饰过的
+    - 没有未被装饰的函数
+'''
+@decorator
+def add(a, b):
+    print(a+b)
+
+print(add) # <function decorator.<locals>.wrapper at 0x7fe1c6922050>
+add(2, 3)
+
+```
+注意
+- 不要忘了返回wrapper
+- 注意区分外层函数参数和内层函数参数
+
+装饰后，函数的一些元数据，比如__name__，__doc__之类的会变成wrapper的，用wraps工具把被装饰函数的属性贴到装饰过的函数
+```python
+from functools import wraps
+
+def decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print("Before")
+        func(*args, **kwargs)
+        print("After")
+    
+    return wrapper
+
+def add(a, b):
+    print(a+b)
+
+print(add) # <function add at 0x7f5d9deedfc0>
+add = decorator(add)
+print(add) # <function add at 0x7f5d9deee050> 不是同一个函数
+add(2, 3)
+
+```
+
+装饰器可以叠加
+```python
+def p(func):
+    def wrapper(s):
+        return "<p>" + func(s) + "</p>"
+    return wrapper
+
+def div(func):
+    def wrapper(s):
+        return "<div>" + func(s) + "</div>"
+    return wrapper
+
+@div
+@p
+def say(something):
+    return something
+
+
+say("hello") # '<div><p>hello</p></div>'
+
+```
+
+- 相当于 div(p(say))
+- 每层装饰都是函数调用，可能有性能影响
+
+!r repr
+!s str
+!a ascii
+
+time.perf_counter()
