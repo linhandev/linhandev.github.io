@@ -5,7 +5,8 @@
     "dictionaries": [],
     "words": [
         "functools",
-        "kwargs"
+        "kwargs",
+        "timeit"
     ],
     "ignoreWords": [],
     "import": []
