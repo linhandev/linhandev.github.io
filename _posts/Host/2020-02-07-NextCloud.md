@@ -11,7 +11,7 @@ tags:
   - Drive
 ---
 
-dietpi 安装 nextcloud 之后的步骤
+dietpi-software 安装 nextcloud 之后的步骤
 
 ## 扫描盘上文件
 
@@ -24,7 +24,11 @@ cd /var/www/
 sudo -u www-data php console.php files:scan --all
 ```
 
+nextcloud 默认在客户端和服务器上都跳过 symlink，开启跟随 simlink：在 /var/www/nextcloud/ 中添加
+
+```php
 'localstorage.allowsymlinks' => true, # 允许在服务器端用软链接
+```
 
 ## 日历
 
@@ -98,8 +102,8 @@ https://fqdn/index.php/settings/admin/richdocuments
 
 ```php
   'preview_max_x' => 512, # 最大预览图大小
-  'preview_max_y' => 512,
-  'preview_max_scale_factor' => 1, # 最大放大倍数
+  'preview_max_y' => 768,
+  'preview_max_scale_factor' => 10, # 最大放大倍数
 ```
 
 ```shell
@@ -114,24 +118,30 @@ sudo apt install ffmpeg
 
 <!-- TODO: 中文txt乱码 -->
 
-nextcloud 应该默认是 on demand 生成图片预览，预先生成并 cache 预览可以用插件 Preview Generator
+nextcloud 默认是打开目录的同时生成图片预览，预先生成并 cache 预览可以用第一方插件 [Preview Generator](https://github.com/nextcloud/previewgenerator)
 
 ```shell
 
-sudo -u www-data php occ config:app:set --value="512" previewgenerator squareSizes
-sudo -u www-data php occ config:app:set --value="256" previewgenerator widthSizes
-sudo -u www-data php occ config:app:set --value="512" previewgenerator heightSizes
+rm -r /mnt/dietpi_userdata/nextcloud_data/appdata_*/preview/
 
 sudo -u www-data php occ files:scan-app-data
+
+sudo -u www-data php occ config:app:set --value="512" previewgenerator squareSizes
+sudo -u www-data php occ config:app:set --value="512" previewgenerator widthSizes
+sudo -u www-data php occ config:app:set --value="768" previewgenerator heightSizes
 
 sudo -u www-data php occ preview:generate-all -vvv
 
 sudo -u www-data php occ preview:generate-all -vvv --path=PATH
 
+```
 
+定时生成预览：
 
+```shell
+crontab -e
 
-
+sudo -u www-data php /var/www/nextcloud/occ preview:pre-generate
 
 ```
 
