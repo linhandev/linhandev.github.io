@@ -218,7 +218,7 @@ swapon /dev/[swap分区]
 # swapon 也可以写多个swap分区，比如 swapon /dev/nvme0n1p2 /dev/nvme1n1p3，这样多个swap分区应该会像raid 0一样做stripping加快速度
 ```
 
-主分区文件系统有三种选择，绝大多数情况下最简单的 ext4 是最合适的，跑下面这一行之后直接到[安装 Arch](#安装 Arch)一节就可以。
+主分区文件系统有三种选择，绝大多数情况下最简单的 ext4 是最合适的，跑下面这一行之后直接到[安装 Arch](#安装Arch)一节就可以。
 
 ```shell
 mkfs.ext4 /dev/[主分区]
@@ -358,7 +358,8 @@ mount -o nodatacow,ssd,subvol=@swap /dev/${part_name} /mnt/swap
 
 </details>
 
-## 安装 Arch
+<!-- prettier-ignore -->
+## 安装Arch
 
 安装需要联网下载，选一个快的镜像可以节省很多时间
 
