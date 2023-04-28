@@ -6,10 +6,10 @@ date: "2022-02-13 01:04"
 math: true
 categories:
   - Note
-  - "Video Image Processing"
+  - "Image Video Processing"
 tags:
   - Note
-  - "Video Image Processing"
+  - "Image Video Processing"
 ---
 
 ![color](/assets/img/post/Note/color.png)

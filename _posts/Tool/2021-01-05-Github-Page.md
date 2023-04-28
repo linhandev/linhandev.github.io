@@ -1,14 +1,13 @@
 ---
 title: 玩转Github Pages
-author: Lin Han
 date: 2019-08-08 11:33:00 +0800
 categories:
-  - Tool
   - Github
 tags:
   - Blog
   - Jekyll
   - Github
+  - Github Pages
 pin: true
 ---
 ![github-page](/assets/img/post/Tool/github-page.png)
