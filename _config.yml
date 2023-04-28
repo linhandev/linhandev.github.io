@@ -21,7 +21,7 @@ timezone: Asia/Shanghai
 
 title: Lin's Blog                          # the main title
 
-tagline: Coder by Choice   # it will display as the sub-title
+tagline: Plan, prioritize, execute   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   Some notes Lin took along the way

@@ -1,5 +1,5 @@
 ---
-title: Arch Linux安装后配置
+title: Arch Linux 安装后配置
 categories:
   - Linux
 tags:
@@ -658,7 +658,9 @@ docker commit [CONTAINER ID] [new name]
 doas pacman -S unzip zip
 ```
 
-# conda
+# 开发
+
+## miniconda
 
 从[miniconda 官网](https://docs.conda.io/en/latest/miniconda.html)下载对应的安装脚本，比如 x86 的机器安装脚本应该叫 `Miniconda3-latest-Linux-x86_64.sh`。之后进行安装
 
@@ -676,6 +678,22 @@ bash [刚下载的安装脚本]
 conda create -n [名字] python=3.9
 conda activate [名字]
 ```
+
+## micromamba
+
+```shell
+curl micro.mamba.pm/install.sh | zsh
+
+cat > ~/.mambarc << EOF
+channels:
+  - conda-forge
+always_yes: false
+EOF
+
+```
+
+## vscode
+
 
 # 手机
 
