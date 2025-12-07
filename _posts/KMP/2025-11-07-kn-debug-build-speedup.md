@@ -45,7 +45,7 @@ https://excalidraw.com/#json=PXibQdsrDjNMs4JYTh5lX,ION6xbv-rqLmeYglzdTO0w
 
 ## 开启方式
 
-// TODO：提供参考pr
+[参考PR](https://github.com/Tencent-TDS/KuiklyBase-kotlin/pull/29)
 
 静态缓存分两个类型
 
