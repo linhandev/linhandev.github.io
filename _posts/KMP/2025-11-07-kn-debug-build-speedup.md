@@ -22,25 +22,20 @@ tags:
 
 1. 尽可能少触发gradle任务
 
-kotlin native编译至少触发[两个gradle任务](https://github.com/JetBrains/kotlin/blob/master/docs/native/compilation-model.md) compileKotlin 和 link。按照KGP的规则，修改一个gradle子项目中的kotlin代码后所有依赖这个项目的其他子项目都会重新运行 compileKotlin 任务，且依赖会传递，如下图。有除此之外的编译任务都是业务代码/项目依赖中配置的，可以检查下是否有必要触发。通过gradle cacheable task跳过任务执行可以参考[gradle文档](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)，[gradle incremental build](https://docs.gradle.org/current/userguide/incremental_build.html#sec:stale_task_outputs)文档更全面
+  Kotlin/Native 构建至少触发[两个gradle任务](https://github.com/JetBrains/kotlin/blob/master/docs/native/compilation-model.md) compileKotlin 和 link。按照KGP的规则，修改一个gradle子项目中的kotlin代码后所有依赖这个项目的其他子项目都会重新运行 compileKotlin 任务，且依赖会传递。如下图项目结构，修改模块C的代码后C，B和A的 compileKotlin 任务都会重新执行。有除此之外的gradle任务都是业务代码/项目依赖中配置的，可以检查下这些任务是否可以通过gradle cacheable task进行缓存。整改参考[gradle文档](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)和[gradle incremental build](https://docs.gradle.org/current/userguide/incremental_build.html#sec:stale_task_outputs)文档。
+  <iframe
+    src="https://excalidraw.com/#json=BX4kEo4nkZLn3-0G6mM_i,0QDBIdOAHzVB-UsBwGf1Uw"
+    width="100%"
+    height="520"
+    style="border:0"
+    loading="lazy"
+    referrerpolicy="no-referrer"
+  ></iframe>
+2. 常被触发的gradle任务优化耗时
 
-<iframe
-  src="https://excalidraw.com/#json=BX4kEo4nkZLn3-0G6mM_i,0QDBIdOAHzVB-UsBwGf1Uw"
-  width="100%"
-  height="520"
-  style="border:0"
-  loading="lazy"
-  referrerpolicy="no-referrer"
-  allow="clipboard-write"
-></iframe>
+  这里主要的反模式是在顶层gradle项目中写或者生成大量代码。顶层gradle子项目的 compileKotlin 任务的每次debug build都会执行且这个任务不支持增量，导致debug build耗时长。将代码放到顶层项目中时应慎重，尤其是生成大量代码的场景。可以选择项目中几个常发生修改的位置修改后构建，观察触发的gradle任务，对触发频率高且耗时长的子项目进行优化
 
-
-1. 常被触发的gradle任务少耗时
-
-主要的反模式是在顶层gradle项目中写或者生成大量代码。compileKotlin任务的cache miss会传递，debug构建过程中依赖关系靠顶层的包重跑compileKotlin的概率很高且这个任务不支持增量。将代码放到顶层项目中时应慎重，尤其是生成大量代码的场景。可以选择项目中几个常发生修改的位置修改后构建，观察触发的compileKotlin任务，对触发频率高且耗时长的子项目进行优化
-
-
-如一些代码原来在上图的A模块中，如果这些代码实际不依赖B中的东西可以考虑挪到D，避开debug过程中触发cache miss概率高的依赖路径。或者如果模块A包含多个独立功能，可以考虑拆分模块A成几个小模块并分别配置依赖关系。总之让经常构建的项目尽可能小，必须很大的项目尽可能减少依赖
+  如一些代码原来在上图的A模块中，如果这些代码实际不依赖B模块可以考虑挪到D，避开debug过程中触发cache miss概率高的依赖路径。或者如果模块A包含多个独立功能，可以考虑拆分模块A成几个小模块并分别配置依赖关系。总之让经常构建的项目尽可能小，必须很大的项目尽可能减少依赖少触发cache miss进行构建
 
 # ohos debug build开启增量缓存
 
@@ -106,7 +101,7 @@ opt3
 
 上游社区已知问题 [KT-81760](https://youtrack.jetbrains.com/issue/KT-81760)。符号名中包含kotlin代码package名，函数名，参数和返回值，在同一个package下重复定义相同的函数这种写法很容易出错，上游社区也可能在新版本中加强校验。如果在项目工程源码中存在这种情况建议整改，如果引入的库之间有符号名冲突不好修改可以添加 [--allow-multiple-definition](https://www.man7.org/linux/man-pages/man1/ld.1.html) 链接选项使用链接时第一个遇到的定义，将相关的正确性校验延后到不开启cache的debug build或release build进行
 
-// TODO: kotlin native和jvm的demo
+// TODO: Kotlin/Native和jvm的demo
 
 1. cache文件夹ohos平台有pl结尾和没有pl结尾两个，有什么区别
 
