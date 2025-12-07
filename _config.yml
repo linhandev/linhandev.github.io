@@ -20,7 +20,7 @@ title: Lin's Blog                          # the main title
 tagline: Plan, prioritize, execute   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Some notes Lin took along the way
+  Some notes I took along the way
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -48,7 +48,7 @@ social:
 # Site Verification Settings
 webmaster_verifications:
   google: # fill in your Google verification code
-  bing: # fill in your Bing verification code
+  bing: <meta name="msvalidate.01" content="77C0FF001AE95CDFC8DD918A597C29FD" /> # fill in your Bing verification code
   alexa: # fill in your Alexa verification code
   yandex: # fill in your Yandex verification code
   baidu: # fill in your Baidu verification code
