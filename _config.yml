@@ -47,8 +47,8 @@ social:
 
 # Site Verification Settings
 webmaster_verifications:
-  google: <meta name="google-site-verification" content="LEBsfAO_l83E3n6jjq5P-M4XqXU4Tn7C4sZxYixhe80" /> # fill in your Google verification code
-  bing: <meta name="msvalidate.01" content="77C0FF001AE95CDFC8DD918A597C29FD" /> # fill in your Bing verification code
+  google: LEBsfAO_l83E3n6jjq5P-M4XqXU4Tn7C4sZxYixhe80 # fill in your Google verification code
+  bing: 77C0FF001AE95CDFC8DD918A597C29FD # fill in your Bing verification code
   alexa: # fill in your Alexa verification code
   yandex: # fill in your Yandex verification code
   baidu: # fill in your Baidu verification code
