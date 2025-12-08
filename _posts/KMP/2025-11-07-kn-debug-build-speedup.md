@@ -88,7 +88,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
     opt3
     ```
 
-    `ld.lld @/path/to/command.txt` 等价于 `ld.lld opt1 opt2 opt3`。因此通过将所有 .a 路径写入文件的方式传给ld。需要注意修改的代码是各target公共逻辑，ios的linker输入格式不同，实现需要区分平台
+    `ld.lld @/path/to/command.txt` 等价于 `ld.lld opt1 opt2 opt3`。因此通过将所有 .a 路径写入文件的方式传给ld。需要注意target ios的linker不接受这种格式的输入，实现要控制影响范围
 
 2. 链接命令耗时不稳定，有时很慢
 
