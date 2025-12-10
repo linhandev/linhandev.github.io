@@ -138,12 +138,16 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
 # 相关资料
 
-- B站debug build效率提升：https://mp.weixin.qq.com/s/wOnyjYcka99eFJz8BWlu4Q
-- Kotlin社区效率提升指导：[https://kotlinlang.org/docs/native-improving-compilation-time.html](https://kotlinlang.org/docs/native-improving-compilation-time.html)
+- [工程化视角的 Kotlin Multiplatform核心解读及优化](https://www.bilibili.com/opus/946823822473953304)
+- [B站在KMP跨平台的业务实践之路](https://www.bilibili.com/opus/1077816888983027751?spm_id_from=333.1387.0.0)
+- [KMP on iOS 深度工程化：模块化、并发编译与 98% 增量构建加速](https://www.bilibili.com/read/cv43008193/?spm_id_from=333.1387.0.0&opus_fallback=1)
+- [Kotlin社区效率提升指导](https://kotlinlang.org/docs/native-improving-compilation-time.html)
 
+<!--
 android build：
 - [https://www.youtube.com/watch?v=Qp-5stxpTz4](https://www.youtube.com/watch?v=Qp-5stxpTz4)
 - [https://www.youtube.com/watch?v=C77WssXZEvo](https://www.youtube.com/watch?v=C77WssXZEvo)
 - [https://medium.com/androiddevnotes/the-internals-of-android-apk-build-process-article-5b68c385fb20](https://medium.com/androiddevnotes/the-internals-of-android-apk-build-process-article-5b68c385fb20)
 - [https://stuff.mit.edu/afs/sipb/project/android/docs/tools/building/index.html](https://stuff.mit.edu/afs/sipb/project/android/docs/tools/building/index.html)
 - ![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image-3.png)
+-->
