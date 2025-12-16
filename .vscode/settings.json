@@ -1,6 +1,7 @@
 {
   "markdown.copyFiles.destination": {
-    "_posts/**/*.md": "/assets/img/post/${documentBaseName}/${isoTime}-${fileName}"
+    "_posts/**/*.md": "/assets/img/post/${documentBaseName}/${isoTime}-${fileName}",
+    "_draft/**/*.md":"/assets/img/post/${documentBaseName}/${isoTime}-${fileName}"
   },
   // Prettier
   "editor.defaultFormatter": "esbenp.prettier-vscode",
