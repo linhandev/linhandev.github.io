@@ -136,6 +136,12 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
     跟so体积膨胀类似，无缓存debug build时基于整个ir进行正确性校验，开启静态缓存后ir变小一些问题会发现不了。不过是否开启静态缓存不停响Kotlin编译器前端对Kotlin语法的校验，而且后续肯定还会做release build，只是发现问题的时间可能比开启cache更晚，不存在最终漏过问题的风险
 
+11. 其他可能的优化点
+    - 使用thinlto优化ld命令耗时
+    - 对缓存按照依赖关系进行分桶，最好的场景是每次修改只有一个桶miss，其他桶直接使用前一次链接好的大a
+    - remote cache
+    - 缓存根据对外暴露的接口signature是否变化进行cache miss传播
+
 # 相关资料
 
 - [工程化视角的 Kotlin Multiplatform核心解读及优化](https://www.bilibili.com/opus/946823822473953304)
