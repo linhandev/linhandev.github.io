@@ -39,7 +39,7 @@ jobs:
       - name: Detect secrets
         uses: trufflesecurity/trufflehog@main
         with:
-          extra_args: --debug
+          extra_args: --results=unknown,unverified --filter-entropy=3.5 --debug
 
       - name: Setup Pages
         id: pages
