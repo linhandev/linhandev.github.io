@@ -32,7 +32,9 @@ published: false
 异常类型
 
 
-
+calloc/malloc/free
+jemalloc
+new delete
 
 ### Shadow Memory
 
@@ -47,6 +49,7 @@ published: false
 
 GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)，内存池大小固定，内存开销也是固定的
 
+- 一次申请超过1 page的内存不会防护
 
 If word references are made to un-aligned buffers, you will see a bus error (SIGBUS) instead of a segmentation fault.
 操作了不允许的页SIGSEGV

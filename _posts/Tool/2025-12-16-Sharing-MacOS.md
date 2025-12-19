@@ -7,12 +7,33 @@ tags:
   - Tool
   - MacOS
 description: 
-published: false
 ---
 
 ## 环境隔离
 
 开启远程登陆功能，创建用户，设置密码 `sudo sysadminctl -addUser <username> -password -`
+
+通过ssh key登陆
+
+```shell
+ssh-keygen -t ed25519 -C "ur email"
+ssh-copy-id -i ~/.ssh/xxx.pub -p 10010 username@ip
+
+# 在本地的 ~/.ssh/config 中配置连接信息
+
+Host remote
+  HostName ip
+  User username
+  Port port
+  IdentityFile /path/to/keyfile
+  ServerAliveInterval 60
+  ServerAliveCountMax 30
+  TCPKeepAlive yes
+
+
+# 之后ssh登陆
+ssh remote
+```
 
 - xcode
     不要使用 xcode-select 指定默认xcode版本，在 ~/.zshrc 中设置 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer/ 选定自己的xcode，用 xcode-select -p 打印当前生效的xcode路径
@@ -162,10 +183,4 @@ idea
     ![alt text](/assets/img/post/2025-12-16-sharing-macos/2025-12-16T09:09:48.588Z-image.png)
 - intellj idea要pro版本才支持完整的remote开发体验
 
-vscode
-
-
-
-
-high entropy test 
-QAEwQoaGwR8XxUJq8sJG
+vscode：点击左下角 >< ，Connect To Remote Host
