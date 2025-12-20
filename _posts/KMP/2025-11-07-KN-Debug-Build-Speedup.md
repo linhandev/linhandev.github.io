@@ -13,13 +13,25 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙（HarmonyO
 
 优化KMP打鸿蒙debug包耗时，优化目标约耗时1分钟
 
-首先[Kotlin官方文档](https://kotlinlang.org/docs/native-improving-compilation-time.html#general-recommendations)覆盖的场景比较全，建议先按照这个排查。其中 kotlin.incremental.native 配置kuikly版本在鸿蒙上截止KBA-013版本暂不支持，下文会介绍如何开启
+首先[Kotlin官方文档](https://kotlinlang.org/docs/native-improving-compilation-time.html)覆盖的场景比较全，建议先按照这个排查。其中 kotlin.incremental.native 配置kuikly版本在鸿蒙上截止KBA-014版本暂不支持，下文会介绍如何开启
 
 # gradle 任务排查
 
 这段在官方文档基础上补充一点针对gradle构建任务进行排查的建议
 
-通过在 ./gradlew 命令最后添加 --profile 或 --scan 可以收集各gradle task的执行耗时，使用scan获取的信息更详细，但需要将数据上传到develocity服务器。profile选项是纯本地的，也能展示基本的任务执行和耗时情况。针对gradle任务的优化目标是修改一行代码后
+通过在 ./gradlew 命令最后添加 --profile 或 --scan 可以收集各gradle task的执行耗时，使用scan获取的信息更详细，但需要将数据上传到develocity服务器。profile选项是纯本地的，也能展示基本的任务执行和耗时情况。
+
+下图是 `./gradlew :app:linkPlCheckDebugSharedOhosArm64 --profile` 结果
+
+![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:18:30.754Z-image.png)
+
+其中Result列
+- 空白：task被执行了
+- UP-TO-DATE：task的输入跟上次执行比没变，直接使用上次的结果
+- SKIPPED：有注册这个task但是不满足执行条件，没有执行
+- FROM-CACHE：通过 `org.gradle.caching=true` 开启gradle build cache功能后，gradle会缓存每个task多次执行的结果。这个task的输入和上次执行时不一样所以不是UP-TO-DATE的，但是输入和之前某次执行一样，gradle直接从build cache中找到了这个输入对应的输出，task也没有被执行
+
+针对gradle任务的优化目标是修改一行代码后
 
 1. 尽可能少触发gradle任务
 
@@ -31,28 +43,28 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙（HarmonyO
 
     这里主要的反模式是在顶层gradle项目中写或者生成大量代码。顶层gradle子项目的 compileKotlin 任务的每次debug build都会执行且这个任务不支持增量，导致debug build耗时长。将代码放到顶层项目中时应慎重，尤其是生成大量代码的场景。可以选择项目中几个常发生修改的位置修改后构建，观察触发的gradle任务，对触发频率高且耗时长的子项目进行优化
 
-    如一些代码原来在上图的A模块中，如果这些代码实际不依赖B模块可以考虑挪到D，避开debug过程中触发cache miss概率高的依赖路径。或者如果模块A包含多个独立功能，可以考虑拆分模块A成几个小模块并分别配置依赖关系。总之让经常构建的项目尽可能小，必须很大的项目尽可能减少依赖少触发cache miss进行构建
+    如一些代码原来在上图的A模块中，如果这些代码实际不依赖B模块可以考虑挪到D，避开debug过程中触发cache miss概率高的依赖路径。或者如果模块A包含多个独立功能，可以考虑拆分模块A成几个小模块并分别配置依赖关系。总之让经常构建的项目尽可能小，必须很大的项目尽可能减少依赖少触发构建
 
-# ohos debug build 开启增量缓存
+# OHOS Debug Build 开启增量编译
 
-增量缓存开/关时的构建流程大致如下图
+增量编译开/关时的构建流程如下图
 
-![alt text](../../assets/img/post/2025-11-07-kn-debug-build-speedup/2025-12-07T11:01:44.083Z-image.png)
+![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:33:42.301Z-image.png)
 
-https://excalidraw.com/#json=PXibQdsrDjNMs4JYTh5lX,ION6xbv-rqLmeYglzdTO0w
+https://excalidraw.com/#json=8ZS-lGRqJBFBqiRV1CgKW,KHva9hBjSKVuLbHfBl-mVg
 
-这一功能只影响编译器后端的link任务，对 compileKotlin 任务没有影响。提速的原理大概是开启增量之前尽管工程中变化的源码很少，但K/N编译器后端每次都完整的将整个工程对应的llvm ir编译成so（图中1）。开启增量缓存后工程的源码和依赖都被编成独立的 .a 静态库（图中2）最后链接到一起（图中5），构建 .a 的范围只是工程中发生修改和依赖被修改文件的其他文件（图中3 4静态缓存没有重新构建），这一范围只是整个工程很小的一个子集，编译的工作量比全量编译显著变少而且实现上一个gradle子项目中的不同文件建立静态缓存有并行化，使得link gradle任务的速度显著提升
+增量编译只影响编译器后端的link任务，对 compileKotlin 任务没有任何影响。提速的原理是开启增量编译之前尽管工程中实际变化的源码很少，但KN编译器后端每次都完整的将整个工程对应的LLVM IR编译成so（图中1）。开启增量编译后工程的源码和依赖都被编成独立的 .a 静态库（图中2）最后链接到一起（图中5），构建 .a 的范围只是工程中发生修改和依赖被修改文件的其他文件（图中3 4静态缓存没有重新构建），这一范围只是整个工程很小的一个子集，编译的工作量比全量编译显著变少，而且实现上一个gradle子项目中的不同文件编 .a 有并行化，使得link gradle任务的速度显著提升
 
 ## 开启方式
 
 [参考PR](https://github.com/Tencent-TDS/KuiklyBase-kotlin/pull/29)
 
-静态缓存分两个类型
+增量编译的静态缓存分两个类型
 
-- 工程依赖的klib因为只会通过修改版本整个替换不会修改klib的内容，整个klib被打包成一个 .a
+- 工程依赖的klib因为只会通过修改版本号方式整个替换，其内容不会发生部分修改，整个klib被打包成一个 .a
 - 工程中的源码文件可以独立修改，每个文件被打包成一个 .a
 
-构建缓存功能开启后就会给依赖的klib打per-klib缓存，项目源码的per-file缓存需要在项目中添加额外的配置开启
+增量编译功能开启后就会给项目依赖的klib打per-klib缓存，项目源码的per-file缓存需要在项目中添加额外的配置开启
 
 ### 依赖klib缓存
 
@@ -62,17 +74,21 @@ https://excalidraw.com/#json=PXibQdsrDjNMs4JYTh5lX,ION6xbv-rqLmeYglzdTO0w
 
 per-klib缓存保存在kotlin编译器中，路径 `$KONAN_DATA_DIR/kotlin-native-prebuilt-macos-aarch64-[kotlin版本号]/klib/cache/ohos_arm64STATIC-pl`，其中KONAN_DATA_DIR如果没有设置默认为 ~/.konan。在上述文件夹中看到工程的依赖则项目则依赖klib缓存开启成功
 
+![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:41:41.173Z-image.png)
+
 ### 工程源码缓存
 
-在应用工程顶层gradle项目的gradle.properties中添加 `kotlin.incremental.native=true` 配置，会在打包所有支持缓存的target时（如上面截图中ios_arm64和ohos_arm64都配置了支持缓存）给项目中的源码打per-file缓存
+在应用工程根目录的gradle.properties中添加 `kotlin.incremental.native=true` 配置，会在打包所有支持增量构建的target时（如上面截图中ios_arm64和ohos_arm64都配置了支持增量构建）给项目中的源码打per-file缓存
 
 ![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image-1.png)
 
 per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native-ic-cache/debugShared/ohos_arm64-gSTATIC-pl` 中，每个文件夹是一个gradle子项目，子项目文件夹中有对应每个文件的文件夹
 
+![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T10:09:48.035Z-image.png)
+
 ### 进阶配置
 
-1. kotlin项目 konan.properties optInCacheableTargets配置项中如果配置了ohos，则ohos target支持静态缓存但默认关闭，需要在应用工程中添加 `kotlin.native.cacheKind.ohosArm64=static` 开启缓存功能
+1. kotlin项目 konan.properties `optInCacheableTargets` 配置项中如果配置了ohos，则ohos target支持增量构建但默认关闭，需要在应用工程中添加 `kotlin.native.cacheKind.ohosArm64=static` 开启缓存功能
 2. 使用静态缓存时如果遇到问题，可以在应用工程中配置 `kotlin.native.cacheKind.ohosArm64=none` 关闭缓存功能
 3. 构建工程源码的静态cache时并行度默认为4，可以通过在应用工程中配置 `kotlin.native.parallelThreads=0` 配置并行度为cpu核数
 
@@ -96,15 +112,23 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
 3. 链接命令失败，报 error: duplicate symbol: kfun: xxx，这个符号在两个 .a 中被重复定义
 
-    上游社区已知问题 [KT-81760](https://youtrack.jetbrains.com/issue/KT-81760)。K/N编译出的函数名中中包含kotlin代码package名，函数名，参数和返回值，出现这一问题应该是在同一个package下重复定义相同的函数，这种写法使用哪个实现在不开启增量缓存时依赖声明依赖的顺序容易出错，上游社区也可能在新版本中加强校验。如果在项目工程源码中存在这种情况建议整改，如果引入的库之间有符号名冲突不好修改可以添加 [--allow-multiple-definition](https://www.man7.org/linux/man-pages/man1/ld.1.html) 链接选项使用链接时第一个遇到的定义，将相关的正确性校验延后到不开启cache的debug build或release build进行。更多冲突情况下的细节可以查看[这个demo](https://github.com/linhandev/kn_samples/tree/clashingDeclarations)
+    上游社区已知问题 [KT-81760](https://youtrack.jetbrains.com/issue/KT-81760)。K/N编译出的函数名中中包含kotlin代码package名，函数名，参数和返回值，出现这一问题应该是在同一个package下重复定义相同的函数，这种写法使用哪个实现在不开启增量缓存时依赖声明依赖的顺序，哪个先被声明哪个生效，容易出错，上游社区也可能在新版本中加强校验。如果在项目工程源码中存在这种情况建议整改，如果引入的库之间有符号名冲突不好修改可以添加 [--allow-multiple-definition](https://www.man7.org/linux/man-pages/man1/ld.1.html) 链接选项使用链接时第一个遇到的定义，将相关的正确性校验延后到不开启cache的debug build或release build进行。更多冲突情况下的细节可以查看[这个demo](https://github.com/linhandev/kn_samples/tree/clashingDeclarations)
 
 4. cache文件夹有pl结尾和没有pl结尾两个，有什么区别
 
     pl代表kotlin的[partial linkage](https://www.youtube.com/watch?v=ERHMsRvIQPQ)功能，这一功能默认开启，开启后当工程依赖的一个klib调用了另一个klib中不存在的接口时，编译不会报错而是在调用点放一个抛出异常，报 No function found for symbol xxx，把问题遗留到运行时。这是一个[demo](https://github.com/linhandev/kn_samples/tree/pl)。kotlin标准库是禁用pl功能的，所以这个库的缓存在kotlin编译器的一个不带pl的文件夹里
 
+    pl功能可能导致一些在编译过程中可以检出的问题漏到运行时，可以在项目的build.gradle.kts中添加一个header_cache类型的构建目标，禁用pl，检查接口兼容性问题
+
+    ```kotlin
+    sharedLib("check") {
+        freeCompilerArgs += listOf("-produce", "header_cache", "-Xpartial-linkage=enable", "-Xpartial-linkage-loglevel=error", "-opt")
+    }
+    ```
+
 5. 开启增量构建后so体积膨胀
 
-    当注释掉K/N编译器中O0和O0 LTO两条优化管线相关的代码跳过llvm ir上的编译优化时，是否启用静态cache产物so体积差异1%左右，不跳过这两个管线体积差异30%+，确定是llvm ir上编译优化质量变差导致的so体积膨胀。开启静态cache后编译成二进制的程序规模变小，函数定义看不到所有的调用点无法进行有效的死代码删除。下面打印的llvm o0管线中包含dce
+    当注释掉K/N编译器中O0和O0 LTO两条优化管线相关的代码跳过llvm ir上的编译优化时，是否启用静态cache产物so体积差异1%左右，不跳过这两个管线体积差异很大，确定是llvmß ir上编译优化质量变差导致的so体积膨胀。开启静态cache后编译成二进制的程序规模变小，函数定义看不到所有的调用点无法进行有效的死代码删除。下面打印的llvm o0管线中包含dce
 
     ```kotlin
     ➜  bin ./clang -O0 -c test.c -mllvm -print-pipeline-passes     
@@ -132,11 +156,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
 9. 一些更详细的控制选项：org.jetbrains.kotlin.incremental.IncrementalCompilationFeatures
 
-10. 有关正确性校验
-
-    跟so体积膨胀类似，无缓存debug build时基于整个ir进行正确性校验，开启静态缓存后ir变小一些问题会发现不了。不过是否开启静态缓存不停响Kotlin编译器前端对Kotlin语法的校验，而且后续肯定还会做release build，只是发现问题的时间可能比开启cache更晚，不存在最终漏过问题的风险
-
-11. 其他可能的优化点
+10. 其他可能的优化点
     - 使用thinlto优化ld命令耗时
     - 对缓存按照依赖关系进行分桶，最好的场景是每次修改只有一个桶miss，其他桶直接使用前一次链接好的大a
     - remote cache
