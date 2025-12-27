@@ -44,6 +44,8 @@ ssh remote
     ```
 - gradle
     默认路径就是 ~/.gradle ，是按用户隔离的
+- /Application
+    如果应用在其他用户不能访问，递归修改赋所有用户读和执行 `sudo chmod -R a+rX /Applications/DevEco-Studio.app`
 
 ## bore开放端口
 
@@ -56,18 +58,37 @@ bore local 22 --to bore.pub
 ssh username@bore.pub -p xxx
 ```
 
-自建bore服务器（debian）
+配rust
 
 ```shell
+# rustup 换源
+export RUSTUP_DIST_SERVER=https://mirrors.huaweicloud.com/rustup/
+export RUSTUP_UPDATE_ROOT=https://mirrors.huaweicloud.com/rustup/rustup/
 curl https://sh.rustup.rs -sSf | sh
-source ~/.bashrc
+. "$HOME/.cargo/env"
+
+# cargo换源
+mkdir -vp ${CARGO_HOME:-$HOME/.cargo}
+
+cat << EOF | tee -a ${CARGO_HOME:-$HOME/.cargo}/config.toml
+[source.crates-io]
+replace-with = 'mirror'
+
+[source.mirror]
+registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+EOF
+```
+
+自建bore服务器（debian/ubuntu）
+
+```shell
 cargo install bore-cli
 bore server # 简单看到启动停掉就行，下一步再详细配
 ```
 
 修改下面的ExecStart
 
-ExecStart=/root/.cargo/bin/bore server --min-port [低位端口] --max-port [高位端口] --secret [随机密码] --bind-addr [公网ip]
+ExecStart=/root/.cargo/bin/bore server --min-port [低位端口] --max-port [高位端口] --secret [随机密码]
 
 /etc/systemd/system/bore.service
 ```toml
@@ -184,3 +205,4 @@ idea
 - intellj idea要pro版本才支持完整的remote开发体验
 
 vscode：点击左下角 >< ，Connect To Remote Host
+- gradle kotlin dsl: 

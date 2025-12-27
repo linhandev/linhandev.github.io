@@ -47,7 +47,7 @@ new delete
 
 ### GWP
 
-GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)，内存池大小固定，内存开销也是固定的
+GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)。性能方面为了减小开销只随机sample部分内存分配进行防护，检查通过mmu硬件进行开销较小，分配和释放内存时会回栈有一些开销，总体性能开销～5%。内存方面开销来自分配guard页，开销是固定可调的。
 
 - 一次申请超过1 page的内存不会防护
 
