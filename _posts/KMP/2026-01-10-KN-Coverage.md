@@ -77,3 +77,8 @@ published: false
 | `-:`     | Not instrumented       | Comments, blank lines, includes |
 | `N:`     | Executed N times       | `4:` = executed 4 times         |
 
+
+
+freeCompilerArgs += listOf("-Xbinary=coverage=true", "-Xtemporary-files-dir=/tmp/inspect")
+
+除了so还会编出来一个gcno文件
