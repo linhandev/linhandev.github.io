@@ -197,7 +197,7 @@ plutil -lint /Library/LaunchDaemons/com.bore.local.plist
 
 此外，如果bore的对端在国外可能被走代理，代理只要有波动就会导致所有ssh断掉。可以配置bore的7835端口不走代理 https://www.clashverge.dev/guide/rules.html#_3
 
-## 远程工具
+## 开发工具
 
 idea
 - [jetbrains gateway](https://www.jetbrains.com/remote-development/gateway/download/download-thanks.html?code=GW&platform=macM1)只支持远程linux
@@ -206,3 +206,7 @@ idea
 
 vscode：点击左下角 >< ，Connect To Remote Host
 - gradle kotlin dsl: 
+
+docker
+- `softwareupdate --install-rosetta` 支持x86 docker
+- 

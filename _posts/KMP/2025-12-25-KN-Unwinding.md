@@ -319,3 +319,6 @@ attributes #9 = { "target-cpu"="cortex-a57" "target-features"="+aes,+fp,+neon,+s
 Kotlin中控制是否设置frame-pointer类型的逻辑：https://github.com/Tencent-TDS/KuiklyBase-kotlin/blob/kuikly-base/2.0.20/kotlin-native/backend.native/compiler/ir/backend.native/src/org/jetbrains/kotlin/backend/konan/llvm/LlvmAttributes.kt#L38
 
 kuikly的实现ohos在release build下不会添加frame-pointer属性，如果有根据fp回栈的需求需要patch让ohos release模式下返回true。
+
+
+检查是否支持fp回栈：`hiperf record -p $(pgrep application) -s fp -f 1000 -d 5 -e hw-cpu-cycles,hw-instructions -o /data/local/tmp/perf.data`
