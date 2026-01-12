@@ -253,8 +253,67 @@ e: warnings found and -Werror specified
 
 **Solution**: Fix the warnings or temporarily disable -Werror. Common warnings:
 - Unnecessary safe calls: `?.` on non-nullable types
-- Use `.exists` not `.exists()` for File
-- Use `.listFiles` not `.listFiles()` for File
+- Use `.exists` not `.exists()` for `kotlin.io.File` (property, not function)
+- Use `.listFiles` not `.listFiles()` for `kotlin.io.File` (property, not function)
+- Note: `java.io.File` uses `.exists()` and `.listFiles()` (methods with parentheses)
+
+**Kotlin File API Gotchas**:
+```kotlin
+// WRONG (for kotlin.io.File):
+val exists = File("path").exists()  // Error: expression of type Boolean cannot be invoked
+val files = File("path").listFiles()  // Error: expression of type List<File> cannot be invoked
+
+// CORRECT (for kotlin.io.File):
+val exists = File("path").exists  // Property access
+val files = File("path").listFiles  // Property access
+
+// For java.io.File (used in some parts):
+import java.io.File as JFile
+val exists = JFile("path").exists()  // Method call
+val files = JFile("path").listFiles()  // Method call
+```
+
+---
+
+## Kotlin Native Configuration System
+
+### Binary Options Pattern
+
+Kotlin Native uses `-Xbinary=name=value` for runtime configuration (similar to sanitizer):
+
+**Add new binary option**:
+
+1. In `BinaryOptions.kt`:
+```kotlin
+object BinaryOptions : BinaryOptionRegistry() {
+    val yourFeature by booleanOption()  // For true/false
+    // or
+    val yourOption by option<YourEnum>()  // For enum values
+}
+```
+
+2. Access in code:
+```kotlin
+val enabled = config.configuration.get(BinaryOptions.yourFeature) ?: false
+```
+
+3. Usage:
+```bash
+kotlinc-native test.kt -Xbinary=yourFeature=true
+```
+
+### Finding Configuration Parsing
+
+**Locate where arguments are parsed**:
+1. Argument definition: `compiler/cli/cli-common/.../K2NativeCompilerArguments.kt`
+2. Parsing logic: `kotlin-native/backend.native/.../SetupConfiguration.kt`
+3. Configuration keys: `kotlin-native/backend.native/.../KonanConfigurationKeys.kt`
+
+**Pattern to find parsing**:
+```bash
+# Find where an argument is used
+grep -r "arguments\.yourArgName" kotlin-native/backend.native/
+```
 
 ---
 

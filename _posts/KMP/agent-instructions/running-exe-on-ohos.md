@@ -131,6 +131,108 @@ hdc shell chmod 777 <device_path>
 - Ensure libraries are also deployed to the device
 - Check that libraries match the target architecture
 
+### Issue: HarmonyOS App Storage Permissions
+
+**Context**: When running code within a HarmonyOS application (HAP), permissions differ from standalone executables.
+
+**Accessible Paths for HAP**:
+```
+✅ /data/storage/el2/base/files/       # App's files directory (read/write)
+✅ /data/storage/el2/base/cache/       # App's cache directory
+✅ /data/storage/el2/base/temp/        # App's temp directory
+❌ /data/local/tmp/                    # NOT accessible to app process
+❌ /data/app/                          # Read-only (app installation)
+```
+
+**For standalone executables** (shell/test):
+```
+✅ /data/local/tmp/                    # Read/write
+```
+
+**Accessing app storage via hdc shell**: There's a mapping relationship between code path within app and accessing from hdc, /data/storage/el2/base/files/pgoprofraw within app is accessible in hdc at /data/app/el2/100/base/[application bundle name， eg: com.example.application]/files/pgoprofraw. You can find application bundle name in /path/to/harmonyProject/AppScope/app.json5.
+
+```json
+{
+  "app": {
+    "bundleName": "com.example.nativecppdemo", # this would be the bundle name
+    ...
+  }
+}
+```
+
+---
+
+## Environment Variables
+
+### Setting Environment for Executables
+
+**In shell**:
+```bash
+hdc shell "export MY_VAR=value && /data/local/tmp/executable"
+```
+
+**With GCOV or instrumented code**:
+```bash
+hdc shell "cd /data/local/tmp && GCOV_PREFIX=/data/local/tmp/gcov GCOV_PREFIX_STRIP=99 ./executable"
+```
+
+**Important**: Environment variables set in shell **only affect that shell session**, not app processes.
+
+### Setting Environment for Shared Libraries in Apps
+
+**For .so loaded by HarmonyOS app**, environment must be set in **app's C++ code**:
+
+```cpp
+// In app's native entry point (napi_init.cpp or similar)
+__attribute__((constructor(101)))  // Run early, before .so global constructors
+static void InitEnvironment() {
+    setenv("MY_VAR", "value", 1);
+}
+```
+
+**Why**: Shell environment doesn't transfer to app processes. Must be set programmatically.
+
+---
+
+## Shared Libraries (.so) vs Executables (.kexe)
+
+### Deployment Differences
+
+**Executables**:
+- Deploy to `/data/local/tmp/`
+- Run directly via `hdc shell`
+- Environment set in shell command
+
+**Shared Libraries in HAP**:
+- Bundle in app's `libs/arm64-v8a/`
+- Loaded by app process (not shell)
+- Environment must be set in app's C++ code
+- Lifecycle: Never unloaded (stays in memory until app killed)
+
+### Lifecycle Implications
+
+**Executables**:
+```
+Start → Run → Exit
+           ↓
+    Destructors run, cleanup happens
+```
+
+**Shared Libraries in HAP**:
+```
+App Start → .so loads (constructors run)
+    ↓
+App Runs → .so stays loaded
+    ↓
+App Backgrounds → .so STILL loaded (no dlclose)
+    ↓
+App Killed → Process terminated (destructors may NOT run)
+```
+
+**Impact**: Code that relies on `atexit()` or `__attribute__((destructor))` may not execute in HAP environments. Use manual triggers instead.
+
+---
+
 ## Example: Complete Workflow
 
 ```bash

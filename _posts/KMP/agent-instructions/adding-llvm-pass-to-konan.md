@@ -198,7 +198,9 @@ kotlinc-native test.kt -target ohos_arm64 -o test -Xbinary=yourOption=true
 
 ### Step 6: Link Runtime Libraries (If Needed)
 
-Some passes require runtime libraries (e.g., GCOV needs libclang_rt.profile.a).
+Some passes require runtime libraries (e.g., GCOV needs libclang_rt.profile.a, sanitizers need libclang_rt.{asan,tsan}.a).
+
+**Important**: Kotlin Native LLVM distribution may not have OHOS-specific compiler-rt libraries. Use **DevEco Studio SDK's LLVM** for OHOS targets.
 
 **File**: `native/utils/src/org/jetbrains/kotlin/konan/target/Linker.kt`
 
@@ -531,6 +533,56 @@ LinkerArguments(
 
 ---
 
+## Advanced Techniques
+
+### Weak Symbol Detection
+
+Use weak symbols to make runtime code conditional on instrumentation presence:
+
+```cpp
+// In runtime C++ code
+extern "C" void __llvm_gcov_init(void*, void*) __attribute__((weak));
+
+__attribute__((constructor(101)))
+static void MaybeInitialize() {
+    if (__llvm_gcov_init == nullptr) {
+        return;  // Instrumentation not present, skip
+    }
+    // Initialize resources needed by instrumentation
+}
+```
+
+**Benefits**:
+- No overhead when instrumentation disabled
+- Single runtime binary works for both cases
+- Automatic detection
+
+### Conditional Linker Arguments
+
+Add linker arguments only when feature is enabled:
+
+```kotlin
+// In LinkerArguments data class
+class LinkerArguments(
+    // ... existing ...
+    val yourFeature: Boolean = false,
+)
+
+// In OhosLinker.finalLinkCommands()
+if (yourFeature) {
+    val lib = provideCompilerRtLibrary("your_runtime")
+    if (lib != null) +lib
+}
+
+// When creating LinkerArguments
+LinkerArguments(
+    // ... existing ...
+    yourFeature = config.configuration.get(BinaryOptions.yourFeature) ?: false,
+)
+```
+
+---
+
 ## Build and Test
 
 ### After Implementation
@@ -552,6 +604,19 @@ kotlin-native/dist/bin/kotlinc-native test.kt \
 llvm-dis /tmp/test_temp/out.bc -o - | grep -c "your_pattern"
 
 # 4. Test on device (if applicable)
+```
+
+### Verify Instrumentation Symbols
+
+```bash
+# For executables
+llvm-nm test.kexe | grep your_symbol
+
+# For shared libraries
+llvm-nm libtest.so | grep your_symbol | wc -l
+
+# Check specific symbols
+llvm-nm test.kexe | grep -E "init|writeout|flush"
 ```
 
 ---

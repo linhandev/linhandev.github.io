@@ -24,12 +24,18 @@ Complete workflow for building the Kotlin Native compiler and testing it with OH
 
 Comprehensive guide for integrating new LLVM optimization or instrumentation passes into the Kotlin Native compiler. Includes C++ API extensions, Kotlin pipeline classes, phase registration, configuration options, runtime library linking, and testing strategies. Uses GCOV profiling pass as a reference example.
 
+### [llvm-runtime-libraries.md](./llvm-runtime-libraries.md)
+**LLVM Compiler-RT Libraries for OHOS**
+
+Guide for working with LLVM's compiler-rt runtime libraries on OHOS targets. Covers library locations, finding libraries at runtime, required OHOS system libraries, and common linking errors. Essential for passes that require runtime support (sanitizers, profiling, coverage).
+
 ## Quick Reference
 
 **Build C/C++ for OHOS**: [working-with-clang.md](./working-with-clang.md)  
 **Deploy to Device**: [running-exe-on-ohos.md](./running-exe-on-ohos.md)  
 **Build Kotlin Native**: [working-with-kotlin-native-compiler.md](./working-with-kotlin-native-compiler.md)  
-**Add LLVM Pass**: [adding-llvm-pass-to-konan.md](./adding-llvm-pass-to-konan.md)
+**Add LLVM Pass**: [adding-llvm-pass-to-konan.md](./adding-llvm-pass-to-konan.md)  
+**LLVM Runtime Libraries**: [llvm-runtime-libraries.md](./llvm-runtime-libraries.md)
 
 ## Workflow Order
 
