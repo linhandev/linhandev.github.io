@@ -82,3 +82,17 @@ published: false
 freeCompilerArgs += listOf("-Xbinary=coverage=true", "-Xtemporary-files-dir=/tmp/inspect")
 
 除了so还会编出来一个gcno文件
+
+GCOV_PREFIX=/data/storage/el2/base/files/
+
+/data/app/el2/100/base/com.example.nativecppdemo/files/
+
+hdc file recv /data/app/el2/100/base/com.example.nativecppdemo/files/gcov/libc2k.gcda .
+
+python -m gcovr --xml --output temp/jacoco.xml --root . --gcov-ignore-errors=all temp/
+
+python -m gcovr --html --html-details --output temp/coverage.html --root . --gcov-ignore-errors=all .
+
+python -m gcovr --json  --root . --gcov-ignore-errors=all .
+
+rm -rf gcov; hdc file recv /data/app/el2/100/base/com.example.nativecppdemo/files/gcov/ . ; cd gcov; cp -f ../kotlinApp/build/bin/ohosArm64/debugShared/libc2k.gcno .; cp -r ../harmonyApp/entry/.cxx/default/default/debug/arm64-v8a/CMakeFiles/entry.dir/gcov.cpp.gcno .; cp -r ../harmonyApp/entry/.cxx/default/default/debug/arm64-v8a/CMakeFiles/entry.dir/napi_init.cpp.gcno .; rm -rf temp; mkdir temp; python -m gcovr --html --html-details --output temp/coverage.html --root .. --gcov-ignore-errors=all . ; cd ..
