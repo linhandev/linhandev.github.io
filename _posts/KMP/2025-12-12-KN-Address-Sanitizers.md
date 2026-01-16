@@ -107,6 +107,8 @@ GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)�
 
 ## DevEco LLVM san编译参数
 
+开启hvigor详细日志查看cmake参数
+
 ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:21:57.769Z-image.png)
 
 构建日志中搜 [cmake]
