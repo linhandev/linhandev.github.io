@@ -107,6 +107,39 @@ GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)�
 
 ## DevEco LLVM san编译参数
 
+![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:21:57.769Z-image.png)
+
+构建日志中搜 [cmake]
+
+![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:22:27.994Z-image.png)
+
+对比DevEco中是否勾选asan，cmake选项差一个 `'-DOHOS_ENABLE_ASAN=ON'`
+
+![alt text](../../assets/img/post/2025-12-12-KN -Address-Sanitizers/2026-01-16T06:26:02.729Z-image.png)
+
+对比 `.cxx/default/default/debug/arm64-v8a/compile_commands.json` 中具体cpp文件的编译命令，clang++多了几个选项
+
+```
+-shared-libasan
+-fsanitize=address
+-fno-omit-frame-pointer
+-fsanitize-recover=address
+```
+
+![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:29:59.512Z-image.png)
+
+比较加不加这四个选项的链接命令，编一个最简单的 int main() {}
+
+```shell
+/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v
+# vs
+/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v -shared-libasan -fsanitize=address -fno-omit-frame-pointer -fsanitize-recover=address
+```
+
+比较输出中的ld命令
+
+![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:38:22.932Z-image.png)
+
 
 ## KN 内存分配
 
@@ -129,6 +162,9 @@ GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)�
 ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2025-12-30T05:59:39.963Z-image.png)
 
 ### 内存布局
+
+> ！！！本章节基本是大模型走读KN runtime代码总结，缺乏验证！！！
+
 对象：
 
 | Offset                                                      | Field                   | Size      | Alignment   | Bit-Level Details                                                                                                                                                                                                                   |
