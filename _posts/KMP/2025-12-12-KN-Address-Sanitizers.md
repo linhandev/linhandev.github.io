@@ -17,7 +17,7 @@ description:
 
 |                  | ASAN                | HWASAN                              | MemDebug           | GWP-ASan                                                          |
 | ---------------- | ------------------- | ----------------------------------- | ------------------ | ----------------------------------------------------------------- |
-| 全名             | Address Sanitizer   | Hardware-Assisted Address Sanitizer | Memory Debug       | Google-Wide Profiling</br>GWP-ASan Will Provide Allocation SANity |
+| 全名             | Address Sanitizer   | Hardware-Assisted Address Sanitizer | Memory Debug       | Google-Wide Profiling<br/>GWP-ASan Will Provide Allocation SANity |
 | 部分检测依赖插桩 | ✅                   | ✅                                   | ❌                  | ❌                                                                 |
 | 开销             | cpu，内存 200%      | cpu 200% 内存 10～35%               | cpu，内存  10～20% | cpu，内存 < 5%，可调                                              |
 | 基本原理         | Shadow Memory，红区 | Shadow Memory，指针Tag              |                    | page电网                                                          |
@@ -28,10 +28,10 @@ description:
 
 KN故障模式：认为关键是谁申请的内存，谁拿着指针做非法访问
 
-|        | C指针                   | KN指针                                                                                               |
-| ------ | ----------------------- | ---------------------------------------------------------------------------------------------------- |
-| C使用  | 正常san                 | 1. KN栈内存没发现获取指针方式，给不到C <br> 2. KN堆内存溢出到内存池外 <br> 3. KN堆内存溢出到内存池内 |
-| KN使用 | konan接llvm san插桩pass | 同C使用                                                                                              |
+|        | C指针                   | KN指针                                                                                             |
+| ------ | ----------------------- | -------------------------------------------------------------------------------------------------- |
+| C使用  | 正常san                 | 1. KN栈内存没发现获取指针方式，给不到C<br/>2. KN堆内存溢出到内存池外<br/>3. KN堆内存溢出到内存池内 |
+| KN使用 | konan接llvm san插桩pass | 同C使用                                                                                            |
 
 异常类型
 - 空间
