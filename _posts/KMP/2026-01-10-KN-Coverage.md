@@ -235,14 +235,10 @@ https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 
 - lambda
 
-![image.png](attachment:de5dfbd3-ccc7-4f04-8ca0-8852bf1d16c1:image.png)
-
-chained call
-
-![image.png](attachment:0375eae5-b2ca-4306-8274-563ff3fb77d4:image.png)
+- chained call
 
 
 
-TODO
+## TODO
 - 是否可以控制插桩代码的范围
 - 补全edge case，分析原因，解决方法
