@@ -290,22 +290,19 @@ Meta
 
 数组
 
-| Offset                                        | Field                    | Size      | Alignment   | Bit-Level Details                                      |
-| --------------------------------------------- | ------------------------ | --------- | ----------- | ------------------------------------------------------ |
-| 0x00                                          | **gc::GC::ObjectData**   | 8 bytes   | 8 bytes     | **GC Header**                                          |
-|                                               | next_ (atomic pointer)   | 8 bytes   | 8 bytes     | Same as HeapObject                                     |
-| 0x08                                          | **KArray (ArrayHeader)** | 16 bytes  | 8 bytes     | **Array Header** (fixed size)                          |
-|                                               | typeInfoOrMeta_          | 8 bytes   | 8 bytes     | **Bits 0-63**: Pointer to array TypeInfo               |
-| **Bits 0-1**: Tag bits                        |
-| 0x10                                          | count_                   | 4 bytes   | 4 bytes     | **Bits 0-31**: Element count (uint32_t)                |
-| 0x14                                          | objcFlags_ / padding     | 4 bytes   | 4 bytes     | **Bits 0-31**: ObjC flags if KONAN_OBJC_INTEROP        |
-| Otherwise: padding to 8-byte struct alignment |
-| 0x18                                          | **[Padding]**            | 0-7 bytes | E bytes     | Align to element size boundary                         |
-| AlignUp(sizeof(ArrayHeader), elementSize)     |
-| 0x18+                                         | **Array elements**       | E × count | **E bytes** | **⚠️ Elements use ELEMENT SIZE alignment, NOT 8-byte!** |
-Each element size E = -typeInfo->instanceSize_
-Elements are **tightly packed** with no extra padding |
-| END | **[Padding]** | 0-7 bytes | — | Pad entire array to 8-byte boundary |
+| Offset                                    | Field                    | Size      | Alignment   | Bit-Level Details                                                                                                                                                       |
+| ----------------------------------------- | ------------------------ | --------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0x00                                      | **gc::GC::ObjectData**   | 8 bytes   | 8 bytes     | **GC Header**                                                                                                                                                           |
+|                                           | next_ (atomic pointer)   | 8 bytes   | 8 bytes     | Same as HeapObject                                                                                                                                                      |
+| 0x08                                      | **KArray (ArrayHeader)** | 16 bytes  | 8 bytes     | **Array Header** (fixed size)                                                                                                                                           |
+|                                           | typeInfoOrMeta_          | 8 bytes   | 8 bytes     | **Bits 0-63**: Pointer to array TypeInfo                                                                                                                                |
+| **Bits 0-1**: Tag bits                    |
+| 0x10                                      | count_                   | 4 bytes   | 4 bytes     | **Bits 0-31**: Element count (uint32_t)                                                                                                                                 |
+| 0x14                                      | objcFlags_ / padding     | 4 bytes   | 4 bytes     | **Bits 0-31**: ObjC flags if KONAN_OBJC_INTEROP, Otherwise: padding to 8-byte struct alignment                                                                          |
+| 0x18                                      | **[Padding]**            | 0-7 bytes | E bytes     | Align to element size boundary                                                                                                                                          |
+| AlignUp(sizeof(ArrayHeader), elementSize) |
+| 0x18+                                     | **Array elements**       | E × count | **E bytes** | **⚠️ Elements use ELEMENT SIZE alignment, NOT 8-byte!** <br/> Each element size E = -typeInfo->instanceSize_ <br/> Elements are **tightly packed** with no extra padding |
+| END                                       | **[Padding]**            | 0-7 bytes | —           | Pad entire array to 8-byte boundary                                                                                                                                     |
 
 ```kotlin
 val flags = BooleanArray(5)  // 5 booleans
