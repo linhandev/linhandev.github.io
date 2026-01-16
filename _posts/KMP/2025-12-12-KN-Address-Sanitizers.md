@@ -115,7 +115,7 @@ GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)�
 
 对比DevEco中是否勾选asan，cmake选项差一个 `'-DOHOS_ENABLE_ASAN=ON'`
 
-![alt text](../../assets/img/post/2025-12-12-KN -Address-Sanitizers/2026-01-16T06:26:02.729Z-image.png)
+![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:26:02.729Z-image.png)
 
 对比 `.cxx/default/default/debug/arm64-v8a/compile_commands.json` 中具体cpp文件的编译命令，clang++多了几个选项
 
