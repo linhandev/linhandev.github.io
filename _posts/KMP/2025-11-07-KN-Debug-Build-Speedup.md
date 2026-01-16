@@ -8,7 +8,7 @@ tags:
   - 增量构建
   - Debug
   - 构建效率
-description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙（HarmonyOS）Debug包构建效率的实用方法，包括排查Gradle任务，开启增量缓存机制，常见问题及解决方案。通过静态缓存和依赖优化，显著提升Debug构建速度，降低开发调试时间。
+description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建效率的实用方法，包括排查Gradle任务，开启增量缓存机制，常见问题及解决方案。通过静态缓存和依赖优化，显著提升Debug构建速度，提升开发效率。
 ---
 
 优化KMP打鸿蒙debug包耗时，优化目标约耗时1分钟
