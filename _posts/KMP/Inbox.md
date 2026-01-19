@@ -37,3 +37,5 @@ published: false
 
 llvm-dis：bc -> ll
 llvm-as：ll -> bc
+
+修改kgp后编译：./gradlew :kotlin-gradle-plugin:compileCommonKotlin 

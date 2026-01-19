@@ -200,9 +200,27 @@ plutil -lint /Library/LaunchDaemons/com.bore.local.plist
 ## 开发工具
 
 idea
-- [jetbrains gateway](https://www.jetbrains.com/remote-development/gateway/download/download-thanks.html?code=GW&platform=macM1)只支持远程linux
+- [jetbrains gateway](https://www.jetbrains.com/remote-development/gateway/download/download-thanks.html?code=GW&platform=macM1) 只支持远程linux
     ![alt text](/assets/img/post/2025-12-16-sharing-macos/2025-12-16T09:09:48.588Z-image.png)
-- intellj idea要pro版本才支持完整的remote开发体验
+- intellj idea 要pro版本才支持完整的remote开发体验
+
+remote上的idea安装在 ~/Application/ 下，用户是ssh用的用户。本地拉不起远端的idea时可以在远端直接开ide看报什么错
+
+解决插件问题导致无法启动
+
+```shell
+# find the intellj config dir
+find ~/Library/Application\ Support/JetBrains -maxdepth 1 -name "IntelliJIdea*" | head -n 1
+
+# Navigate to the plugin folder
+cd "/Users/hl/Library/Application Support/JetBrains/IntelliJIdea2025.3"
+
+# Move the plugins folder to a backup (this disables ALL non-bundled plugins)
+mv plugins plugins_backup
+
+# Create a fresh, empty plugins folder
+mkdir plugins
+```
 
 vscode：点击左下角 >< ，Connect To Remote Host
 - gradle kotlin dsl: 

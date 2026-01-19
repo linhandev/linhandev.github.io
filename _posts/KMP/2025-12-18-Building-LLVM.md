@@ -27,13 +27,13 @@ KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kot
   - return subprocess.check_output(['xcrun', '--show-sdk-path'],
   + return subprocess.check_output(['xcrun', '--sdk', 'macosx', '--show-sdk-path'],
       universal_newlines=True).rstrip()
-      
   ```
 
 ## master-llvm12-backup
 
 - 分支地址：https://gitcode.com/openharmony/third_party_llvm-project/tree/master-llvm12-backup
-- 使用 KN 2.0 的脚本
+- 使用 KN 2.0 的脚本构建
+- 适配多xcode环境稍微修改过的脚本：https://gitcode.com/linhandev/third_party_llvm-project/blob/master-llvm12-backup/package.py
 
 ### Mac Arm
 

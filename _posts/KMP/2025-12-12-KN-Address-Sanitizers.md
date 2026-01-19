@@ -74,18 +74,19 @@ KN故障模式：认为关键是谁申请的内存，谁拿着指针做非法访
 
 ### HWASAN
 
-[Detecting-memory-safety-violations](https://developer.arm.com/documentation/102433/0200/Detecting-memory-safety-violations?lang=en)
+- [Detecting-memory-safety-violations](https://developer.arm.com/documentation/102433/0200/Detecting-memory-safety-violations?lang=en)
+- [Arm Memory Tagging Extension Whitepaper](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Arm_Memory_Tagging_Extension_Whitepaper.pdf)
 
-- 利用arm硬件寻址时的Top Bit Ignore功能：128G = 2 ^ 7 * 2 ^ 10 (kb) * 2 ^ 10 (mb) * 2 ^ 10 (gb) = 2 ^ 37 bytes。37 bit就能表示128G的地址空间，64位系统上寻址时高位是用不到的
-- 拿到的地址是带tag的，使用地址时检查地址中的tag和被访问地址的tag是不是一致
+- 利用arm硬件寻址时的Top Byte Ignore功能：128G = 2 ^ 7 * 2 ^ 10 (kb) * 2 ^ 10 (mb) * 2 ^ 10 (gb) = 2 ^ 37 bytes。37 bit就能表示128G的内存地址空间，64位系统上寻址时高位是用不到的
+- 分配内存时拿到的地址是带tag的，使用地址时检查地址中的tag和被访问地址的tag是不是一致
   ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2025-12-30T02:42:47.734Z-image.png)
-  ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2025-12-30T03:04:50.882Z-image.png)
-- LLVM的hwasan实现tag是8位，也有shadow memory，1 sm byte对16应用byte。应用地址分配16 byte对齐
+  <!-- ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2025-12-30T03:04:50.882Z-image.png) -->
+- LLVM的hwasan实现tag是8位，也有shadow memory，1 sm byte对 16 应用byte。应用内存分配16 byte对齐
   - 分配
-    - 分配了 n*16 + 1～15 bytes：sm中保存实际分配的byte数，应用内存最后一个byte保存tag
-    - 分配了 n* 16 bytes：sm中保存tag
+    - 分配了 n * 16 + 1～15 bytes：sm中保存实际分配的byte数，应用内存最后一个byte保存tag
+    - 分配了 n * 16 bytes：sm中保存tag
   - 检查
-    - 如果shadow byte值 1 ～ 15，包含：
+    - 如果shadow byte值 \[1, 15\]：
       - 指针tag == shadow byte：视为完整16字节粒度的正常tag，有效
       - 指针tag != shadow byte：视为短粒度tag，检查访问地址是否在16字节粒度的前N字节内（N为shadow byte值），且指针tag是否与应用内存16 byte中最后一个byte存的tag匹配
         - 如果都满足：短粒度访问有效
@@ -94,6 +95,37 @@ KN故障模式：认为关键是谁申请的内存，谁拿着指针做非法访
       - 如果指针tag与shadow byte匹配：有效
       - 如果指针tag与shadow byte不匹配：无效
 
+```shell
+┌─────────────────────────┐
+│ Extract PtrTag (>>56)   │
+│ Compute Shadow = Addr>>4│
+│ Load MemTag from Shadow │
+└────────────┬────────────┘
+             ↓
+      ┌─────▼──────┐
+      │ PtrTag ==  │
+      │  MemTag?   │
+      └──┬─────┬───┘
+    Yes  │     │ No
+         │     ↓
+         │  ┌──▼──────────┐
+         │  │MemTag > 15? │ (Not short granule)
+         │  └──┬─────┬────┘
+         │ Yes │     │ No
+         │     │     ↓
+         │     │  ┌──▼────────────────────┐
+         │     │  │ (Addr&15)+Size > Tag? │
+         │     │  └──┬─────┬──────────────┘
+         │     │ Yes │     │ No
+         │     │     │     ↓
+         │     │     │  ┌──▼──────────────┐
+         │     │     │  │ Load Tag @Addr|15│
+         │     │     │  │ PtrTag == Tag?  │
+         │     │     │  └──┬─────┬────────┘
+         │     │     │ Yes │     │ No
+         ↓     ↓     ↓     ↓     ↓
+      [OK]    [ ERROR ]  [OK]  [ERROR]
+```
 ### GWP
 
 GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)。性能方面为了减小开销只随机sample部分内存分配进行防护，检查通过mmu硬件进行开销较小，分配和释放内存时会回栈有一些开销，总体性能开销～5%。内存方面开销来自分配guard页和空洞，开销是固定可调的。
@@ -121,27 +153,36 @@ GWP-ASan的实现通常被描述为[电网](https://linux.die.net/man/3/efence)�
 
 对比 `.cxx/default/default/debug/arm64-v8a/compile_commands.json` 中具体cpp文件的编译命令，clang++多了几个选项
 
-```
--shared-libasan
--fsanitize=address
--fno-omit-frame-pointer
--fsanitize-recover=address
-```
-
+- asan:
+  ```
+  -shared-libasan
+  -fsanitize=address
+  -fno-omit-frame-pointer
+  -fsanitize-recover=address
+  ```
+- hwasan:
+  ```
+  -shared-libasan
+  -fsanitize=hwaddress
+  -mllvm -hwasan-globals=0
+  -fno-emulated-tls
+  -fno-omit-frame-pointer
+  ```
 ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:29:59.512Z-image.png)
 
-比较加不加这四个选项的链接命令，编一个最简单的 int main() {}
+KN接入 LLVM 已有能力通常是两步：1. 调相关pass处理IR，2. 链接运行时库。编一个最简单的 int main() {} 比较差异
 
 ```shell
-/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v
+/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v -mllvm -debug-pass=Structure
 # vs
-/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v -shared-libasan -fsanitize=address -fno-omit-frame-pointer -fsanitize-recover=address
+/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos test.cpp -v -mllvm -debug-pass=Structure -shared-libasan -fsanitize=address -fno-omit-frame-pointer -fsanitize-recover=address
 ```
 
 比较输出中的ld命令
 
 ![alt text](../../assets/img/post/2025-12-12-KN-Address-Sanitizers/2026-01-16T06:38:22.932Z-image.png)
 
+KN接入san时应当参考KN使用的 LLVM 版本中的链接参数，其他版本的 LLVM 参数和 DevEco中的 LLVM 15可能不同
 
 ## KN 内存分配
 
