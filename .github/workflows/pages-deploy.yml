@@ -77,3 +77,41 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Submit changed posts to IndexNow
+        run: |
+          # Get changed files in _posts folder from the last commit
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD -- '_posts/**/*.md' 2>/dev/null || echo "")
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No posts changed in this commit"
+            exit 0
+          fi
+          
+          echo "Changed post files:"
+          echo "$CHANGED_FILES"
+          
+          # Process each changed file
+          for FILE in $CHANGED_FILES; do
+            # Extract slug from filename: _posts/{Category}/{YYYY-MM-DD}-{slug}.md -> {slug}
+            FILENAME=$(basename "$FILE" .md)
+            # Remove date prefix (YYYY-MM-DD-)
+            SLUG=$(echo "$FILENAME" | sed 's/^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-//')
+            
+            if [ -n "$SLUG" ]; then
+              URL="https://linhandev.github.io/posts/${SLUG}/"
+              echo "Submitting to IndexNow: $URL"
+              
+              curl -X GET "https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558"
+              echo ""
+            fi
+          done
