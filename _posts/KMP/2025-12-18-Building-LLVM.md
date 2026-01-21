@@ -6,8 +6,9 @@ tags:
   - KMP
   - KN
   - LLVM
-description: 
+description: 使用 Kotlin Native 项目的构建脚本编译 LLVM。包含 Mac Arm 和 Linux 平台的两阶段构建流程，涵盖 LLVM 12 (OpenHarmony master-llvm12-backup 分支) 和 LLVM 19 版本，以及多 Xcode 环境适配、增量构建、Debug 版本配置等技巧。
 ---
+
 
 KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kotlin/tree/master/kotlin-native/tools/llvm_builder)构建
 - 这脚本主要是在组装cmake和ninja命令参数，确定参数后后续增量构建直接用命令

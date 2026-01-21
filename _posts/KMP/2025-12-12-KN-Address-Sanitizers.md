@@ -8,9 +8,8 @@ tags:
   - ASAN
   - HWASAN
   - GWP-ASAN
-description: 
+description: Kotlin Native 中使用地址消毒工具检测内存安全问题。介绍 ASAN、HWASAN、MemDebug、GWP-ASan 的原理与开销，分析 KN 与 C 混合场景下的故障模式，涵盖堆栈溢出、use-after-free、double-free 等异常类型的检测方法。
 ---
-
 
 > One of the first Internet-spread computer worms was the Internet Worm in 1988, which exploited a buffer overrun. More than thirty years later, we are still seeing attacks that exploit this type of programming bug. -- Detecting memory safety violations, Arm Developer Manual
 
