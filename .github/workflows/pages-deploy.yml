@@ -109,7 +109,9 @@ jobs:
             
             if [ -n "$SLUG" ]; then
               URL="https://linhandev.github.io/posts/${SLUG}/"
-              echo -n "IndexNow: $URL "
-              curl -s -o /dev/null -w "%{http_code}\n" "https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558"
+              CURL_CMD="curl -s -o /dev/null -w \"%{http_code}\" \"https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558\""
+              echo "$CURL_CMD"
+              HTTP_CODE=$(eval "$CURL_CMD")
+              echo "Response: $HTTP_CODE"
             fi
           done
