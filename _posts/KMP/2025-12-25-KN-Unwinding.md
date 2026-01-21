@@ -322,3 +322,4 @@ kuikly的实现ohos在release build下不会添加frame-pointer属性，如果�
 
 
 检查是否支持fp回栈：`hiperf record -p $(pgrep application) -s fp -f 1000 -d 5 -e hw-cpu-cycles,hw-instructions -o /data/local/tmp/perf.data`
+

@@ -395,3 +395,4 @@ SingleObjectPage
 | 0x30     | ├─ ObjHeader                  | 8 bytes      | 8 bytes   | TypeInfo* typeInfoOrMeta_ pointer                           |
 | 0x38     | ├─ [Object fields...]         | varies       | natural   | Field data (1/2/4/8-byte aligned)                           |
 | ???      | └─ [padding]                  | 0-7 bytes    | —         | Pad total object to 8-byte boundary                         |
+
