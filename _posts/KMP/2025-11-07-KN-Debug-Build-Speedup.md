@@ -11,7 +11,6 @@ tags:
 description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建效率的实用方法，包括排查Gradle任务，开启增量缓存机制，常见问题及解决方案。通过静态缓存和依赖优化，显著提升Debug构建速度，提升开发效率。
 ---
 
-
 优化KMP打鸿蒙debug包耗时，优化目标约耗时1分钟
 
 首先[Kotlin官方文档](https://kotlinlang.org/docs/native-improving-compilation-time.html)覆盖的场景比较全，建议先按照这个排查。其中 kotlin.incremental.native 配置kuikly版本在鸿蒙上截止KBA-014版本暂不支持，下文会介绍如何开启

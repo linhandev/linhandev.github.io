@@ -102,6 +102,12 @@ jobs:
           
           # Process each changed file
           for FILE in $CHANGED_FILES; do
+            # Skip if published: false in frontmatter
+            if grep -q "published: false" "$FILE" 2>/dev/null; then
+              echo "Skipping unpublished: $FILE"
+              continue
+            fi
+            
             # Extract slug from filename: _posts/{Category}/{YYYY-MM-DD}-{slug}.md -> {slug}
             FILENAME=$(basename "$FILE" .md)
             # Remove date prefix (YYYY-MM-DD-)
@@ -109,9 +115,8 @@ jobs:
             
             if [ -n "$SLUG" ]; then
               URL="https://linhandev.github.io/posts/${SLUG}/"
-              CURL_CMD="curl -s -o /dev/null -w \"%{http_code}\" \"https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558\""
-              echo "$CURL_CMD"
-              HTTP_CODE=$(eval "$CURL_CMD")
-              echo "Response: $HTTP_CODE"
+              INDEXNOW_URL="https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558"
+              echo -n "$INDEXNOW_URL "
+              curl -s -o /dev/null -w "%{http_code}\n" "$INDEXNOW_URL"
             fi
           done
