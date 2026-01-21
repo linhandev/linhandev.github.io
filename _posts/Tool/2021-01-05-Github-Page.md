@@ -8,6 +8,7 @@ tags:
   - Jekyll
   - Github
   - Github Pages
+description: Github Pages 免费静态网站托管完全指南。介绍三种使用方式（直接 Markdown、Github Action 构建、上传网页），涵盖项目主页、个人博客搭建，Jekyll 主题选择与配置，自定义域名，博客评论系统集成等内容。
 ---
 ![github-page](/assets/img/post/2021-01-05-Github-Page/github-page.png)
 
@@ -30,10 +31,9 @@ Pages 在项目每次更新后会做两件事：
 
 这三种方法操作复杂度和灵活性都是依次递增。
 
-- 第一种方式最简单也很方便，但是Pages的Jekyll只提供了[13个](https://pages.github.com/themes/)为项目主页设计的单页主题，所以通常也只有项目主页用第一种方式。
+- 第一种方式最简单也很方便，但是Pages的Jekyll只提供了[13个](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll#supported-themes)为项目主页设计的单页主题，所以通常也只有项目主页用第一种方式。
 - 个人博客和组织官网用第二种的居多，直接Fork一个主题项目就行，够灵活而且不用本地配环境，Action的构建脚本通常Jekyll主题都自带，不需要操心自己写。
 - 直接上传网页灵活性最高，不过大多数场景下感觉没有必要。除非是没用Jekyll这种工具生成网页，而是自己直接写的网页，否则感觉第二种方法就够用了。
-
 
 ## Github
 
@@ -49,15 +49,15 @@ Github上的项目可以自己新建也可以复制别人的，就做博客来�
 
 点击之后就会跳转到一个自己的新项目，项目的内容和名称都和原来的项目一样。这个项目已经在自己的账户下，可以进行修改。
 
-如果是要创建自己的项目，点主页左边一个绿色的[创建新项目](https://github.com/new)（New）按钮就行。
+如果是要创建自己的项目，点主页左边一个绿色的[创建新项目](https://github.com/new)（New）按钮。
 
 ![new project](/assets/img/post/2021-01-05-Github-Page/new-project.png)
 
 ![image](https://user-images.githubusercontent.com/29757093/152296633-62157681-e911-4fb8-82e6-ced17e103dff.png)
 
-一般建议添加一个README.md，空项目是没法直接从Github往下拉的，需要本地跑几行操作，稍微麻烦一点。
+一般建议添加一个README.md，空项目是没法直接从Github往下拉的，需要本地跑几行命令，稍微麻烦一点。
 
-git是一个代码版本管理工具，简单来说可以让你在写代码过程中创建一些存档点。如果只有一个开发者那么这些存档点大概就是一条直线，一个比一个新，像下面图里的红线。如果有多个开发者同时对项目做修改，存档点可以有一些平行的路径，像下面图里的蓝线和黄线。就做个人博客来说不需要了解很多的git知识，操作也不需要命令行，有很多带界面的git软件比如[Github Desktop](https://desktop.github.com/)和[gitg](https://github.com/GNOME/gitg)。做博客最简单的方法是Fork一个主题项目，将项目pull到本地，进行修改，之后再将修改push到Github上。后面用到的时候回说具体怎么操作。
+git是一个代码版本管理工具，简单来说可以让你在写代码过程中创建一些存档点。如果只有一个开发者那么这些存档点大概就是一条直线，一个比一个新，如下图红线。如果有多个开发者同时对项目做修改，存档点可以有一些平行的路径，如下图蓝线和黄线。就做个人博客来说不需要了解很多的git知识，操作也不需要命令行，有很多带界面的git软件比如[Github Desktop](https://desktop.github.com/)和[gitg](https://github.com/GNOME/gitg)。做博客最简单的方法是Fork一个主题项目，将项目pull到本地，进行修改，git commit，之后再将修改push到Github上。后面用到的时候会说具体怎么操作。
 
 ![git](/assets/img/post/2021-01-05-Github-Page/git.png)
 
@@ -374,7 +374,7 @@ Markdown不是所见即所得，而且插入图片一般有点费劲。本地环
 
 一般个人博客的流量都不大，Chirpy主题的作者甚至不推荐大家开文章浏览量功能，怕打击博主的创作热情 😂 不过如果你的博客有一些高质量的内容，搜索引擎是可以带来一些流量的。
 
-搜索引擎优化是一门学问，但如果只是很佛系的告诉搜索引擎：“我有个网站，你爬不爬看着办”，那只要添加robots.txt，之后提交一个sitemap就行。
+搜索引擎优化是一门玄学不要太认真，如果只是很佛系的告诉搜索引擎：“我有个网站，你爬不爬看着办”，那只要添加robots.txt，之后提交一个sitemap就行。
 
 sitemap可以看作网站的地图，告诉爬虫我这个网站都有些什么页面可以访问。大多数主题都会带这个功能，访问 [github id].github.io/sitemap.xml ，如果不是404那就是有sitemap的。比如我的长这样
 
@@ -423,12 +423,6 @@ robots.txt和sitemap俱全就可以向搜索引擎提交网站了。这里需要
 在Chirpy主题中网站的header部分在 _includes/head.html定义，如果你的主题目录结构不一样可以在项目里搜一下head开头的文件。找到之后这行代码放到head.html的head部分就行了。
 
 验证身份后找带sitemap的tab，点进去输入sitemap网址就大功告成了。就我这个网站添加多个搜索引擎之后不多的流量来看，bing国内版似乎是对新网站最友好的，大概提交sitemap 3 4天之后就能看到来自cn.bing.com的流量。Google也有一两个，其他国内的搜索引擎大多数连爬都懒得爬。
-
-
-## 流量统计
-
-换位思考，我不想被别人统计所以也不做流量统计。
-
 
 ## 自定义域名
 
