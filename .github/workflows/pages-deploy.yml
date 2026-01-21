@@ -109,9 +109,7 @@ jobs:
             
             if [ -n "$SLUG" ]; then
               URL="https://linhandev.github.io/posts/${SLUG}/"
-              echo "Submitting to IndexNow: $URL"
-              
-              curl -X GET "https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558"
-              echo ""
+              echo -n "IndexNow: $URL "
+              curl -s -o /dev/null -w "%{http_code}\n" "https://api.indexnow.org/indexnow?url=${URL}&key=da5d430ecef74cf5ac9473d8bda82558"
             fi
           done
