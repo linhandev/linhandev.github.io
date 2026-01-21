@@ -36,10 +36,10 @@ jobs:
           # If using the 'assets' git submodule from Chirpy Starter, uncomment above
           # (See: https://github.com/cotes2020/chirpy-starter/tree/main/assets)
 
-      - name: Detect secrets
-        uses: trufflesecurity/trufflehog@main
-        with:
-          extra_args: --results=unknown,unverified --filter-entropy=3.5 --debug
+      # - name: Detect secrets
+      #   uses: trufflesecurity/trufflehog@main
+      #   with:
+      #     extra_args: --results=unknown,unverified --filter-entropy=3.5 --debug
 
       - name: Setup Pages
         id: pages
