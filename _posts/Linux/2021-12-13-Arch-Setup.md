@@ -11,7 +11,7 @@ tags:
 
 # btrfs
 
-如果用了 btrfs 可以考虑保留一个刚安装完系统的快照。这里默认子卷的结构按照[安装教程](https://linhandev.github.io/posts/Arch-install/#btrfs)。snapper 默认要用 dbus，如果还在 chroot 里需要重启进系统跑下面的命令。
+如果用了 btrfs 可以考虑保留一个刚安装完系统的快照。这里默认子卷的结构按照[安装教程](https://linhandev.github.io/posts/Arch-Install/#btrfs)。snapper 默认要用 dbus，如果还在 chroot 里需要重启进系统跑下面的命令。
 
 ![image](https://user-images.githubusercontent.com/29757093/155235420-f2d24eec-2e0c-4bc3-a0f6-e789eba1e6d8.png)
 
