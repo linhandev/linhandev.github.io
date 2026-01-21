@@ -9,7 +9,7 @@ tags:
 
 这篇记录一些新做 Arch Linux 系统之后常用的设置和常装的软件。
 
-# btrfs
+## btrfs
 
 如果用了 btrfs 可以考虑保留一个刚安装完系统的快照。这里默认子卷的结构按照[安装教程](https://linhandev.github.io/posts/Arch-Install/#btrfs)。snapper 默认要用 dbus，如果还在 chroot 里需要重启进系统跑下面的命令。
 
@@ -55,7 +55,7 @@ btrfs subvol snapshot /mnt/@.snapshots/[要rollback到的snapshot编号]/snapsho
 reboot
 ```
 
-# 权限
+## 权限
 
 sudo 使用非常广泛，但是通常在个人电脑的场景下 sudo 的用途只是让一个用户可以作为 root 执行命令，就这个使用场景来说 sudo 比较杀鸡用牛刀。doas 不一定比 sudo 安全，但是精简很多
 
@@ -74,9 +74,9 @@ doas ls # 测试配置是否正确
 
 我这么用了大概小一年的时间，基本没有遇到必须用 sudo，doas 不行的情况。如果遇到可以通过修改 /usr/bin/sudo 软链接或者直接重装 sudo 进行暂时恢复。
 
-# 包管理
+## 包管理
 
-## yay
+### yay
 
 yay 是个很有用的包管理工具，使用方法跟 Arch 自带的 pacman 基本完全相同，主要是加入了对 AUR 的支持。在 AUR 里基本能找到所有常用的软件。下面的命令安装 yay
 
@@ -118,7 +118,7 @@ yay -Scc
 
 [参考](https://herbort.me/posts/automatically-cleaning-pacman-and-yay-cache-in-arch-linux/)
 
-## 镜像测速
+### 镜像测速
 
 全球有很多 pacman 软件库的镜像，选一个快的能节省不少下载时间。reflector 可以按速度对镜像排序，也可以定时执行
 
@@ -153,7 +153,7 @@ doas systemctl status reflector.timer # Trigger: 可以看到还有多久下次�
 
 ![image](https://user-images.githubusercontent.com/29757093/152112943-c3214b28-4915-46d7-9f3d-e5ba63e33584.png)
 
-# 密码管理
+## 密码管理
 
 [pass](https://www.passwordstore.org/)是一个不错的选择，加密基于 gpg，生态丰富，在不同平台和浏览器上都有 gui 或插件。
 
@@ -169,9 +169,9 @@ yay -S pass qtpass # 密码管理工具和gui
 curl -sSL github.com/passff/passff-host/releases/latest/download/install_host_app.sh | bash -s -- [firefox|librewolf|host app支持其他浏览器，但是貌似还没有插件]
 ```
 
-# 浏览器
+## 浏览器
 
-## Firefox
+### Firefox
 
 LibreWolf 是基于 Firefox 的一个关注隐私的浏览器，用起来体验和 Firefox 差别不大。默认关浏览器后就清 cookie 所以网站会要求重新登陆，结合密码管理插件并不很影响使用体验。大多数 Firefox 的设置都是在的，可以根据自己的需要开启，比如保存浏览历史或者针对一些/所有网站关浏览器不清除 cookie。
 
@@ -179,7 +179,7 @@ LibreWolf 是基于 Firefox 的一个关注隐私的浏览器，用起来体验�
 yay -S librewolf-bin
 ```
 
-## Chrome
+### Chrome
 
 chromium 阵营 Brave 和 Vivaldi 貌似风评都不是很好，有一个开源的选择 ungoogled-chromium。不过默认设置和 chrome 差不多，想要一些隐私保护的功能都要自己开，用 web store 也不是很方便。
 
@@ -187,7 +187,7 @@ chromium 阵营 Brave 和 Vivaldi 貌似风评都不是很好，有一个开源�
 yay -S ungoogled-chromium
 ```
 
-# 中文输入法
+## 中文输入法
 
 如果中文都显示成麻将那是缺少中文自体，在系统语言中添加中文
 
@@ -282,7 +282,7 @@ https://github.com/hrko/fcitx-skin-material
 (TODO:material color)
 -->
 
-# 声音
+## 声音
 
 Linux 的[声音系统](https://wiki.archlinux.org/title/Sound_system)分两层，驱动和声音服务器(Sound Server)。驱动有两个选择，ALSA 和 OSS。ALSA Arch 安装自带，OSS 因为闭源过了一段时间整体上看赶不上 ALSA。
 
@@ -300,7 +300,7 @@ echo "load-module module-switch-on-connect" | doas tee -a /etc/pulse/default.pa
 
 重启 pulse audio 比较麻烦，可以登出一下重新进来。
 
-## 蓝牙
+### 蓝牙
 
 <!-- https://www.jeremymorgan.com/tutorials/linux/how-to-bluetooth-arch-linux/ -->
 
@@ -344,9 +344,9 @@ doas sysctl vm.swappiness=10
 yay -S tuned
 doas systemctl start tuned.service
 
-# Rule for when switching to battery
+## Rule for when switching to battery
 ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0" RUN+="/usr/bin/tuned-adm profile laptop-battery-powersave"
-# Rule for when switching to AC
+## Rule for when switching to AC
 ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1" RUN+="/usr/bin/tuned-adm profile latency-performance"
 
 alias cpu-max='tuned-adm profile latency-performance'
@@ -385,16 +385,16 @@ doas pacman -S pulseaudio pavucontrol
 yay -S xfce4-pulseaudio-plugin
 ``` -->
 
-# shell
+## shell
 
-## zsh
+### zsh
 
 ```shell
 doas pacman -S zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-# 快捷键
+## 快捷键
 
 在 app finder 里搜 keyboard 可以找到键盘设置，一些有用的快捷键
 
@@ -413,9 +413,9 @@ xkill # 强制关闭，对付卡死的窗口
 [恢复默认](https://askubuntu.com/questions/224006/resetting-xfce-panels-to-default-settings)
 网络，性能监控 -->
 
-# 软件
+## 软件
 
-## 百度网盘
+### 百度网盘
 
 百度网盘有 deb 的包但是 debtap 过来跑不起来，这个包是 web 版的封装，有 4G 上传大小的限制。
 
@@ -431,7 +431,7 @@ yay -S baidupcs
 
 <!-- "TODO: baidupcs登陆和使用" -->
 
-## 微信
+### 微信
 
 deepin-wine-wechat 依赖 Multilib 里的一些 32 位库，Arch Linux 默认不搜索 Multilib，开了之后才能安装
 
@@ -459,7 +459,7 @@ yay -S deepin-wine-wechat # 之后一路回车选择默认就行
 yay -S --mflags --skipinteg deepin-wine-wechat
 ```
 
-## 腾讯会议
+### 腾讯会议
 
 是一个旧版本的腾讯会议 ubuntu 包，主要的缺点是不能接受别人在屏幕上标画，个人没有遇到其他使用上的问题。
 
@@ -467,13 +467,13 @@ yay -S --mflags --skipinteg deepin-wine-wechat
 yay -S wemeet-bin
 ```
 
-## 录屏
+### 录屏
 
 ```shell
 yay -S simplescreenrecorder
 ```
 
-## 虚拟机
+### 虚拟机
 
 做 Windows 虚拟机首先需要一个 Windows iso，可以从[微软官网](https://www.microsoft.com/en-us/software-download/windows11)或[msdn](https://next.itellyou.cn/)下。msdn 的 BT 链接可以先用百度网盘的离线下载下到网盘，之后下到本地。
 
@@ -583,7 +583,7 @@ doas systemctl start nmb
 
 添加成功后输入用户名密码就能看到文件了。
 
-## Docker
+### Docker
 
 ```shell
 doas pacman -S docker # 安装
@@ -649,17 +649,17 @@ docker commit [CONTAINER ID] [new name]
 
 [gui docker](https://github.com/HarGit14/dorowu-docker-ubuntu-vnc-desktop)
 
-# 压缩
+## 压缩
 
-## zip
+### zip
 
 ```shell
 doas pacman -S unzip zip
 ```
 
-# 开发
+## 开发
 
-## miniconda
+### miniconda
 
 从[miniconda 官网](https://docs.conda.io/en/latest/miniconda.html)下载对应的安装脚本，比如 x86 的机器安装脚本应该叫 `Miniconda3-latest-Linux-x86_64.sh`。之后进行安装
 
@@ -678,7 +678,7 @@ conda create -n [名字] python=3.9
 conda activate [名字]
 ```
 
-## micromamba
+### micromamba
 
 ```shell
 curl micro.mamba.pm/install.sh | zsh
@@ -691,10 +691,10 @@ EOF
 
 ```
 
-## vscode
+### vscode
 
 
-# 手机
+## 手机
 
 用 usb 在 Arch 和 Android 之间传文件需要 MTP(Media Transfer Protocol)的支持，Arch 默认是不装这个的。
 
@@ -725,7 +725,7 @@ fio --name TEST --eta-newline=5s --filename=temp.file --rw=read --size=100m --io
 
 fio --name TEST --eta-newline=5s --filename=temp.file --rw=write --size=100m --io_size=2g --blocksize=2k --ioengine=libaio --fsync=10000 --iodepth=32 --direct=1 --numjobs=1 --runtime=60 --group_reporting -->
 
-# 多内核
+## 多内核
 
 Arch 默认的 Linux 内核叫 linux，这个内核一直是最新的。Arch 还有其他几个内核选择
 
@@ -764,7 +764,7 @@ doas grub-mkconfig -o /boot/grub/grub.cfg # 之后还是要重新生成grub配�
 
 
 
-# zram
+## zram
 
 `/etc/systemd/zram-generator.conf`
 
@@ -775,14 +775,14 @@ zram-size = ram
 zram-size = ram
 ```
 
-# Prime
+## Prime
 
 ```shell
 yay -S nvidia-prime
 prime-run steam
 ```
 
-# rclone
+## rclone
 
 rclone listremotes
 
