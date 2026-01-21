@@ -23,6 +23,16 @@ published: false
   - runBackend
     - FunctionsWithoutBoundCheckGenerator
     - splitIntoFragments
+    - createGenerationStateAndRunLowerings
+      - BuildAdditionalCacheInfoPhase
+      - EntryPointPhase
+      - lowerModuleWithDependencies
+        - validateIrBeforeLowering
+        - getLoweringsUpToAndIncludingInlining
+        - validateIrAfterInlining
+        - getLoweringsAfterInlining
+        - validateIrAfterLowering
+        - mergeDependencies：所有需要编译的kotlin ir合并到一个IRFragment中
     - runAfterLowerings
       - SaveAdditionalCacheInfoPhase （HEADER_CACHE）
       - FinalizeCachePhase（HEADER_CACHE）
