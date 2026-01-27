@@ -62,7 +62,12 @@ https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 
 ## KN 接入 LLVM gcov
 
-参考实现：https://github.com/linhandev/KuiklyBase-kotlin/commits/gcov/ 分支最后一笔
+参考实现：https://github.com/linhandev/KuiklyBase-kotlin/commits/gcov/ 分支最后一笔，KN工程中添加两个编译选项
+
+```
+freeCompilerArgs += "-Xadd-light-debug=enable"
+freeCompilerArgs += "-Xbinary=coverage=true"
+```
 
 ### 编译插桩
 
