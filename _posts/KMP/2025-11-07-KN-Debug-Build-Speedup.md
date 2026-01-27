@@ -15,7 +15,7 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建
 
 首先[Kotlin官方文档](https://kotlinlang.org/docs/native-improving-compilation-time.html)覆盖的场景比较全，建议先按照这个排查。其中 kotlin.incremental.native 配置kuikly版本在鸿蒙上截止KBA-014版本暂不支持，下文会介绍如何开启
 
-# gradle 任务排查
+## gradle 任务排查
 
 这段在官方文档基础上补充一点针对gradle构建任务进行排查的建议
 
@@ -45,7 +45,7 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建
 
     如一些代码原来在上图的A模块中，如果这些代码实际不依赖B模块可以考虑挪到D，避开debug过程中触发cache miss概率高的依赖路径。或者如果模块A包含多个独立功能，可以考虑拆分模块A成几个小模块并分别配置依赖关系。总之让经常构建的项目尽可能小，必须很大的项目尽可能减少依赖少触发构建
 
-# OHOS Debug Build 开启增量编译
+## OHOS Debug Build 开启增量编译
 
 增量编译开/关时的构建流程如下图
 
@@ -55,7 +55,7 @@ https://excalidraw.com/#json=8ZS-lGRqJBFBqiRV1CgKW,KHva9hBjSKVuLbHfBl-mVg
 
 增量编译只影响编译器后端的link任务，对 compileKotlin 任务没有任何影响。提速的原理是开启增量编译之前尽管工程中实际变化的源码很少，但KN编译器后端每次都完整的将整个工程对应的LLVM IR编译成so（图中1）。开启增量编译后工程的源码和依赖都被编成独立的 .a 静态库（图中2）最后链接到一起（图中5），构建 .a 的范围只是工程中发生修改和依赖被修改文件的其他文件（图中3 4静态缓存没有重新构建），这一范围只是整个工程很小的一个子集，编译的工作量比全量编译显著变少，而且实现上一个gradle子项目中的不同文件编 .a 有并行化，使得link gradle任务的速度显著提升
 
-## 开启方式
+### 开启方式
 
 [参考PR](https://github.com/Tencent-TDS/KuiklyBase-kotlin/pull/29)
 
@@ -66,7 +66,7 @@ https://excalidraw.com/#json=8ZS-lGRqJBFBqiRV1CgKW,KHva9hBjSKVuLbHfBl-mVg
 
 增量编译功能开启后就会给项目依赖的klib打per-klib缓存，项目源码的per-file缓存需要在项目中添加额外的配置开启
 
-### 依赖klib缓存
+#### 依赖klib缓存
 
 在kotlin仓库konan.properties文件cacheableTargets中添加ohos，表示ohos上支持缓存，默认启用缓存功能，会给工程依赖打per-klib缓存
 
@@ -76,7 +76,7 @@ per-klib缓存保存在kotlin编译器中，路径 `$KONAN_DATA_DIR/kotlin-nativ
 
 ![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:41:41.173Z-image.png)
 
-### 工程源码缓存
+#### 工程源码缓存
 
 在应用工程根目录的gradle.properties中添加 `kotlin.incremental.native=true` 配置，会在打包所有支持增量构建的target时（如上面截图中ios_arm64和ohos_arm64都配置了支持增量构建）给项目中的源码打per-file缓存
 
@@ -86,13 +86,13 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
 ![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T10:09:48.035Z-image.png)
 
-### 进阶配置
+#### 进阶配置
 
 1. kotlin项目 konan.properties `optInCacheableTargets` 配置项中如果配置了ohos，则ohos target支持增量构建但默认关闭，需要在应用工程中添加 `kotlin.native.cacheKind.ohosArm64=static` 开启缓存功能
 2. 使用静态缓存时如果遇到问题，可以在应用工程中配置 `kotlin.native.cacheKind.ohosArm64=none` 关闭缓存功能
 3. 构建工程源码的静态cache时并行度默认为4，可以通过在应用工程中配置 `kotlin.native.parallelThreads=0` 配置并行度为cpu核数
 
-## 常见问题
+### 常见问题
 
 1. 链接命令失败，ld.lld报命令过长
 
@@ -162,7 +162,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
     - remote cache
     - 缓存根据对外暴露的接口signature是否变化进行cache miss传播
 
-# 相关资料
+## 相关资料
 
 - [工程化视角的 Kotlin Multiplatform核心解读及优化](https://www.bilibili.com/opus/946823822473953304)
 - [B站在KMP跨平台的业务实践之路](https://www.bilibili.com/opus/1077816888983027751?spm_id_from=333.1387.0.0)
