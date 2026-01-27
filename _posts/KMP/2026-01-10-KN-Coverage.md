@@ -29,10 +29,10 @@ KN的这行代码跑没跑到？
         - 基于dwarf，兼容gnu gcc
     - source based
         - clang前端从c代码直接生成mapping信息，不基于dwarf，llvm主推
+        - 社区[曾实现过](https://github.com/JetBrains/kotlin/commit/4f77434ea57fea4a2f8b49abf9c495447c34f15a)，因为缺少需求，CoverageMappingFormat不稳定升级负担等原因滚掉了
         - https://llvm.org/docs/CoverageMappingFormat.html
         - https://llvm.org/docs/InstrProfileFormat.html
         - https://clang.llvm.org/docs/SourceBasedCodeCoverage.html
-            
             ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:16.811Z-image.png)
             
 
@@ -42,15 +42,15 @@ KN的这行代码跑没跑到？
 
 1. 红色：发明部分轮子，Kotlin IR上插桩
    - 优点
-     - KMP所有后端，jvm/wasm/js/native 一套工具
-     - 插桩位置更靠近kotlin代码，覆盖率和源码的对应关系更好
+     - KMP所有后端，jvm/wasm/js/native 可以共用一套工具
+     - 插桩位置更靠近 kotlin 代码，覆盖率和源码的对应关系更好
    - 缺点
-     - 需要进行Control Flow Graph分析（KN编译器应该已有），设计插桩策略+实现（参考kover/jacoco），进行离线结果分析/源码对应（分析可能可以复用jacoco）
+     - 需要进行 Control Flow Graph 分析（KN编译器中已有），插桩策略+实现（参考jacoco），进行离线结果分析/源码对应（考虑复用jacoco组件）
 2. 绿色：llvm gcov，LLVM IR上插桩
    - 优点
      - 成熟的native profile工具，接入简单
-   - 缺点 
-     - LLVM IR离Kotlin代码更远，已经经过了一些处理，如Kotlin的inline，一些高级语法难以对应到源码
+   - 缺点
+     - LLVM IR 离 Kotlin 代码更远，已经经过了一些处理，如 Kotlin IR 上的的inline，一些高级语法难以对应到源码
 
 ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:33.358Z-image.png)
 
@@ -63,7 +63,6 @@ https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 ## LLVM gcov
 
 1. 编译插桩：GCOVProfilerPass
-
   ```cpp
   #include <stdlib.h>
 
@@ -143,52 +142,13 @@ https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
   IR中多了一个@__llvm_gcov_ctr数组，包含两个int64，分别统计走if和走else bb的次数
 
 2. 链接runtime：libclang_rt.profile.a，腾讯的LLVM 12没打出这个a，用的DevEco里15的版本。这里版本是错配的但是使用中还没发现问题
-
+   
   PGO的runtime也在这个a里（_*llvm_profile**），做覆盖率统计主要就用到统计结果写盘相关的实现
 
   ```cpp
-  T InstProfClzll
-  T InstProfPopcountll
-  T InstrProfGetRangeRepValue
-  T InstrProfIsSingleValRange
   T __gcov_dump # 手动触发结果写盘
   T __gcov_fork
   T __gcov_reset # 重置内存中的结果
-  T __llvm_get_function_addr
-  T __llvm_orderfile_dump
-  T __llvm_orderfile_write_file
-  T __llvm_profile_begin_counters
-  T __llvm_profile_begin_data
-  ... ...
-  T __llvm_profile_write_file
-  T __llvm_write_binary_ids
-  T getFirstValueProfRecord
-  T getValueProfDataSize
-  T getValueProfRecordHeaderSize
-  T getValueProfRecordNext
-  T getValueProfRecordNumValueData
-  T getValueProfRecordSize
-  T getValueProfRecordValueData
-  T initBufferWriter
-  T llvm_delete_reset_function_list
-  T llvm_gcda_emit_arcs
-  T llvm_gcda_emit_function
-  T llvm_gcda_end_file
-  T llvm_gcda_start_file
-  T llvm_gcda_summary_info
-  T llvm_gcov_init
-  T llvm_register_reset_function
-  T llvm_register_writeout_function
-  T llvm_reset_counters
-  T llvm_writeout_files
-  T lprofApplyPathPrefix
-  T lprofBufferIOFlush
-  ... ...
-  T lprofUnlockFileHandle
-  T lprofWriteData
-  T lprofWriteDataImpl
-  T serializeValueProfDataFrom
-  T serializeValueProfRecordFrom
   ```
 
 3. hap集成
