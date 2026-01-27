@@ -6,11 +6,10 @@ tags:
   - KN
   - KMP
   - Coverage
-description: 
+description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR 插桩与 LLVM gcov 两种技术路线，详细介绍基于 LLVM gcov 的覆盖率检测实现，包括编译插桩、运行时集成、覆盖率解析工具（llvm-cov、gcovr、lcov）的使用方法。
 ---
 
-
-KN的这行代码跑没跑到？
+所以KN的这行代码跑没跑到？
 
 ## 相关项目
 
