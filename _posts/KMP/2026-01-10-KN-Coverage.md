@@ -1,11 +1,12 @@
 ---
-title: Kotlin/Native 覆盖率
+title: Kotlin/Native 测试覆盖率统计
 categories:
   - KN
 tags:
   - KN
   - KMP
-  - Coverage
+  - Kotlin Native
+  - Test Coverage
 description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR 插桩与 LLVM gcov 两种技术路线，详细介绍基于 LLVM gcov 的覆盖率检测实现，包括编译插桩、运行时集成、覆盖率解析工具（llvm-cov、gcovr、lcov）的使用方法。
 ---
 
