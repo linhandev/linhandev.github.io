@@ -5,7 +5,8 @@ categories:
 tags:
   - KN
   - KMP
-  - Hacking
+  - Coverage
+description: 
 ---
 
 
@@ -60,7 +61,9 @@ https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 - LLVM gcov可以只根据dwarf信息解析到代码，sourcebased实现需要在Konan前端加Code Coverage Map生成，成本较高
 - 综上选择 gcov 看看效果
 
-## LLVM gcov
+## KN 接入 LLVM gcov
+
+参考实现：https://github.com/linhandev/KuiklyBase-kotlin/commits/gcov/ 分支最后一笔
 
 ### 编译插桩
 
