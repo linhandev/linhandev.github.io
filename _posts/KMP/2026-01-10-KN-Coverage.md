@@ -169,7 +169,7 @@ if (__gcov_dump) {
 写到有权限的沙箱路径
 - GCOV_PREFIX=有权限的路径
 - GCOV_PREFIX_STRIP=99 去除所有前缀，在设置的路径平铺，⚠️ 可能导致碰撞
-    - --hash-filenames 在文件名中添加hash
+    - \-\-hash-filenames 在文件名中添加hash
     - 设好dwarf信息后减少strip的前缀数量
 
 ## 覆盖率解析
@@ -403,8 +403,8 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
      --output-file coverage.info
 
 ```
-- --gcov-tool：指定gcov工具路径，建议使用齐套的版本，使用llvm工具链可以用一个bash脚本，内容 `/path/to/llvm-cov gcov "$@"`
-- --capture：从 --directory 下找所有gcda和gcno数据进行解析
+- \-\-gcov-tool：指定gcov工具路径，建议使用齐套的版本，使用llvm工具链可以用一个bash脚本，内容 `/path/to/llvm-cov gcov "$@"`
+- \-\-capture：从 --directory 下找所有gcda和gcno数据进行解析
 
 结果中
 - SF：Source File，源码路径
