@@ -258,6 +258,26 @@ hdc shell chmod 777 /data/local/tmp/main
 hdc shell /data/local/tmp/main
 ```
 
+## Validated Behaviors
+
+### PLT Resolution and Weak Symbols (Validated 2026-01-28)
+
+When testing weak vs global symbol resolution with dlopen on OHOS:
+
+**Observation**: When linking only with a weak library (`-lweak`), the undefined symbol in the caller's dynamic symbol table shows as `GLOBAL DEFAULT UND`, not `WEAK`. However, at runtime:
+- The symbol correctly resolves to the WEAK definition
+- If the function is called before `dlopen` of a GLOBAL library, PLT resolves to WEAK
+- After `dlopen` of GLOBAL library, subsequent calls still use the WEAK symbol (PLT doesn't update)
+
+**Key Point**: The symbol binding in `.dynsym` for undefined symbols may show GLOBAL even when they will resolve to WEAK symbols at runtime. The runtime behavior is what matters.
+
+**Test Command**:
+```bash
+# Build and deploy libraries and test program
+# Link test with -lweak only, then dlopen libglobal.so
+# First call returns 2 (WEAK), second call after dlopen still returns 2 (WEAK)
+```
+
 ## Additional Resources
 
 - OHOS Native Development Documentation

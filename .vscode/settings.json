@@ -1,7 +1,7 @@
 {
   "markdown.copyFiles.destination": {
-    "_posts/**/*.md": "/assets/img/post/${documentBaseName}/${isoTime}-${fileName}",
-    "_draft/**/*.md":"/assets/img/post/${documentBaseName}/${isoTime}-${fileName}"
+    "_posts/**/*.md": "/assets/img/post/${documentBaseName}/${fileName}",
+    "_draft/**/*.md":"/assets/img/post/${documentBaseName}/${fileName}"
   },
   // Prettier
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -30,5 +30,6 @@
   // Run tasks in macOS
   "terminal.integrated.profiles.osx": {
     "zsh": { "path": "/bin/zsh", "args": ["-l", "-i"] }
-  }
+  },
+  "editor.pasteAs.enabled": true
 }
