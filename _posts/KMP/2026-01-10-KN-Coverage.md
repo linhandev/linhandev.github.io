@@ -409,7 +409,6 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
      --capture \
      --directory . \
      --output-file coverage.info
-
 ```
 - \-\-gcov-tool：指定gcov工具路径，建议使用齐套的版本，使用llvm工具链可以用一个bash脚本，内容 `/path/to/llvm-cov gcov "$@"`
 - \-\-capture：从 --directory 下找所有gcda和gcno数据进行解析
@@ -481,7 +480,7 @@ LH:12
 end_of_record
 ```
 
-lcov合并报告，看到结果中所有覆盖次数都翻倍了
+lcov合并多次执行的报告，看到结果中所有覆盖次数都翻倍了
 
 ```
 lcov --add-tracefile coverage.info \
@@ -490,6 +489,56 @@ lcov --add-tracefile coverage.info \
      --function-coverage \
      --branch-coverage \
      --output-file coverage_merged.info
+```
+
+一波解析多次运行的覆盖率，生成合并的报告。其中两个run文件夹里都要同时包含gcno，gcda
+
+```
+tree .
+.
+├── coverage.info
+├── run1
+│   ├── libc2k.gcda
+│   └── libc2k.gcno
+└── run2
+    ├── libc2k.gcda
+    └── libc2k.gcno
+
+lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
+     --ignore-errors format,empty,inconsistent \
+     --function-coverage \
+     --branch-coverage \
+     --capture \
+     --directory run1/ \
+     --directory run2/ \
+     --output-file coverage.info
+```
+
+如果两次运行的程序完全一样，gcno完全一样，可以用一个gcno+多个gcda生成合并报告。gcda是通过名字匹配gcno的，多次运行要匹配到同一个gcno必须放在不同的文件夹里，没法平铺到一个文件夹
+
+```
+tree .
+
+.
+├── coverage.info
+├── libc2k.gcno
+├── run1
+│   └── libc2k.gcda
+├── run2
+│   └── libc2k.gcda
+└── run3
+    └── libc2k.gcda
+
+lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
+    --ignore-errors format,empty,inconsistent \
+    --function-coverage \
+    --branch-coverage \
+    --capture \
+    --build-directory . \
+    --directory run1 \
+    --directory run2 \
+    --directory run3 \
+    --output-file coverage.info
 ```
 
 ## edge case
