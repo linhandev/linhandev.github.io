@@ -24,13 +24,13 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
     - Collection of code coverage through JVM tests (**JS and native targets are not supported yet**).
     - 随kotlin 1.6发布，更好的kmp集成，发布时是针对kotlin inline之类的语法做了优化，[当前默认agent已经切到了jacoco](https://github.com/Kotlin/kotlinx-kover/issues/720)
 - rust coverage：https://rustc-dev-guide.rust-lang.org/llvm-coverage-instrumentation.html
-    - 基于llvm sourcebased，使用文档没写实现
+    - 基于llvm sourcebased，是使用文档没写实现
 - llvm
     - gcov
         - 基于dwarf，兼容gnu gcc
     - source based
         - clang前端从c代码直接生成mapping信息，不基于dwarf，llvm主推
-        - 社区[曾实现过](https://github.com/JetBrains/kotlin/commit/4f77434ea57fea4a2f8b49abf9c495447c34f15a)，因为缺少需求，CoverageMappingFormat不稳定升级负担等原因滚掉了
+        - 社区[曾实现过](https://github.com/JetBrains/kotlin/commit/4f77434ea57fea4a2f8b49abf9c495447c34f15a)，因为CoverageMappingFormat格式不稳定升级负担等原因滚掉了
         - https://llvm.org/docs/CoverageMappingFormat.html
         - https://llvm.org/docs/InstrProfileFormat.html
         - https://clang.llvm.org/docs/SourceBasedCodeCoverage.html
@@ -185,6 +185,8 @@ if (__gcov_dump) {
 - gcno：coverage note，Control Flow Graph和代码的对应关系，只有代码的绝对路径位置没有代码内容
 - gcda：coverage data，运行时CFG中每条边的执行次数
 - 理论上有这俩就能解出来每行有没有执行
+
+上面那笔参考实现 gcno 是写到执行gradlew 的当前目录，gcda 是写到  /data/app/el2/100/base/[bundle名]/files/gcov/
 
 ### llvm-cov
 
