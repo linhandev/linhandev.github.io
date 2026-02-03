@@ -165,13 +165,49 @@ DISTRIBUTION_COMPONENTS=(clang libclang lld llvm-cov llvm-profdata llvm-ar clang
 docker run --platform linux/amd64 --rm -it -v .:/output -v $LLVM_FOLDER:/llvm kotlin-llvm-builder --llvm-sources /llvm --install-path /output/llvm-12.0.1-x86_64-linux --distribution-components $DISTRIBUTION_COMPONENTS --save-temporary-files # --pack
 ```
 
-## llvm-19.1.7
-
-cmake版本高的话会遇到cmake < 3.5不再被支持，有两个声明cmake最低3.1的，bump到3.5
+## kotlin llvm-19.1.4
 
 ```shell
-LLVM_FOLDER=/Users/hl/git/llvm/oh19
-export DEVELOPER_DIR=/Applications/Xcode-16.4.app/Contents/Developer/
-# 其他的同12
-```
+cd
 
+apt update
+apt upgrade -y
+apt install -y git docker ca-certificates curl
+
+export DOWNLOAD_URL="https://mirrors.tuna.tsinghua.edu.cn/docker-ce"
+curl -fsSL https://raw.githubusercontent.com/docker/docker-install/master/install.sh | sh
+
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+LLVM_FOLDER=$(realpath ~/kotlin-llvm-1914)
+git clone --branch kotlin/llvm-19-apple --depth 3 --single-branch https://gitcode.com/linhandev/kotlin-llvm-project.git $LLVM_FOLDER
+cd $LLVM_FOLDER
+git checkout fb492d2475910b83cda3a68b4eee9e87d7e221c1
+cd -
+
+mkdir docker_image
+cd docker_image
+wget https://raw.githubusercontent.com/JetBrains/kotlin/refs/tags/v2.2.21/kotlin-native/tools/llvm_builder/images/linux/Dockerfile
+# FROM docker.m.daocloud.io/ubuntu:20.04
+wget https://raw.githubusercontent.com/JetBrains/kotlin/refs/tags/v2.2.21/kotlin-native/tools/llvm_builder/package.py
+docker build -t kotlin-llvm-builder --file ./Dockerfile .
+cd ..
+
+mkdir output
+cd output
+
+DISTRIBUTION_COMPONENTS="clang libclang lld llvm-cov llvm-profdata llvm-ar clang-resource-headers compiler-rt"
+docker run --platform linux/amd64 --rm -it -v ./output:/output -v $LLVM_FOLDER:/llvm/ kotlin-llvm-builder --llvm-sources /llvm --install-path /output/ --save-temporary-files # --pack
+```

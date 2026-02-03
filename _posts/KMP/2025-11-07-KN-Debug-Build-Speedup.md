@@ -168,6 +168,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 - [B站在KMP跨平台的业务实践之路](https://www.bilibili.com/opus/1077816888983027751?spm_id_from=333.1387.0.0)
 - [KMP on iOS 深度工程化：模块化、并发编译与 98% 增量构建加速](https://www.bilibili.com/read/cv43008193/?spm_id_from=333.1387.0.0&opus_fallback=1)
 - [Kotlin社区效率提升指导](https://kotlinlang.org/docs/native-improving-compilation-time.html)
+- 结合hap的[增量调试](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-incremental-debugging)
 
 <!--
 android build：
