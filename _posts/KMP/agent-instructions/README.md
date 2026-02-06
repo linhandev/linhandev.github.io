@@ -10,7 +10,12 @@ This knowledge base serves as a centralized repository for KMP and OHOS domain k
   - `adding-llvm-pass-to-konan.md` - Adding LLVM passes to the compiler
   - `llvm-runtime-libraries.md` - LLVM compiler-RT libraries for OHOS
   - `working-with-clang.md` - Building C/C++ programs for OHOS
-  
+  - `kmp-development-knowledge-summary.md` - Comprehensive summary of KMP/OHOS development practices
+  - `kn-build-speed-optimization.md` - Kotlin/Native build speed optimization techniques
+  - `kn-debugging-techniques.md` - Debugging strategies for Kotlin/Native applications
+  - `kn-code-coverage.md` - Code coverage implementation for Kotlin/Native
+  - `llvm-building-guide.md` - Detailed guide for building LLVM for Kotlin/Native
+
 - `ohos-integration/` - OHOS-specific integration patterns and APIs
   - `ohos-kmp-integration.md` - General KMP-OHOS integration
   - `running-exe-on-ohos.md` - Deploying and running executables on OHOS devices

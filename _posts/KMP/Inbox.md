@@ -39,3 +39,6 @@ llvm-dis：bc -> ll
 llvm-as：ll -> bc
 
 修改kgp后编译：./gradlew :kotlin-gradle-plugin:compileCommonKotlin 
+
+
+clang bc -> o, cc1 显示pass信息 -mllvm -time-passes -mllvm -debug-pass=Executions
