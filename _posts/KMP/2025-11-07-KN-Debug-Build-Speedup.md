@@ -92,6 +92,10 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 2. 使用静态缓存时如果遇到问题，可以在应用工程中配置 `kotlin.native.cacheKind.ohosArm64=none` 关闭缓存功能
 3. 构建工程源码的静态cache时并行度默认为4，可以通过在应用工程中配置 `kotlin.native.parallelThreads=0` 配置并行度为cpu核数
 
+### 关键流程
+
+增量流程从 needToBuild 开始
+
 ### 常见问题
 
 1. 链接命令失败，ld.lld报命令过长

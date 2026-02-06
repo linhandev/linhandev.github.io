@@ -20,6 +20,7 @@ KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kot
 
 - 加上 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 选项，构建出来的版本中带 compile_commands.json，方便vscode做代码导航
 - 多xcode环境下稳定取得 DEVELOPER_DIR 指向的sysroot
+
   ```diff
   def detect_xcode_sdk_path():
     """
@@ -39,7 +40,7 @@ KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kot
 ### Mac Arm
 
 ```shell
-LLVM_FOLDER=/Users/hl/git/llvm/oh12
+LLVM_FOLDER=/Users/ohoskt/git/llvm/oh12
 git clone http://gitcode.com/openharmony/third_party_llvm-project $LLVM_FOLDER
 
 brew install ninja cmake wget ccache
@@ -65,10 +66,10 @@ ninja install-distribution
 py脚本的实际编译命令
 
 ```shell
-Force-creating directory /Users/hl/git/llvm/oh12/llvm-stage-1
-Force-creating directory /Users/hl/git/llvm/oh12/llvm-stage-1-build
+Force-creating directory /Users/ohoskt/git/llvm/oh12/llvm-stage-1
+Force-creating directory /Users/ohoskt/git/llvm/oh12/llvm-stage-1-build
 
-/Users/hl/git/llvm/oh12/llvm-stage-1-build
+/Users/ohoskt/git/llvm/oh12/llvm-stage-1-build
 Running command: cmake -G Ninja
 -DCMAKE_BUILD_TYPE=Release
 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
@@ -92,19 +93,19 @@ Running command: cmake -G Ninja
 -DCOMPILER_RT_ENABLE_IOS=OFF
 -DCOMPILER_RT_ENABLE_WATCHOS=OFF
 -DCOMPILER_RT_ENABLE_TVOS=OFF
--DCMAKE_INSTALL_PREFIX=/Users/hl/git/llvm/oh12/llvm-stage-1
+-DCMAKE_INSTALL_PREFIX=/Users/ohoskt/git/llvm/oh12/llvm-stage-1
 -DLLVM_TARGETS_TO_BUILD=Native
 '-DLLVM_ENABLE_PROJECTS=clang;lld;libcxx;libcxxabi;compiler-rt'
 -DLLVM_BUILD_LLVM_DYLIB=OFF
 -DLLVM_LINK_LLVM_DYLIB=OFF
-/Users/hl/git/llvm/oh12/llvm
+/Users/ohoskt/git/llvm/oh12/llvm
 
-/Users/hl/git/llvm/oh12/llvm-stage-1-build
+/Users/ohoskt/git/llvm/oh12/llvm-stage-1-build
 Running command: ninja install
 
-Force-creating directory /Users/hl/git/llvm/oh12/llvm-stage-2-build
+Force-creating directory /Users/ohoskt/git/llvm/oh12/llvm-stage-2-build
 
-/Users/hl/git/llvm/oh12/llvm-stage-2-build
+/Users/ohoskt/git/llvm/oh12/llvm-stage-2-build
 Running command: 
 cmake -G Ninja
 -DCMAKE_BUILD_TYPE=Release
@@ -126,11 +127,11 @@ cmake -G Ninja
 -DCMAKE_OSX_DEPLOYMENT_TARGET=11.2
 -DCMAKE_OSX_SYSROOT=/Applications/Xcode-14.3.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk
 -DLIBCXX_USE_COMPILER_RT=ON
--DCMAKE_INSTALL_PREFIX=/Users/hl/git/llvm/oh12/llvm-distribution
+-DCMAKE_INSTALL_PREFIX=/Users/ohoskt/git/llvm/oh12/llvm-distribution
 '-DLLVM_ENABLE_PROJECTS=clang;lld;libcxx;libcxxabi;compiler-rt'
--DCMAKE_C_COMPILER=/Users/hl/git/llvm/oh12/llvm-stage-1/bin/clang
--DCMAKE_CXX_COMPILER=/Users/hl/git/llvm/oh12/llvm-stage-1/bin/clang++
--DCMAKE_AR=/Users/hl/git/llvm/oh12/llvm-stage-1/bin/llvm-ar
+-DCMAKE_C_COMPILER=/Users/ohoskt/git/llvm/oh12/llvm-stage-1/bin/clang
+-DCMAKE_CXX_COMPILER=/Users/ohoskt/git/llvm/oh12/llvm-stage-1/bin/clang++
+-DCMAKE_AR=/Users/ohoskt/git/llvm/oh12/llvm-stage-1/bin/llvm-ar
 -DCMAKE_C_FLAGS=
 -DCMAKE_CXX_FLAGS=-stdlib=libc++
 -DCMAKE_EXE_LINKER_FLAGS=-stdlib=libc++
@@ -138,9 +139,9 @@ cmake -G Ninja
 -DCMAKE_SHARED_LINKER_FLAGS=-stdlib=libc++
 -DLLVM_BUILD_LLVM_DYLIB=OFF
 -DLLVM_LINK_LLVM_DYLIB=OFF
-/Users/hl/git/llvm/oh12/llvm
+/Users/ohoskt/git/llvm/oh12/llvm
 
-/Users/hl/git/llvm/oh12/llvm-stage-2-build
+/Users/ohoskt/git/llvm/oh12/llvm-stage-2-build
 Running command: ninja install
 ```
 
@@ -154,7 +155,7 @@ Running command: ninja install
 ### Linux
 
 ```shell
-LLVM_FOLDER=/Users/hl/git/llvm/oh12
+LLVM_FOLDER=/Users/ohoskt/git/llvm/oh12
 git clone http://gitcode.com/openharmony/third_party_llvm-project $LLVM_FOLDER
 
 cd kotlin-native/tools/llvm_builder/images/linux/
