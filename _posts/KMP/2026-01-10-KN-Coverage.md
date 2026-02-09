@@ -15,27 +15,25 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
 ## 相关项目
 
 - JaCoCo：https://www.jacoco.org/jacoco/trunk/doc/flow.html
-    - java bytecode插桩；只识别至少执行了一次，不记次数；byte array记录执行情况 + 离线分析
+    - java bytecode上插桩；只识别至少执行了一次，不记次数；byte array记录执行情况 + 离线分析
     - 文档声称影响：30% codesize，10%性能
-    
-    ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:50:22.410Z-image.png)
-    
+        ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:50:22.410Z-image.png)
 - Kover：https://github.com/Kotlin/kotlinx-kover
     - Collection of code coverage through JVM tests (**JS and native targets are not supported yet**).
-    - 随kotlin 1.6发布，更好的kmp集成，发布时是针对kotlin inline之类的语法做了优化，[当前默认agent已经切到了jacoco](https://github.com/Kotlin/kotlinx-kover/issues/720)
-- rust coverage：https://rustc-dev-guide.rust-lang.org/llvm-coverage-instrumentation.html
-    - 基于llvm sourcebased，是使用文档没写实现
+    - 随kotlin 1.6发布，卖点是更好的KMP集成和对kotlin inline之类的语法做了针对性优化
+        - [当前默认agent已经切到了jacoco](https://github.com/Kotlin/kotlinx-kover/issues/720)，第二个卖点已经没了
+- Rust Coverage：https://rustc-dev-guide.rust-lang.org/llvm-coverage-instrumentation.html
+    - 基于llvm sourcebased方案
 - llvm
     - gcov
         - 基于dwarf，兼容gnu gcc
     - source based
-        - clang前端从c代码直接生成mapping信息，不基于dwarf，llvm主推
-        - 社区[曾实现过](https://github.com/JetBrains/kotlin/commit/4f77434ea57fea4a2f8b49abf9c495447c34f15a)，因为CoverageMappingFormat格式不稳定升级负担等原因滚掉了
+        - clang前端从c代码直接生成mapping信息，不基于dwarf，llvm主推的方式
+        - Kotlin 社区[曾实现过](https://github.com/JetBrains/kotlin/commit/4f77434ea57fea4a2f8b49abf9c495447c34f15a)基于source based的覆盖率，因为CoverageMappingFormat格式不稳定升级负担等原因回滚掉了
         - https://llvm.org/docs/CoverageMappingFormat.html
         - https://llvm.org/docs/InstrProfileFormat.html
         - https://clang.llvm.org/docs/SourceBasedCodeCoverage.html
             ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:16.811Z-image.png)
-            
 
 ## 技术选型
 
@@ -44,15 +42,20 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
 1. 红色：发明部分轮子，Kotlin IR上插桩
    - 优点
      - KMP所有后端，jvm/wasm/js/native 可以共用一套工具
-     - 插桩位置更靠近 kotlin 代码，覆盖率和源码的对应关系更好
+     - 插桩位置更靠近 Kotlin 代码，覆盖率和源码的对应关系更好
    - 缺点
-     - 需要进行 Control Flow Graph 分析（KN编译器中已有），插桩策略+实现（参考jacoco），进行离线结果分析/源码对应（考虑复用jacoco组件）
-2. 绿色：llvm gcov，LLVM IR上插桩
+     - 需要进行 Control Flow Graph 分析（KN编译器中已有），插桩策略（参考jacoco）+实现（KCP，难度较大），进行离线结果分析/源码对应（考虑复用jacoco组件）
+2. 绿色：llvm gcov，LLVM IR上插桩，dwarf对应到源码
    - 优点
      - 成熟的native profile工具，接入简单
    - 缺点
      - LLVM IR 离 Kotlin 代码更远，已经经过了一些处理，如 Kotlin IR 上的的inline，一些高级语法难以对应到源码
-
+3. 蓝色+绿色：llvm sourcebased，LLVM IR上插桩，CoverageMapping对应到源码
+   - 优点
+     - 成熟的native profile工具
+     - 源码对应关系是和dwarf独立的另一套数据，便于针对 Kotlin 语法进行调整
+   - 缺点
+     - 需要对
 ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:33.358Z-image.png)
 
 https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
@@ -186,7 +189,7 @@ if (__gcov_dump) {
 - gcda：coverage data，运行时CFG中每条边的执行次数
 - 理论上有这俩就能解出来每行有没有执行
 
-上面那笔参考实现 gcno 是写到执行gradlew 的当前目录，gcda 是写到  /data/app/el2/100/base/[bundle名]/files/gcov/
+上面那笔参考实现 gcno 是写到执行 gradlew 命令时的当前目录，gcda 是写到 /data/app/el2/100/base/[bundle名]/files/gcov/。电脑上使用 `hdc file recv [手机路径] [电脑路径]`
 
 ### llvm-cov
 
@@ -264,7 +267,7 @@ llvm-cov的报告不是很方便看，[gcovr](https://github.com/gcovr/gcovr)基
 
 html报告
 ```bash
-python -m gcovr --html --html-details --output out/coverage.html --root /source/root/ \
+python -m gcovr --html --html-details --output out/coverage.html --root [项目源码文件夹] \
   --gcov-ignore-errors=source_not_found \
   --gcov-ignore-errors=output_error \
   --gcov-ignore-errors=no_working_dir_found [包含gcno，gcda文件的路径]
@@ -275,7 +278,7 @@ json报告
 
 ```shell
 
-python -m gcovr --json --root ./source/root/ \
+python -m gcovr --json --root [项目源码文件夹] \
   --gcov-ignore-errors=source_not_found \
   --gcov-ignore-errors=output_error \
   --gcov-ignore-errors=no_working_dir_found [包含gcno，gcda文件的路径]

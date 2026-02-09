@@ -124,6 +124,7 @@ hdc shell chmod 777 <device_path>
 **Solution**:
 - Ensure executable has execute permissions: `hdc shell chmod 777 <path>`
 - Check that the path is writable: `/data/local/tmp/` is typically safe
+- **If still denied**: On not rooted ohos phones (not simulators), execution from `/data/local/tmp` is blocked by SELinux or security policy even with correct file permissions. The filesystem may not have `noexec`; the block is policy-level. In that case there is no standard alternative folder that is both writable via `hdc file send` and allowed to execute: `/data/` and `/mnt/` root are typically not writable by the shell user. Options: use a rooted/developer image, an OpenHarmony emulator, or run native code inside an app (e.g. .so in HAP) instead of a standalone exe.
 
 ### Issue: Library not found at runtime
 **Solution**:

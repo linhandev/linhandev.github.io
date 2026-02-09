@@ -9,7 +9,6 @@ tags:
 description: 使用 Kotlin Native 项目的构建脚本编译 LLVM。包含 Mac Arm 和 Linux 平台的两阶段构建流程，涵盖 LLVM 12 (OpenHarmony master-llvm12-backup 分支) 和 LLVM 19 版本，以及多 Xcode 环境适配、增量构建、Debug 版本配置等技巧。
 ---
 
-
 KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kotlin/tree/master/kotlin-native/tools/llvm_builder)构建
 - 这脚本主要是在组装cmake和ninja命令参数，确定参数后后续增量构建直接用命令
 - 默认是2阶段
@@ -46,6 +45,7 @@ git clone http://gitcode.com/openharmony/third_party_llvm-project $LLVM_FOLDER
 brew install ninja cmake wget ccache
 # cmake 4.2.1 ninja 1.13.2 实测成功
 
+# 在对应版本的 kotlin 仓库中找
 cd kotlin-native/tools/llvm_builder
 
 export DEVELOPER_DIR=/Applications/Xcode-14.3.1.app/Contents/Developer/
@@ -56,8 +56,8 @@ python3 package.py \
   --save-temporary-files # --pack
 
 # 增量构建
-cd llvm-stage-2-build
-ninja install-distribution
+cd $LLVM_FOLDER/llvm-stage-2-build
+ninja install-distribution # 产物在 llvm-distribution 文件夹
 
 # 打发布产物
 # python脚本传 --pack
@@ -167,6 +167,8 @@ docker run --platform linux/amd64 --rm -it -v .:/output -v $LLVM_FOLDER:/llvm ko
 ```
 
 ## kotlin llvm-19.1.4
+
+### Linux
 
 ```shell
 cd
