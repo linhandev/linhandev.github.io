@@ -14,7 +14,7 @@ This document provides instructions for deploying and running executables on OHO
 
 - OHOS device connected via USB or network
 - `hdc` tool available (OHOS Device Connector, similar to Android's `adb`)
-- Executable built for the correct target architecture (see [working-with-clang.md](./working-with-clang.md) for build instructions)
+- Executable built for the correct target architecture (see [working-with-clang.md](../kmp-foundations/working-with-clang.md) for build instructions)
 
 ## Device Connection Check
 
@@ -42,7 +42,7 @@ To determine which architecture your device uses, run:
 hdc shell uname -a
 ```
 
-This will output system information including the architecture. Use the appropriate target architecture when building your executable (see [working-with-clang.md](./working-with-clang.md)).
+This will output system information including the architecture. Use the appropriate target architecture when building your executable (see [working-with-clang.md](../kmp-foundations/working-with-clang.md)).
 
 ## Device Deployment
 
@@ -87,7 +87,7 @@ hdc shell chmod 777 <device_path>
    hdc shell uname -a
    ```
 
-3. **Build executable** for the target architecture (see [working-with-clang.md](./working-with-clang.md))
+3. **Build executable** for the target architecture (see [working-with-clang.md](../kmp-foundations/working-with-clang.md))
 
 4. **Send to device:**
    ```bash
@@ -131,6 +131,7 @@ hdc shell chmod 777 <device_path>
 - Set `LD_LIBRARY_PATH` to the directory containing required libraries
 - Ensure libraries are also deployed to the device
 - Check that libraries match the target architecture
+- **Where system/app .so live on device:** see [ohos-device-layout.md](./ohos-device-layout.md) (e.g. `/system/lib64/ndk/` for NDK libs).
 
 ### Issue: HarmonyOS App Storage Permissions
 
@@ -244,7 +245,7 @@ hdc list targets
 hdc shell uname -a
 
 # 3. Build executable (example for aarch64)
-# See working-with-clang.md for detailed build instructions
+# See kmp-foundations/working-with-clang.md for detailed build instructions
 clang++ \
   --sysroot /Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot \
   main.cpp \
@@ -283,4 +284,4 @@ When testing weak vs global symbol resolution with dlopen on OHOS:
 
 - OHOS Native Development Documentation
 - DevEco Studio User Guide
-- For building C/C++ programs, see [working-with-clang.md](./working-with-clang.md)
+- For building C/C++ programs, see [working-with-clang.md](../kmp-foundations/working-with-clang.md)

@@ -19,6 +19,7 @@ This knowledge base serves as a centralized repository for KMP and OHOS domain k
 - `ohos-integration/` - OHOS-specific integration patterns and APIs
   - `ohos-kmp-integration.md` - General KMP-OHOS integration
   - `running-exe-on-ohos.md` - Deploying and running executables on OHOS devices
+  - `ohos-device-layout.md` - **Where to find .so on device** (system, app, vendor lib paths; use for locating NDK/system libs via HDC)
 
 - `best-practices/` - Proven practices and guidelines
   - `kmp-ohos-best-practices.md` - Development best practices for KMP/OHOS
@@ -42,6 +43,7 @@ This knowledge base serves as a centralized repository for KMP and OHOS domain k
 
 ## Search Tips
 - Use specific terms when searching within the knowledge base
+- **Find .so / library locations on device** → `ohos-integration/ohos-device-layout.md`
 - Look for related topics in the "See Also" sections
 - Check the `frequent-issues/` section first for common problems
 - Review the `best-practices/` section for recommended approaches

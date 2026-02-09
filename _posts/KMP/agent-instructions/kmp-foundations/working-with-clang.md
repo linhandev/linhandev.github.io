@@ -1,6 +1,6 @@
 # Agent Guide: Building C/C++ Programs for OHOS (OpenHarmony)
 
-This document provides instructions for building C/C++ programs targeting OHOS devices using Clang. For deploying and running executables on devices, see [running-exe-on-ohos.md](./running-exe-on-ohos.md). Update this if during execution more information concerning this topic is learned and can be useful for future llvm sessions.
+This document provides instructions for building C/C++ programs targeting OHOS devices using Clang. For deploying and running executables on devices, see [running-exe-on-ohos.md](../ohos-integration/running-exe-on-ohos.md). Update this if during execution more information concerning this topic is learned and can be useful for future llvm sessions.
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
@@ -145,7 +145,7 @@ clang++ \
 
 ```bash
 # 1. Determine architecture (if device available)
-# See running-exe-on-ohos.md for device connection and architecture detection
+# See ohos-integration/running-exe-on-ohos.md for device connection and architecture detection
 
 # 2. Build (example for aarch64)
 clang++ \
@@ -161,4 +161,4 @@ clang++ \
 
 - OHOS Native Development Documentation
 - DevEco Studio User Guide
-- For deploying and running executables, see [running-exe-on-ohos.md](./running-exe-on-ohos.md)
+- For deploying and running executables, see [running-exe-on-ohos.md](../ohos-integration/running-exe-on-ohos.md)

@@ -21,7 +21,7 @@
 - **Tags**: kmp, architecture, design-patterns
 - **Summary**: Multi-tier architecture with shared business logic layer
 - **Details**: Detailed explanation...
-- **Related**: ../kmp-foundations/architecture.md
+- **Related**: [kmp-foundations/kmp-structure.md](../kmp-foundations/kmp-structure.md)
 - **Action Items**: Move to kmp-foundations after review
 
 ## Pending Review

@@ -333,7 +333,7 @@ grep -r "arguments\.yourArgName" kotlin-native/backend.native/
 kotlin-native/dist/bin/kotlinc-native test.kt -target ohos_arm64 -o test -g
 ```
 
-4. **Deploy to device** (see AGENT_INSTRUCTIONS.md for hdc commands)
+4. **Deploy to device** (see [ohos-integration/running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md) for hdc commands)
 
 5. **Iterate**:
    - If compilation fails → check error, fix code, rebuild
@@ -452,7 +452,7 @@ kotlinc-native test.kt -target macos_arm64 -o test -g
 
 ```bash
 kotlinc-native test.kt -target ohos_arm64 -o test -g
-# Deploy and run (see AGENT_INSTRUCTIONS.md)
+# Deploy and run (see ohos-integration/running-exe-on-ohos.md)
 ```
 
 This two-stage approach catches issues early without needing device access.
