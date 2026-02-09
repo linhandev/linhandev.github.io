@@ -21,7 +21,7 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
 - Kover：https://github.com/Kotlin/kotlinx-kover
     - Collection of code coverage through JVM tests (**JS and native targets are not supported yet**).
     - 随kotlin 1.6发布，卖点是更好的KMP集成和对kotlin inline之类的语法做了针对性优化
-        - [当前默认agent已经切到了jacoco](https://github.com/Kotlin/kotlinx-kover/issues/720)，第二个卖点已经没了
+        - [当前默认agent已经切到了jacoco](https://github.com/Kotlin/kotlinx-kover/issues/720)，更好的kotlin插桩支持后续都会在jacoco的agent中实现，第二个卖点已经没了
 - Rust Coverage：https://rustc-dev-guide.rust-lang.org/llvm-coverage-instrumentation.html
     - 基于llvm sourcebased方案
 - llvm
@@ -55,12 +55,11 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
      - 成熟的native profile工具
      - 源码对应关系是和dwarf独立的另一套数据，便于针对 Kotlin 语法进行调整
    - 缺点
-     - 需要对
-![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:33.358Z-image.png)
+     - 需要实现根据 Kotlin IR 给 LLVM IR 添加 __llvm_coverage_mapping ，工作量大，升级 LLVM 复杂
+        ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/image.png)
+        https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 
-https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
-
-- Kover作为为KMP开发的框架也没做到Kotlin IR上，Kotlin IR上实现难度应该较高
+- Kover作为JB专门为KMP开发的框架也没做到Kotlin IR上，Kotlin IR上实现难度应该较高
 - LLVM gcov可以只根据dwarf信息解析到代码，sourcebased实现需要在Konan前端加Code Coverage Map生成，成本较高
 - 综上选择 gcov 看看效果
 
@@ -73,9 +72,9 @@ freeCompilerArgs += "-Xadd-light-debug=enable"
 freeCompilerArgs += "-Xbinary=coverage=true"
 ```
 
-### 编译插桩
+## LLVM gcov 原理
 
-在llvm ir上运行 GCOVProfilerPass
+以C代码为例
 
 ```cpp
 #include <stdlib.h>
@@ -91,7 +90,9 @@ int main() {
 }
 ```
 
-插桩前
+### LLVM IR插桩
+
+首先在llvm ir上运行 GCOVProfilerPass，插桩前
 
 ```llvm
 define dso_local i32 @main() #0 {
@@ -157,7 +158,7 @@ IR中多了一个@__llvm_gcov_ctr数组，包含两个int64，分别统计走if�
 
 ### 链接runtime
 
-链接 libclang_rt.profile.a，应当优先使用跟插桩pass用一个版本中的静态库。腾讯的LLVM 12没打出这个a，用DevEco里15的版本是错配的，但是这种混搭使用中还没发现问题。PGO的runtime也在这个a里（_*llvm_profile**），做覆盖率统计主要就用到统计结果写盘相关的实现
+链接 libclang_rt.profile.a，应当优先使用跟插桩pass同一个LLVM版本中的静态库。腾讯的LLVM 12没打出这个a，用DevEco里15的静态库版本是错配的，但是这种混搭使用中还没发现问题。PGO的runtime也在这个a里（_*llvm_profile**），做覆盖率统计主要就用到统计结果写盘相关的实现
 
 ```cpp
 T __gcov_dump # 手动触发结果写盘
@@ -177,7 +178,7 @@ if (__gcov_dump) {
 }
 ```
 
-写到有权限的沙箱路径
+要写到有权限的沙箱路径
 - GCOV_PREFIX=有权限的路径
 - GCOV_PREFIX_STRIP=99 去除所有前缀，在设置的路径平铺，⚠️ 可能导致碰撞
     - \-\-hash-filenames 在文件名中添加hash
@@ -187,13 +188,18 @@ if (__gcov_dump) {
 
 - gcno：coverage note，Control Flow Graph和代码的对应关系，只有代码的绝对路径位置没有代码内容
 - gcda：coverage data，运行时CFG中每条边的执行次数
-- 理论上有这俩就能解出来每行有没有执行
 
-上面那笔参考实现 gcno 是写到执行 gradlew 命令时的当前目录，gcda 是写到 /data/app/el2/100/base/[bundle名]/files/gcov/。电脑上使用 `hdc file recv [手机路径] [电脑路径]`
+注意：
+- 理论上有这俩就能解出来每行有没有执行，实际一些工具在设计上一定要求提供代码，没有代码时推荐lcov
+- 上面那笔参考实现 gcno 是写到执行 gradlew 命令时的当前目录，gcda 是写到 /data/app/el2/100/base/[bundle名]/files/gcov/。电脑上使用 `hdc file recv [手机路径] [电脑路径]` 将gcda下载到电脑上
+- exe/so中链接插了覆盖率桩的静态库，打静态库时就会出gcno，链接一个这样的库就会多生成一个gcda。ie：有几个gcno就会有几个gcda，一一对应
+- 运行多次程序，一个gcno可以对应多个gcda；但是不会有一个gcda对应多个gcno，有几个gcno一次运行就会生成几个gcda
 
 ### llvm-cov
 
-gcno和gcda在当前路径下，解析是要求盘上在gcno对应路径有代码
+llvm自带工具，输出格式不是很好看/进行后续处理，不太推荐用这个
+
+解析时把gcno和gcda放在一个文件夹，要求盘上在打包时原位置有代码
 
 ```shell
 ls
@@ -205,6 +211,7 @@ gcov -b -f libc2k.gcda
 - \-: 代表不认为这一行是代码，如注释，label等
 - #####: 代表认为这行是代码，而且没有被执行
 - 数字代表统计到这行执行了多少次
+- branch x taken 统计分支覆盖率
 
 ```
         -:    0:Source:/Users/hl/git/sample/kn_samples/switchLib/src/commonMain/kotlin/SwitchFunction.kt
@@ -263,9 +270,10 @@ branch  1 never executed
 
 ### gcovr
 
-llvm-cov的报告不是很方便看，[gcovr](https://github.com/gcovr/gcovr)基于gcov，支持多种格式
+[gcovr](https://github.com/gcovr/gcovr)基于gcov，支持的输出格式比较多，html格式看起来比较方便，json报告后续接处理流程比较方便，跟llvm-cov一样把gcno，gcda放在一个文件夹，要求盘上有代码
 
-html报告
+html报告，绿色100%执行，黄色有分支被部分执行，红色没执行，白色的是不认为是代码（注释这种）
+
 ```bash
 python -m gcovr --html --html-details --output out/coverage.html --root [项目源码文件夹] \
   --gcov-ignore-errors=source_not_found \
@@ -274,10 +282,9 @@ python -m gcovr --html --html-details --output out/coverage.html --root [项目�
 ```
 ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-27T19:03:42.631Z-image.png)
 
-json报告
+json报告中有行/分支/函数覆盖率
 
 ```shell
-
 python -m gcovr --json --root [项目源码文件夹] \
   --gcov-ignore-errors=source_not_found \
   --gcov-ignore-errors=output_error \
@@ -404,7 +411,7 @@ python -m gcovr --json --root [项目源码文件夹] \
 
 ### lcov
 
-lcov在gcov的基础上扩展了报告可视化和运行数据合并能力
+lcov主要在gcov的基础上扩展了报告展示和运行数据合并，不要求盘上有代码
 
 ```
 lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
@@ -415,7 +422,7 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
      --directory . \
      --output-file coverage.info
 ```
-- \-\-gcov-tool：指定gcov工具路径，建议使用齐套的版本，使用llvm工具链可以用一个bash脚本，内容 `/path/to/llvm-cov gcov "$@"`
+- \-\-gcov-tool：指定gcov工具路径，建议跟插桩用同一个llvm，使用llvm工具链gcov不是一个exe，是llvm-cov下的一个模式，这个选项可以传一个脚本，内容 `/path/to/llvm-cov gcov "$@"`
 - \-\-capture：从 --directory 下找所有gcda和gcno数据进行解析
 
 结果中
@@ -485,7 +492,7 @@ LH:12
 end_of_record
 ```
 
-lcov合并多次执行的报告，看到结果中所有覆盖次数都翻倍了
+lcov合并多次执行的报告
 
 ```
 lcov --add-tracefile coverage.info \
@@ -519,7 +526,7 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
      --output-file coverage.info
 ```
 
-如果两次运行的程序完全一样，gcno完全一样，可以用一个gcno+多个gcda生成合并报告。gcda是通过名字匹配gcno的，多次运行要匹配到同一个gcno必须放在不同的文件夹里，没法平铺到一个文件夹
+如果两次运行的程序完全一样，gcno完全一样，可以用一个gcno+多个gcda生成合并报告
 
 ```
 tree .
@@ -557,8 +564,6 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
 - lambda
 
 - chained call
-
-
 
 ## TODO
 - 是否可以控制插桩代码的范围
