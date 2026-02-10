@@ -35,6 +35,19 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
         - https://llvm.org/docs/InstrProfileFormat.html
         - https://clang.llvm.org/docs/SourceBasedCodeCoverage.html
             ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:16.811Z-image.png)
+        - 版本历史
+            [这里](https://github.com/llvm/llvm-project/blob/main/llvm/include/llvm/ProfileData/Coverage/CoverageMapping.h#L1440)定义的版本枚举
+
+            | Version | First LLVM release                                     | Commit                                                                                                                                                                                     |
+            | ------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 1       | LLVM 3.8 (initial format)                              | [\[PGO\] Minor refactoring /NFC](https://github.com/llvm/llvm-project/commit/1054a85a28682da0a9049a07979b130dce50b1c9)                                                                     |
+            | 2       | LLVM 3.9 (MD5 name ref, name section compression)      | [\[PGO\] Enable compression in pgo instrumentation](https://github.com/llvm/llvm-project/commit/a82d6c0a4b95177289d0d79d28382ad874b073c2)                                                  |
+            | 3       | LLVM 6.0 (gap regions / column end encoding)           | [\[Coverage\] Use gap regions to select better line exec counts](https://github.com/llvm/llvm-project/commit/ad8f637bd83aeeca7321d6c74b3d7787587c0d55)                                     |
+            | 4       | LLVM 11.0 (named function records, zlib filename list) | [Reland: \[Coverage\] Revise format to reduce binary size](https://github.com/llvm/llvm-project/commit/dd1ea9de2e3e3ac80a620f71411a9a36449f2697)                                           |
+            | 5       | LLVM 12.0 (branch regions)                             | [\[Coverage\] Add support for Branch Coverage in LLVM Source-Based Code Coverage](https://github.com/llvm/llvm-project/commit/9f2967bcfe2f7d1fc02281f0098306c90c2c10a5)                    |
+            | 6       | LLVM 13.0 (compilation directory in filename list)     | [\[Coverage\] Store compilation dir separately in coverage mapping](https://github.com/llvm/llvm-project/commit/5fbd1a333aa1a0b70903d036b98ea56c51ae5224)                                  |
+            | 7       | LLVM 18.1 (MC/DC: decision regions, extended branches) | [Reland: \[InstrProf\]\[compiler-rt\] Enable MC/DC Support in LLVM Source-based Code Coverage (1/3)](https://github.com/llvm/llvm-project/commit/f95b2f1acf1171abb0d00089fd4c9238753847e3) |
+
 
 ## 技术选型
 
@@ -66,12 +79,15 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
 
 ## KN 接入 LLVM gcov
 
-参考实现：https://github.com/linhandev/KuiklyBase-kotlin/commits/gcov/ 分支最后一笔，KN工程中添加两个编译选项
-
-```
-freeCompilerArgs += "-Xadd-light-debug=enable"
-freeCompilerArgs += "-Xbinary=coverage=true"
-```
+参考实现：
+- kotlin工程：https://github.com/linhandev/KuiklyBase-kotlin/commits/gcov/ 分支最后一笔
+- 开启覆盖率需要在KMP工程中添加两个编译选项
+    ```
+    freeCompilerArgs += "-Xadd-light-debug=enable"
+    freeCompilerArgs += "-Xbinary=coverage=true"
+    ```
+- 大规模项目编译时，bc到o代码生成阶段gcov相关的函数寄存器优化耗时极长，跳过相关步骤后构建耗时大致为不开插桩时的一倍
+    ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/image-1.png)
 
 ## LLVM gcov 原理
 
@@ -569,3 +585,6 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
 ## TODO
 - 是否可以控制插桩代码的范围
 - 补全edge case，分析原因，解决方法
+
+## Related
+- [2023 LLVM Dev Mtg - Using Clang's source-based code coverage at scale]([text](https://www.youtube.com/watch?v=RlySdMe3Eg0))

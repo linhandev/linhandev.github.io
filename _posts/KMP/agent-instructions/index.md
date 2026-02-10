@@ -9,6 +9,16 @@ This directory contains structured guides for agents working with Kotlin Native 
 
 Guide for building C/C++ programs targeting OHOS devices using Clang. Covers compiler locations, sysroot configuration, target architecture selection, and build processes including multi-stage compilation (IR → Object → Executable). Essential for understanding the native compilation toolchain used by Kotlin Native.
 
+### [building-ohos-hap-from-cli.md](./ohos-integration/building-ohos-hap-from-cli.md)
+**Building OHOS HAP from Command Line**
+
+How to build an OpenHarmony/HarmonyOS HAP from the CLI when the app includes a Kotlin/Native shared library. References the L33 task block in `kotlinApp/build.gradle.kts` (publish binaries, startHarmonyApp). Covers one-command Gradle flow, required `gradle.properties`, HAP output location, and optional manual hvigor steps.
+
+### [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md)
+**Calling OHOS System C APIs from Native Code**
+
+How to discover and use OHOS NDK C APIs: where to find API profile (headers, libs in sysroot), usage docs and examples, what to include and link, debugging, checking HiLog output, and building/running the HAP. Uses **OH_LOG_Print** (HiLog) as the running example.
+
 ### [running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md)
 **Deploying and Running Executables on OHOS Devices**
 
@@ -37,6 +47,8 @@ Guide for working with LLVM's compiler-rt runtime libraries on OHOS targets. Cov
 ## Quick Reference
 
 **Build C/C++ for OHOS**: [working-with-clang.md](./kmp-foundations/working-with-clang.md)  
+**Build OHOS HAP from CLI**: [building-ohos-hap-from-cli.md](./ohos-integration/building-ohos-hap-from-cli.md)  
+**Call OHOS native API**: [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md)  
 **Deploy to Device**: [running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md)  
 **Find .so on device**: [ohos-device-layout.md](./ohos-integration/ohos-device-layout.md)  
 **Build Kotlin Native**: [working-with-kotlin-native-compiler.md](./working-with-kotlin-native-compiler.md)  
