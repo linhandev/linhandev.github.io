@@ -4,15 +4,11 @@ How to build an OpenHarmony/HarmonyOS HAP (Harmony Ability Package) from the com
 
 For a reference implementation of the same flow in Gradle, see [kn_samples kotlinApp/build.gradle.kts around line 33](https://github.com/linhandev/kn_samples/blob/gcov/kotlinApp/build.gradle.kts#L33) (branch `gcov`). Your project may not have that task; the steps below are the equivalent you can run manually.
 
----
-
 ## Prerequisites
 
 - **DevEco Studio** installed (e.g. `/Applications/DevEco-Studio.app` on macOS). All commands use the tools bundled inside it: **node**, **ohpm**, **hvigor**, **hdc** (see [hdc-commands.md](./hdc-commands.md)).
 - Your **Harmony/OHOS app** project on disk (the directory that contains `AppScope/`, `entry/` or your module(s), `build-profile.json5`, `hvigorfile.ts`, `oh-package.json5`, etc.).
 - If the app uses a **Kotlin/Native shared library**: build the `.so` and copy it (and any header) into the Harmony app’s expected paths **before** running the HAP build steps below. The commands here only build the HAP from the Harmony project.
-
----
 
 ## Variables to set
 
@@ -40,8 +36,6 @@ Optional, for install/launch:
 ENTRY_MODULE_DIR="entry"
 ```
 
----
-
 ## Step 1: Install OHPM dependencies
 
 Run from the **Harmony app root** (`HARMONY_APP_DIR`). This installs dependencies declared in `oh-package.json5`.
@@ -60,8 +54,6 @@ export PATH="$NODE_HOME/bin:$PATH"
 
 If this fails, fix the project’s `oh-package.json5` / registry access and retry.
 
----
-
 ## Step 2: Run hvigor sync
 
 Still in `HARMONY_APP_DIR`. Sync and configure the build for the chosen product and build mode.
@@ -78,9 +70,7 @@ cd "$HARMONY_APP_DIR"
   --daemon
 ```
 
-Use the same `buildMode` value as in Step 3. Adjust `product=default` if your project uses another product name.
-
----
+Match buildMode with Step 3.
 
 ## Step 3: Build the HAP
 
@@ -108,8 +98,6 @@ cd "$HARMONY_APP_DIR"
 
 On success, hvigor writes the HAP under the entry module’s build output (see below).
 
----
-
 ## Step 4 (optional): Install HAP to device
 
 Connect the device, then install the HAP (HDC usage: [hdc-commands.md](./hdc-commands.md#app-install-and-launch)):
@@ -133,9 +121,7 @@ fi
 "$DEVECO_DIR/Contents/sdk/default/openharmony/toolchains/hdc" install "$HAP_FILE"
 ```
 
-Adjust `HAP_DIR` / `entry-default-*.hap` if your module or product name differs (e.g. different `build-profile.json5` or product flavor).
-
----
+Adjust HAP_DIR/filename if module/product differs.
 
 ## Step 5 (optional): Launch the app on the device
 
@@ -153,8 +139,6 @@ ABILITY_NAME="EntryAbility"
 
 You can copy `bundleName` from `AppScope/app.json5` and the ability name from your entry module’s `module.json5` or from DevEco Studio’s run configuration.
 
----
-
 ## HAP output location
 
 After **Step 3**, the HAP is under the **entry module’s** build directory:
@@ -170,9 +154,7 @@ For a default setup with module name `entry` and product `default`, the path is:
 <HarmonyAppRoot>/entry/build/default/outputs/default/entry-default-unsigned.hap
 ```
 
-(or `entry-default-signed.hap`). If your module or product name differs, the directory and file names will follow your build profile.
-
----
+(or entry-default-signed.hap). Names follow build profile.
 
 ## Full script example (build HAP only)
 
@@ -202,8 +184,6 @@ echo "=== Step 3: Build HAP ==="
 
 echo "HAP output: $HARMONY_APP_DIR/$ENTRY_MODULE_DIR/build/default/outputs/default/"
 ```
-
----
 
 ## Summary
 

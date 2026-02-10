@@ -1,18 +1,6 @@
 # KMP/OHOS Development Knowledge Summary
 
-Based on analysis of blog posts from `/Users/ohoskt/git/doc/linhandev.github.io/_posts/KMP`, this document summarizes key knowledge about Kotlin Multiplatform and OHOS development.
-
-## Table of Contents
-1. [Build Speed Optimization](#build-speed-optimization)
-2. [Development Environment Setup](#development-environment-setup)
-3. [Compiler Options](#compiler-options)
-4. [Development Tricks](#development-tricks)
-5. [Build Process](#build-process)
-6. [Address Sanitizers](#address-sanitizers)
-7. [LLVM Building](#llvm-building)
-8. [Debugging Techniques](#debugging-techniques)
-9. [Code Coverage](#code-coverage)
-10. [Build Speed Profiling](#build-speed-profiling)
+Summary of KMP/OHOS knowledge from blog analysis.
 
 ## Build Speed Optimization
 
@@ -161,6 +149,3 @@ python3 package.py \
 
 ### Performance Analysis Script
 A Python script can parse build logs and generate statistics about phase execution times, counts, averages, and distributions.
-
----
-*This document synthesizes knowledge from multiple blog posts on KMP/OHOS development practices and techniques.*

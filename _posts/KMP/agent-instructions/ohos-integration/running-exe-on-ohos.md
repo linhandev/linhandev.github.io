@@ -1,14 +1,6 @@
-# Agent Guide: Running Executables on OHOS Devices
+# Running Executables on OHOS Devices
 
-This document provides instructions for deploying and running executables on OHOS (OpenHarmony) devices using HDC (OHOS Device Connector). Update this if during execution more information concerning this topic is learned and can be useful for future sessions.
-
-## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Device Connection Check](#device-connection-check)
-3. [Target Architecture Detection](#target-architecture-detection)
-4. [Device Deployment](#device-deployment)
-5. [Common Issues and Solutions](#common-issues-and-solutions)
-6. [Example: Complete Workflow](#example-complete-workflow)
+Deploy and run executables on OHOS using HDC. See [hdc-commands.md](./hdc-commands.md), [working-with-clang.md](../kmp-foundations/working-with-clang.md) for build.
 
 ## Prerequisites
 
@@ -16,95 +8,47 @@ This document provides instructions for deploying and running executables on OHO
 - HDC available (see [hdc-commands.md](./hdc-commands.md))
 - Executable built for the correct target architecture (see [working-with-clang.md](../kmp-foundations/working-with-clang.md) for build instructions)
 
-## Device Connection Check
+## Device connection
 
-Before deploying and running executables, verify that an OHOS device is connected using `hdc list targets`. If no devices are shown, check USB/network, developer mode, and HDC service
+`hdc list targets`. If none: check USB/network, developer mode, HDC service.
 
-## Target Architecture Detection
+## Target architecture
 
-OHOS supports two architectures:
-
-- **x86_64-linux-ohos**: Used for x86 emulators
-- **aarch64-linux-ohos**: Used for ARM64 emulators and real devices
-
-To determine which architecture your device uses, run:
+x86_64-linux-ohos (x86 emulators), aarch64-linux-ohos (ARM64 emulators/real devices). Determine device:
 
 ```bash
 hdc shell uname -a
 ```
 
-This will output system information including the architecture. Use the appropriate target architecture when building your executable (see [working-with-clang.md](../kmp-foundations/working-with-clang.md)).
-
-## Device Deployment
-
-Use HDC for file transfer and shell (see [hdc-commands.md](./hdc-commands.md)). Deployment workflow:
+Use that target when building. Deployment:
 
 1. **Check device connection:** `hdc list targets`
 2. **Determine target architecture:** `hdc shell uname -a`
 3. **Build executable** for the target architecture (see [working-with-clang.md](../kmp-foundations/working-with-clang.md))
 4. **Send to device:** `hdc file send main /data/local/tmp/main`
 5. **Set permissions:** `hdc shell chmod 777 /data/local/tmp/main`
-6. **Run executable:** `hdc shell LD_LIBRARY_PATH=/data/local/tmp/ /data/local/tmp/main` (set `LD_LIBRARY_PATH` if you need to load libraries from a specific path)
+6. Run: `hdc shell LD_LIBRARY_PATH=/data/local/tmp/ /data/local/tmp/main`
 
-## Common Issues and Solutions
+## Common issues
 
-### Issue: HDC connection failed
-**Solution**: Check USB/network, developer mode, and HDC service (see [hdc-commands.md](./hdc-commands.md#service-and-targets)); run `hdc list targets` to verify the device is detected.
+HDC connection failed: Check USB/network, developer mode, HDC; `hdc list targets`.
+Wrong target: `hdc shell uname -a`, rebuild with correct -target and -L.
+Permission denied: chmod 777, writable path (e.g. /data/local/tmp). On non-rooted phones execution from /data/local/tmp can be blocked by SELinux; no standard writable+executable folder via hdc. Options: rooted/developer image, emulator, or run inside app (.so in HAP).
+Library not found: Set LD_LIBRARY_PATH, deploy libs, match architecture. .so locations: [ohos-device-layout.md](./ohos-device-layout.md).
 
-### Issue: Wrong target architecture
-**Solution**: Use `hdc shell uname -a` to get device architecture (see [hdc-commands.md](./hdc-commands.md#shell)); rebuild with the correct `-target` and `-L` for that architecture.
-
-### Issue: Permission denied when running executable
-**Solution**: Ensure execute permissions (`hdc shell chmod 777 <path>`, see [hdc-commands.md](./hdc-commands.md#shell)) and that the path is writable (e.g. `/data/local/tmp/`).
-- **If still denied**: On not rooted ohos phones (not simulators), execution from `/data/local/tmp` is blocked by SELinux or security policy even with correct file permissions. The filesystem may not have `noexec`; the block is policy-level. In that case there is no standard alternative folder that is both writable via `hdc file send` and allowed to execute: `/data/` and `/mnt/` root are typically not writable by the shell user. Options: use a rooted/developer image, an OpenHarmony emulator, or run native code inside an app (e.g. .so in HAP) instead of a standalone exe.
-
-### Issue: Library not found at runtime
-**Solution**:
-- Set `LD_LIBRARY_PATH` to the directory containing required libraries
-- Ensure libraries are also deployed to the device
-- Check that libraries match the target architecture
-- **Where system/app .so live on device:** see [ohos-device-layout.md](./ohos-device-layout.md) (e.g. `/system/lib64/ndk/` for NDK libs).
-
-### Issue: HarmonyOS App Storage Permissions
+## HarmonyOS App Storage Permissions
 
 **Context**: When running code within a HarmonyOS application (HAP), permissions differ from standalone executables.
 
-**Accessible Paths for HAP**:
-```
-✅ /data/storage/el2/base/files/       # App's files directory (read/write)
-✅ /data/storage/el2/base/cache/       # App's cache directory
-✅ /data/storage/el2/base/temp/        # App's temp directory
-❌ /data/local/tmp/                    # NOT accessible to app process
-❌ /data/app/                          # Read-only (app installation)
-```
+HAP: accessible /data/storage/el2/base/files/, cache/, temp/. Not: /data/local/tmp/, /data/app/. Standalone: /data/local/tmp/ rw. App path mapping via hdc: Paths used inside the app map to device paths: e.g. `/data/storage/el2/base/files/` in-app is `/data/app/el2/100/base/<bundle_name>/files/` when accessed via `hdc shell`. Get the bundle name from the project’s `AppScope/app.json5`.
 
-**For standalone executables** (shell/test):
-```
-✅ /data/local/tmp/                    # Read/write
-```
+## Environment variables (executables)
 
-**Accessing app storage via hdc shell**: Paths used inside the app map to device paths: e.g. `/data/storage/el2/base/files/` in-app is `/data/app/el2/100/base/<bundle_name>/files/` when accessed via `hdc shell`. Get the bundle name from the project’s `AppScope/app.json5`.
+`hdc shell "export VAR=value && /data/local/tmp/executable"`. Shell env only affects that session, not app processes.
 
-```json
-{
-  "app": {
-    "bundleName": "com.example.nativecppdemo", # this would be the bundle name
-    ...
-  }
-}
-```
+## Environment for .so in HAP
 
----
-
-## Environment Variables
-
-### Setting Environment for Executables
-
-Use `hdc shell "..."` to run with env vars (see [hdc-commands.md](./hdc-commands.md#shell)), e.g. `hdc shell "export MY_VAR=value && /data/local/tmp/executable"` or with GCOV: `hdc shell "cd /data/local/tmp && GCOV_PREFIX=/data/local/tmp/gcov GCOV_PREFIX_STRIP=99 ./executable"`. Environment variables set in the shell **only affect that shell session**, not app processes.
-
-### Setting Environment for Shared Libraries in Apps
-
-**For .so loaded by HarmonyOS app**, environment must be set in **app's C++ code**:
+Set in app C++ code:
 
 ```cpp
 // In app's native entry point (napi_init.cpp or similar)
@@ -113,50 +57,13 @@ static void InitEnvironment() {
     setenv("MY_VAR", "value", 1);
 }
 ```
+Shell env doesn't transfer to app; set in code.
 
-**Why**: Shell environment doesn't transfer to app processes. Must be set programmatically.
+## .so vs executables
 
----
+Executables: deploy to /data/local/tmp/, run via hdc shell; env in shell. .so in HAP: in libs/arm64-v8a/, loaded by app; env in C++; never unloaded until app killed. Impact: atexit()/destructor may not run in HAP; use manual triggers.
 
-## Shared Libraries (.so) vs Executables (.kexe)
-
-### Deployment Differences
-
-**Executables**:
-- Deploy to `/data/local/tmp/` (see [hdc-commands.md](./hdc-commands.md))
-- Run via `hdc shell`; environment set in the shell command
-
-**Shared Libraries in HAP**:
-- Bundle in app's `libs/arm64-v8a/`
-- Loaded by app process (not shell)
-- Environment must be set in app's C++ code
-- Lifecycle: Never unloaded (stays in memory until app killed)
-
-### Lifecycle Implications
-
-**Executables**:
-```
-Start → Run → Exit
-           ↓
-    Destructors run, cleanup happens
-```
-
-**Shared Libraries in HAP**:
-```
-App Start → .so loads (constructors run)
-    ↓
-App Runs → .so stays loaded
-    ↓
-App Backgrounds → .so STILL loaded (no dlclose)
-    ↓
-App Killed → Process terminated (destructors may NOT run)
-```
-
-**Impact**: Code that relies on `atexit()` or `__attribute__((destructor))` may not execute in HAP environments. Use manual triggers instead.
-
----
-
-## Example: Complete Workflow
+## Complete workflow
 
 1. Check device: `hdc list targets`
 2. Architecture: `hdc shell uname -a`
@@ -164,30 +71,8 @@ App Killed → Process terminated (destructors may NOT run)
    ```bash
    clang++ --sysroot <SYSROOT> main.cpp -target aarch64-linux-ohos -L<CLANG_LIB_DIR> -resource-dir <RESOURCE_DIR> -o main
    ```
-4. Deploy and run (see [hdc-commands.md](./hdc-commands.md)): `hdc file send main /data/local/tmp/main`, then `hdc shell chmod 777 /data/local/tmp/main`, then `hdc shell /data/local/tmp/main`
+4. Deploy: hdc file send main /data/local/tmp/main; hdc shell chmod 777 /data/local/tmp/main; hdc shell /data/local/tmp/main
 
-## Validated Behaviors
+## Validated: PLT and weak symbols (2026-01-28)
 
-### PLT Resolution and Weak Symbols (Validated 2026-01-28)
-
-When testing weak vs global symbol resolution with dlopen on OHOS:
-
-**Observation**: When linking only with a weak library (`-lweak`), the undefined symbol in the caller's dynamic symbol table shows as `GLOBAL DEFAULT UND`, not `WEAK`. However, at runtime:
-- The symbol correctly resolves to the WEAK definition
-- If the function is called before `dlopen` of a GLOBAL library, PLT resolves to WEAK
-- After `dlopen` of GLOBAL library, subsequent calls still use the WEAK symbol (PLT doesn't update)
-
-**Key Point**: The symbol binding in `.dynsym` for undefined symbols may show GLOBAL even when they will resolve to WEAK symbols at runtime. The runtime behavior is what matters.
-
-**Test Command**:
-```bash
-# Build and deploy libraries and test program
-# Link test with -lweak only, then dlopen libglobal.so
-# First call returns 2 (WEAK), second call after dlopen still returns 2 (WEAK)
-```
-
-## Additional Resources
-
-- OHOS Native Development Documentation
-- DevEco Studio User Guide
-- For building C/C++ programs, see [working-with-clang.md](../kmp-foundations/working-with-clang.md)
+Linking with -lweak only: .dynsym shows GLOBAL DEFAULT UND, not WEAK. At runtime: resolves to WEAK; before dlopen(GLOBAL) PLT→WEAK; after dlopen still WEAK (PLT doesn't update). Runtime behavior matters; .dynsym may show GLOBAL for undefined that resolve to WEAK.

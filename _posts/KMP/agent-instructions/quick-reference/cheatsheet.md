@@ -1,6 +1,6 @@
-# KMP/OHOS Quick Reference Cheatsheet
+# KMP/OHOS Cheatsheet
 
-## Common Commands
+## Commands
 
 ### Kotlin Native Build
 ```bash

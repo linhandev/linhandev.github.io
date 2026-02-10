@@ -1,10 +1,8 @@
 # Calling OHOS System C APIs from Native Code
 
-This guide describes how to discover, use, and debug OHOS (OpenHarmony/HarmonyOS) system C APIs in a native module (e.g. NAPI shared library in a HAP). **OH_LOG_Print** (HiLog) and **OH_HiTrace** are used as concrete examples throughout.
+How to discover, use, and debug OHOS system C APIs in a native module (e.g. NAPI shared library in a HAP). Examples: **OH_LOG_Print** (HiLog), **OH_HiTrace**.
 
----
-
-## 1. Finding the API profile (signature, header, library)
+## Finding the API profile (signature, header, library)
 
 **Where to look:** The OHOS NDK sysroot shipped with DevEco Studio.
 
@@ -18,18 +16,11 @@ This guide describes how to discover, use, and debug OHOS (OpenHarmony/HarmonyOS
 - **Libraries:** `sysroot/usr/lib/<arch>/`  
   - Architectures: `arm-linux-ohos`, `aarch64-linux-ohos`, `x86_64-linux-ohos`.  
   - NDK libs are usually named `lib<module>_ndk.z.so` (e.g. `libhilog_ndk.z.so`). The header’s `@library` may say `libhilog.so`; for app NDK development use the `*_ndk.z.so` variant.
-  - Note: The @library field in headers may be wrong, use nm to confim the lib actually contains a public symbol with expected name. If not, do a search globbing all so in the sysroot and use nm to list symbols provided by every so to identify which on you need to link to.
+  - Note: @library in headers may be wrong; use nm to confirm the lib has the symbol; if not, glob *.so in sysroot and nm each to find the right one.
 
-**Example — OH_LOG_Print:**
+OH_LOG_Print: Header `sysroot/usr/include/hilog/log.h`, declaration `int OH_LOG_Print(LogType type, LogLevel level, unsigned int domain, const char *tag, const char *fmt, ...);`, library **libhilog_ndk.z.so** (link in CMake).
 
-- **Header:** `sysroot/usr/include/hilog/log.h`
-- **Declaration:**  
-  `int OH_LOG_Print(LogType type, LogLevel level, unsigned int domain, const char *tag, const char *fmt, ...);`
-- **Library:** Header says `@library libhilog.so`; in the NDK sysroot the actual file is **`libhilog_ndk.z.so`** (link this in CMake).
-
----
-
-## 2. Usage documents and examples
+## Usage documents and examples
 
 Doc on official website takes precedence over header file content should they contradict.
 
@@ -58,11 +49,9 @@ Doc on official website takes precedence over header file content should they co
 
 - **Example code:**  
   - In your project: e.g. the entry module’s `entry/src/main/cpp/napi_init.cpp` in a DevEco native sample.  
-  - OpenHarmony GitHub: search the `openharmony` org for the API or module name (e.g. `hilog`, `hitrace`) for native unit tests or demos; C API examples may be in `native` or `ndk` trees.
+  - OpenHarmony GitHub: search `openharmony` org for API/module name for native tests/demos.
 
----
-
-## 3. Headers to include and libs to link
+## Headers to include and libs to link
 
 **Include:**  
 Use the path as in the sysroot, without the sysroot prefix. The build is configured to use the NDK sysroot as include path.
@@ -87,11 +76,9 @@ In the native module’s `CMakeLists.txt`, add the NDK library (name as in sysro
 target_link_libraries(entry PUBLIC libace_napi.z.so libhilog_ndk.z.so libhitrace_ndk.z.so)
 ```
 
-Rule of thumb: header `@library` often says `lib<name>.so`; in the NDK sysroot the file is usually **`lib<name>_ndk.z.so`** (e.g. `libhilog_ndk.z.so`).
+Rule: header often says `lib<name>.so`; in NDK sysroot use **lib<name>_ndk.z.so** when that variant exists (e.g. hilog, hitrace). Some modules ship only **lib<name>.so** (e.g. **libohhicollie.so** for HiCollie).
 
----
-
-## 4. Example: using OH_LOG_Print (HiLog)
+## OH_LOG_Print (HiLog) example
 
 **Call signature (from log.h):**
 
@@ -99,17 +86,7 @@ Rule of thumb: header `@library` often says `lib<name>.so`; in the NDK sysroot t
 int OH_LOG_Print(LogType type, LogLevel level, unsigned int domain, const char *tag, const char *fmt, ...);
 ```
 
-**Parameters:**
-
-- `type`: e.g. `LOG_APP` (app logs).
-- `level`: `LOG_DEBUG`, `LOG_INFO`, `LOG_WARN`, `LOG_ERROR`, `LOG_FATAL`.
-- `domain`: unsigned int (e.g. `LOG_DOMAIN`).
-- `tag`: string (e.g. `LOG_TAG`).
-- `fmt`: printf-style format string.
-
-**Privacy Note (Important):**
-By default, **OHOS redacts variable arguments** in logs, showing them as `<private>`.
-To make them visible, you must use the `%{public}` prefix in your format specifiers.
+Parameters: type (e.g. LOG_APP), level (LOG_DEBUG/INFO/WARN/ERROR/FATAL), domain (unsigned int), tag (string), fmt (printf-style). Privacy: OHOS redacts log args as `<private>` by default; use `%{public}d` / `%{public}s` to show values; `%{private}d` is explicit private.
 
 - `%{public}d`: Public integer.
 - `%{public}s`: Public string.
@@ -126,23 +103,11 @@ OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %d", id);
 OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %{public}d", id);
 ```
 
-**Viewing HiLog on device:** `hdc shell hilog -T <TAG> -x` (use your `LOG_TAG` as `<TAG>`). See [hdc-commands.md](./hdc-commands.md#logs-hilog).
+View HiLog on device: `hdc shell hilog -T <TAG> -x`. See [hdc-commands.md](./hdc-commands.md#logs-hilog).
 
----
+## OH_HiTrace example
 
-## 5. Example: using OH_HiTrace
-
-**Header:** `<hitrace/trace.h>`
-**Library:** `libhitrace_ndk.z.so`
-
-**Common APIs:**
-
-- `OH_HiTrace_BeginChain(const char *name, int flags)`: Starts a tracing chain.
-- `OH_HiTrace_EndChain()`: Ends the current chain.
-- `OH_HiTrace_GetId()`: Gets the current chain ID (struct `HiTraceId`).
-- `OH_HiTrace_GetChainId(const HiTraceId *id)`: Extracts the 64-bit chain ID from the struct.
-
-**Usage Example:**
+Header `<hitrace/trace.h>`, library `libhitrace_ndk.z.so`. APIs: OH_HiTrace_BeginChain(name, flags), OH_HiTrace_EndChain(), OH_HiTrace_GetId(), OH_HiTrace_GetChainId(&id).
 
 ```c
 #include <hitrace/trace.h>
@@ -167,16 +132,22 @@ void TraceExample() {
     OH_HiTrace_EndChain();
 }
 ```
----
 
-## 5. Pitfalls
+## HiCollie (stuck/jank detection)
 
-### Permission denied: two common causes
+Header `hicollie/hicollie.h`, library **libohhicollie.so** (no `_ndk.z` variant). Syscap: SystemCapability.HiviewDFX.HiCollie. @since 12 (SetTimer/CancelTimer/StuckDetectionWithTimeout @since 18).
 
-When an API returns a permission-denied (or similar) error:
+- **OH_HiCollie_Init_StuckDetection(task)** / **OH_HiCollie_Init_StuckDetectionWithTimeout(task, timeout)**: Must be called from a **non-main thread** (HICOLLIE_WRONG_THREAD_CONTEXT otherwise). `timeout` 3–15 s. Task runs periodically on HiCollie’s thread.
+- **OH_HiCollie_Report(isSixSecond)**: Allowed **only** from inside the StuckDetection task callback; otherwise WRONG_THREAD_CONTEXT or REMOTE_FAILED. On emulator, Report may return HICOLLIE_REMOTE_FAILED (29800002); try a real device.
+- **OH_HiCollie_Init_JankDetection(beginFunc, endFunc, param)**: Must be called from a non-main thread. Pass pointers to your begin/end stub functions (both set or both null). Call `beginFunc("eventName")` / `endFunc("eventName")` around each event.
+- **OH_HiCollie_SetTimer(param, &id)** / **OH_HiCollie_CancelTimer(id)**: Use before/after time-consuming work. Do not call from appspawn or native process. Use `HICOLLIE_FLAG_NOOP` to avoid log/recovery on timeout. `param.name` non-empty, `param.timeout` in seconds.
 
-1. **Missing or wrong permission** — You may not have requested the correct permission in the app (e.g. in `module.json5` or the capability/sandbox config). Check the API docs for required permissions and add them.
-2. **Wrong device type** — Some APIs are intended only for certain device types (e.g. PC). Calling such an API on a different device (e.g. phone) can still return permission denied even when the correct permission is applied. If permissions look correct, try the same call on the target device type (e.g. PC emulator or device) to confirm.
+```cmake
+target_link_libraries(entry PUBLIC libace_napi.z.so libhilog_ndk.z.so libohhicollie.so)
+```
 
-### API not availble during runtime
-All apis have @since docstring denoting since which api level they are availble. Use `hdc shell param get const.ohos.apiversion` to check runtime api level, if api level is lower than @since, app would crash.
+## Pitfalls
+
+Permission denied: (1) Missing/wrong permission in app (module.json5, capability/sandbox)—check API docs and add. (2) Wrong device type—some APIs are PC-only; on phone they still return denied; try on target device type.
+
+API not available at runtime: APIs have @since in docs. Check device: `hdc shell param get const.ohos.apiversion`. If runtime API level < @since, app can crash.

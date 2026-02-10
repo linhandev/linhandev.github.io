@@ -1,15 +1,6 @@
-# Agent Guide: Building and Testing Kotlin Native Compiler for OHOS
+# Building and Testing Kotlin Native Compiler for OHOS
 
-This guide covers the complete workflow for building the Kotlin Native compiler and testing it with OHOS targets.
-
-## Table of Contents
-1. [Build Prerequisites](#build-prerequisites)
-2. [Build Process](#build-process)
-3. [Testing Compiled Code](#testing-compiled-code)
-4. [Common Issues and Solutions](#common-issues-and-solutions)
-5. [Development Workflow](#development-workflow)
-
----
+Workflow: build KN compiler, test with OHOS target.
 
 ## Build Prerequisites
 
@@ -21,17 +12,11 @@ This guide covers the complete workflow for building the Kotlin Native compiler 
 
 ### Environment Setup
 
-**OHOS SDK Location** (macOS):
-```
-/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/
-```
-
-**Key Directories**:
+OHOS SDK (macOS): /Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/. Key dirs:
 - Native toolchain: `native/llvm/`
 - Sysroot: `native/sysroot/`
 - Compiler-rt libraries: `native/llvm/lib/clang/15.0.4/lib/aarch64-linux-ohos/`
 
----
 
 ## Build Process
 
@@ -71,7 +56,7 @@ After successful build:
 
 ### Clean Build (When Needed)
 
-**WARNING**: Clean build is expensive (7+ minutes). Only use when necessary:
+Clean build ~7+ min; use only when necessary:
 
 ```bash
 ./gradlew --stop
@@ -90,7 +75,6 @@ After successful build:
 - After simple code changes in Kotlin/C++ files
 - For routine development
 
----
 
 ## Testing Compiled Code
 
@@ -157,7 +141,6 @@ grep -n "define.*main" /tmp/kn_test_temp/out.ll
 grep -c "^define " /tmp/kn_test_temp/out.ll
 ```
 
----
 
 ## Common Issues and Solutions
 
@@ -273,7 +256,6 @@ val exists = JFile("path").exists()  // Method call
 val files = JFile("path").listFiles()  // Method call
 ```
 
----
 
 ## Kotlin Native Configuration System
 
@@ -315,7 +297,6 @@ kotlinc-native test.kt -Xbinary=yourFeature=true
 grep -r "arguments\.yourArgName" kotlin-native/backend.native/
 ```
 
----
 
 ## Development Workflow
 
@@ -384,7 +365,6 @@ kotlinc-native test.kt -target ohos_arm64 -o test \
   -Xdisable-phases=LTOBitcodeOptimization,ModuleBitcodeOptimization
 ```
 
----
 
 ## Architecture Overview
 
@@ -423,23 +403,10 @@ Executable (.kexe) via ld.lld
   - C++ code for LLVM pass integration
   - Exposed to Kotlin via cinterop
 
----
 
-## Testing Checklist
+Verify after change: compiler builds; simple .kt compiles for OHOS; output aarch64; runs on device; no new linker errors; backward compat; reasonable size.
 
-After implementing a change, verify:
-
-- [ ] Compiler builds successfully
-- [ ] Simple Kotlin file compiles for OHOS target
-- [ ] Generated executable has correct architecture (aarch64)
-- [ ] Executable runs on OHOS device (if device available)
-- [ ] No new linker errors introduced
-- [ ] Backward compatibility maintained (old code still compiles)
-- [ ] File sizes are reasonable (check for bloat)
-
----
-
-## Advanced: Cross-Target Testing
+## Cross-target testing
 
 ### Test on macOS (Fast Local Testing)
 
@@ -457,33 +424,6 @@ kotlinc-native test.kt -target ohos_arm64 -o test -g
 
 This two-stage approach catches issues early without needing device access.
 
----
-
 ## Summary
 
-**Build Commands**:
-```bash
-# Incremental build (most common)
-./gradlew :kotlin-native:dist
-
-# Full build (when needed)
-./gradlew --stop
-./gradlew :kotlin-native:dist :kotlin-native:platformLibs:ohos_arm64Install
-
-# Clean build (rarely needed)
-./gradlew --stop
-./gradlew clean
-./gradlew :kotlin-native:dist :kotlin-native:platformLibs:ohos_arm64Install --rerun-tasks
-```
-
-**Test Compilation**:
-```bash
-kotlin-native/dist/bin/kotlinc-native test.kt -target ohos_arm64 -o test -g
-```
-
-**Remember**:
-- Use incremental builds for speed
-- Only clean when absolutely necessary
-- Check dist/bin/ for compiled binaries
-- Use -Xtemporary-files-dir to preserve intermediate files
-- OHOS requires hilog_ndk and unwind for debug builds
+Incremental: `./gradlew :kotlin-native:dist`. Full: add platformLibs:ohos_arm64Install. Clean: --stop, clean, --rerun-tasks. Test: kotlinc-native test.kt -target ohos_arm64 -o test -g. Use -Xtemporary-files-dir for debug. OHOS debug: hilog_ndk, unwind.

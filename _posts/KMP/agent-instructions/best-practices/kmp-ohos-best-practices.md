@@ -56,9 +56,4 @@
 4. Deploy and test on target platform
 5. Iterate based on findings
 
-### Verification Checklist
-- [ ] Compiler builds successfully
-- [ ] Simple test file compiles for target platform
-- [ ] Generated executable has correct architecture
-- [ ] No new linker errors introduced
-- [ ] Backward compatibility maintained
+Verify: compiler builds; test file compiles; correct arch; no new linker errors; backward compat.

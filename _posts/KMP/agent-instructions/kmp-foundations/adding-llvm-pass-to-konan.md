@@ -1,15 +1,6 @@
-# Agent Guide: Adding an LLVM Pass to Kotlin Native Compiler
+# Adding an LLVM Pass to Kotlin Native Compiler
 
-This guide explains how to integrate a new LLVM optimization or instrumentation pass into the Kotlin Native compiler, using the GCOV profiling pass as a reference example. This guide primarily applies to Kotlin 2.0 using the legacy pass manager, on 2.2 with the new pass manager there's simpler ways.
-
-## Table of Contents
-1. [Overview](#overview)
-2. [Implementation Steps](#implementation-steps)
-3. [Pipeline Architecture](#pipeline-architecture)
-4. [Testing Your Pass](#testing-your-pass)
-5. [Advanced Topics](#advanced-topics)
-
----
+Integrate LLVM optimization or instrumentation pass; GCOV as example. Kotlin 2.0 legacy pass manager; 2.2 has simpler options.
 
 ## Overview
 
@@ -28,7 +19,6 @@ To add a pass to Kotlin Native:
 3. **Configuration**: Add compiler option (optional)
 4. **Linker**: Add required runtime libraries (if needed)
 
----
 
 ## Implementation Steps
 
@@ -247,7 +237,6 @@ override fun LinkerArguments.finalLinkCommands(): List<Command> {
 }
 ```
 
----
 
 ## Pipeline Architecture
 
@@ -296,7 +285,6 @@ LLVMPassManager
    - Requires debug metadata
    - Links profile runtime library
 
----
 
 ## Testing Your Pass
 
@@ -357,7 +345,6 @@ grep "attributes.*your_attribute" out.ll
 3. Run and verify behavior
 4. Check runtime artifacts (e.g., .gcda files for coverage)
 
----
 
 ## Advanced Topics
 
@@ -416,7 +403,6 @@ if (featureEnabled) {
 }
 ```
 
----
 
 ## Complete Example: GCOV Profiling Pass
 
@@ -531,7 +517,6 @@ LinkerArguments(
 )
 ```
 
----
 
 ## Advanced Techniques
 
@@ -581,7 +566,6 @@ LinkerArguments(
 )
 ```
 
----
 
 ## Build and Test
 
@@ -619,7 +603,6 @@ llvm-nm libtest.so | grep your_symbol | wc -l
 llvm-nm test.kexe | grep -E "init|writeout|flush"
 ```
 
----
 
 ## Common Patterns
 
@@ -671,7 +654,6 @@ class AnalysisPipeline(...) : LlvmOptimizationPipeline(...) {
 }
 ```
 
----
 
 ## Troubleshooting
 
@@ -722,7 +704,6 @@ ld.lld: error: cannot open libclang_rt.your_lib.a
 - Use DevEco Studio SDK for OHOS-specific libraries
 - Build library from compiler-rt source if needed
 
----
 
 ## Reference: ThreadSanitizer Implementation
 
@@ -764,22 +745,10 @@ when (context.config.sanitizer) {
 }
 ```
 
----
 
 ## Checklist for Adding a Pass
 
-- [ ] C++ function added to CAPIExtensions.h/cpp
-- [ ] Pipeline class created in OptimizationPipeline.kt
-- [ ] Phase registered in Bitcode.kt
-- [ ] Phase execution added to runBitcodePostProcessing()
-- [ ] Configuration option added (if needed)
-- [ ] Runtime libraries linked (if needed)
-- [ ] LinkerArguments updated with new parameters (if needed)
-- [ ] Tested: pass runs and transforms IR
-- [ ] Tested: compiled code works on target device
-- [ ] Tested: backward compatibility (default behavior unchanged)
-
----
+Checklist: C++ in CAPIExtensions.h/cpp; pipeline in OptimizationPipeline.kt; phase in Bitcode.kt; runPhase in runBitcodePostProcessing(); BinaryOptions (if needed); Linker + runtime libs (if needed); LinkerArguments (if needed); test IR, device, backward compat.
 
 ## Summary
 

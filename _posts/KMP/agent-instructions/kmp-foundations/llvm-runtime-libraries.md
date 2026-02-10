@@ -2,9 +2,8 @@
 
 ## Overview
 
-LLVM's compiler-rt provides runtime support libraries for sanitizers, profiling, and other instrumentation. For OHOS targets, dynamic libraries must come from **DevEco Studio SDK sysroot**, for static libraries, Kotlin Native LLVM‘s version is perferred.
+compiler-rt provides runtime support libraries for sanitizers, profiling, and other instrumentation. OHOS: dynamic from DevEco SDK sysroot; static prefer Kotlin Native LLVM.
 
----
 
 ## Library Locations
 
@@ -34,7 +33,6 @@ Kotlin 2.2: ~/.konan/dependencies/llvm-19.1.7-aarch64-macos-ohos-2/lib/clang/19/
 
 **Note**: The oh llvm 12 only has Darwin (macOS/iOS) libraries, **NOT OHOS**.
 
----
 
 ## Finding Libraries at Runtime
 
@@ -64,7 +62,6 @@ override fun provideCompilerRtLibrary(libraryName: String, isDynamic: Boolean): 
 }
 ```
 
----
 
 ## Required OHOS System Libraries
 
@@ -91,7 +88,6 @@ if (codeCoverage) {
 }
 ```
 
----
 
 ## Common Errors and Solutions
 
@@ -125,7 +121,6 @@ Alternatively, add to `konan.properties`, this doesn't require a rebuild thus is
 linkerKonanFlags.ohos_arm64 = ... -lhilog_ndk.z -lunwind
 ```
 
----
 
 ## Verification
 
@@ -154,7 +149,6 @@ llvm-nm test.kexe | grep __llvm_profile
 llvm-nm test.kexe | grep __llvm_gcov
 ```
 
----
 
 ## Summary
 

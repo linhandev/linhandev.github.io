@@ -1,13 +1,6 @@
-# Agent Guide: Building C/C++ Programs for OHOS (OpenHarmony)
+# Building C/C++ Programs for OHOS
 
-This document provides instructions for building C/C++ programs targeting OHOS devices using Clang. For deploying and running executables on devices, see [running-exe-on-ohos.md](../ohos-integration/running-exe-on-ohos.md). Update this if during execution more information concerning this topic is learned and can be useful for future llvm sessions.
-
-## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Key Paths and Locations](#key-paths-and-locations)
-3. [Target Architecture Detection](#target-architecture-detection)
-4. [Build Process](#build-process)
-5. [Common Issues and Solutions](#common-issues-and-solutions)
+Build C/C++ for OHOS with Clang. Deploy/run: [running-exe-on-ohos.md](../ohos-integration/running-exe-on-ohos.md).
 
 ## Prerequisites
 
@@ -76,7 +69,7 @@ clang++ \
   -o output
 ```
 
-Replace `<TARGET_ARCH>` with either `x86_64-linux-ohos` or `aarch64-linux-ohos` based on your device (see [Target Architecture Detection](#target-architecture-detection)).
+Replace <TARGET_ARCH> with x86_64-linux-ohos or aarch64-linux-ohos.
 
 ### Multi-Stage Build (IR -> Object -> Executable)
 
@@ -135,13 +128,9 @@ clang++ \
 - Ensure the `-target` flag matches the device architecture
 - Ensure the `-L` library path points to the correct architecture directory
 
-## Example: Build Workflow
+## Example (aarch64)
 
 ```bash
-# 1. Determine architecture (if device available)
-# See ohos-integration/running-exe-on-ohos.md for device connection and architecture detection
-
-# 2. Build (example for aarch64)
 clang++ \
   --sysroot /Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot \
   main.cpp \
@@ -150,9 +139,3 @@ clang++ \
   -resource-dir /Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/lib/clang/15.0.4 \
   -o main
 ```
-
-## Additional Resources
-
-- OHOS Native Development Documentation
-- DevEco Studio User Guide
-- For deploying and running executables, see [running-exe-on-ohos.md](../ohos-integration/running-exe-on-ohos.md)
