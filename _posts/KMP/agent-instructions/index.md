@@ -49,6 +49,7 @@ Guide for working with LLVM's compiler-rt runtime libraries on OHOS targets. Cov
 **Build C/C++ for OHOS**: [working-with-clang.md](./kmp-foundations/working-with-clang.md)  
 **Build OHOS HAP from CLI**: [building-ohos-hap-from-cli.md](./ohos-integration/building-ohos-hap-from-cli.md)  
 **Call OHOS native API**: [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md)  
+**View HiLog by tag**: `hdc shell hilog -T <TAG> -x` (see [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md#viewing-hilog-on-device))  
 **Deploy to Device**: [running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md)  
 **Find .so on device**: [ohos-device-layout.md](./ohos-integration/ohos-device-layout.md)  
 **Build Kotlin Native**: [working-with-kotlin-native-compiler.md](./working-with-kotlin-native-compiler.md)  

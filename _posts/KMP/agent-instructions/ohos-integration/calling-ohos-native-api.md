@@ -118,6 +118,14 @@ OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %d", id);
 OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %{public}d", id);
 ```
 
+**Viewing HiLog on device:** Use HDC to stream logs filtered by tag (e.g. the same string as your `LOG_TAG`):
+
+```bash
+hdc shell hilog -T CAPI_TEST -x
+```
+
+Replace `CAPI_TEST` with your tag (e.g. `MyModule`). The `-x` option excludes other tags so you see only logs from that tag.
+
 ---
 
 ## 5. Example: using OH_HiTrace

@@ -32,6 +32,13 @@ hdc std -t <device-id> file send test.kexe /data/test.kexe
 hdc std -t <device-id> shell "chmod 755 /data/test.kexe && /data/test.kexe"
 ```
 
+### View HiLog by tag
+```bash
+# Stream device logs for a specific tag only (-x excludes others)
+hdc shell hilog -T CAPI_TEST -x
+```
+Replace `CAPI_TEST` with your `LOG_TAG` (e.g. from OH_LOG_Print).
+
 ## Key Directories
 - **Compiler binaries**: `kotlin-native/dist/bin/`
 - **Platform libraries**: `kotlin-native/dist/konan/targets/ohos_arm64/`
