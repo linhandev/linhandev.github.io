@@ -40,6 +40,21 @@ Note: The @library field in headers may be wrong, use nm to confim the lib actua
   `https://developer.huawei.com/consumer/cn/doc/search?type=all&val=<api_name>`  
   e.g. `val=oh_log_print` or `val=OH_LOG_Print`.
 
+- **HarmonyOS doc URL convention (direct API page):**  
+  Reference pages for native C APIs follow a predictable pattern.  
+  **Base:** `https://developer.huawei.com/consumer/cn/doc/`  
+  **Page path:** `harmonyos-references/capi-<header-slug>-h`  
+  **Anchor:** `#<api_lowercase>` (optional; links to a specific API on the page).
+
+  - **Header → slug:** Use the header **basename** (no directory). Replace underscores with hyphens and append `-h`.  
+    Example: `native_interface_bundle.h` → `capi-native-interface-bundle-h`.
+  - **API → anchor:** C API symbol in **lowercase**, underscores unchanged.  
+    Example: `OH_NativeBundle_GetAbilityResourceInfo` → `oh_nativebundle_getabilityresourceinfo`.
+
+  **Full example:**  
+  `https://developer.huawei.com/consumer/cn/doc/harmonyos-references/capi-native-interface-bundle-h#oh_nativebundle_getabilityresourceinfo`  
+  (API `OH_NativeBundle_GetAbilityResourceInfo` from `native_interface_bundle.h`).
+
 - **In-header documentation:**  
   Headers use Doxygen-style `@brief`, `@param`, `@return`, `@since`, and often **sample code** in the file comment (e.g. in `hilog/log.h`: define `LOG_DOMAIN`, `LOG_TAG`, then call `OH_LOG_Print` or macros like `OH_LOG_INFO`).
 
@@ -118,13 +133,7 @@ OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %d", id);
 OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "User ID: %{public}d", id);
 ```
 
-**Viewing HiLog on device:** Use HDC to stream logs filtered by tag (e.g. the same string as your `LOG_TAG`):
-
-```bash
-hdc shell hilog -T CAPI_TEST -x
-```
-
-Replace `CAPI_TEST` with your tag (e.g. `MyModule`). The `-x` option excludes other tags so you see only logs from that tag.
+**Viewing HiLog on device:** `hdc shell hilog -T <TAG> -x` (use your `LOG_TAG` as `<TAG>`). See [hdc-commands.md](./hdc-commands.md#logs-hilog).
 
 ---
 
@@ -248,3 +257,30 @@ void TestAVRecorder() {
     if (fd >= 0) close(fd);
 }
 ```
+
+---
+
+## 5. Tips for Specific APIs
+
+### Permission denied: two common causes
+
+When an API returns a permission-denied (or similar) error:
+
+1. **Missing or wrong permission** — You may not have requested the correct permission in the app (e.g. in `module.json5` or the capability/sandbox config). Check the API docs for required permissions and add them.
+2. **Wrong device type** — Some APIs are intended only for certain device types (e.g. PC). Calling such an API on a different device (e.g. phone) can still return permission denied even when the correct permission is applied. If permissions look correct, try the same call on the target device type (e.g. PC emulator or device) to confirm.
+
+**Checking device API level / device type:** Use `hdc shell param get const.ohos.apiversion` and `hdc shell param get const.product.devicetype`. See [hdc-commands.md](./hdc-commands.md#device-properties-param).
+
+### BundleManager (OH_NativeBundle)
+
+*   **Permissions**: Some APIs like `OH_NativeBundle_GetAbilityResourceInfo` require system permissions (e.g., `ohos.permission.GET_ABILITY_INFO`). If called from a normal application, they may return error code `201` (`BUNDLE_MANAGER_ERROR_CODE_PERMISSION_DENIED`). That is not considered a successful call.
+*   **Opaque Structs**: For APIs returning opaque structs (e.g., `OH_NativeBundle_AbilityResourceInfo`), check if there is a `GetSize` function (e.g., `OH_NativeBundle_GetSize`). This size is needed to iterate over arrays of these structs if the API returns a pointer to the first element but specifies a count.
+    *   Example iteration:
+        ```c
+        int structSize = OH_NativeBundle_GetSize();
+        for (size_t i = 0; i < count; i++) {
+            OH_NativeBundle_AbilityResourceInfo* item = 
+                (OH_NativeBundle_AbilityResourceInfo*)((char*)array + i * structSize);
+            // Use item...
+        }
+        ```

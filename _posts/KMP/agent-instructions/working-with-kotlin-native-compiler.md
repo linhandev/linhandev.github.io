@@ -333,7 +333,7 @@ grep -r "arguments\.yourArgName" kotlin-native/backend.native/
 kotlin-native/dist/bin/kotlinc-native test.kt -target ohos_arm64 -o test -g
 ```
 
-4. **Deploy to device** (see [ohos-integration/running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md) for hdc commands)
+4. **Deploy to device** (see [ohos-integration/running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md) and [ohos-integration/hdc-commands.md](./ohos-integration/hdc-commands.md))
 
 5. **Iterate**:
    - If compilation fails → check error, fix code, rebuild

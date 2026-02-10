@@ -14,6 +14,11 @@ Guide for building C/C++ programs targeting OHOS devices using Clang. Covers com
 
 How to build an OpenHarmony/HarmonyOS HAP from the CLI when the app includes a Kotlin/Native shared library. References the L33 task block in `kotlinApp/build.gradle.kts` (publish binaries, startHarmonyApp). Covers one-command Gradle flow, required `gradle.properties`, HAP output location, and optional manual hvigor steps.
 
+### [hdc-commands.md](./ohos-integration/hdc-commands.md)
+**HDC (OHOS Device Connector) Commands**
+
+Single reference for all HDC commands: service/targets, file transfer, shell, HiLog, device params (API level, device type), app install and launch. Other guides use HDC and link here.
+
 ### [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md)
 **Calling OHOS System C APIs from Native Code**
 
@@ -49,7 +54,8 @@ Guide for working with LLVM's compiler-rt runtime libraries on OHOS targets. Cov
 **Build C/C++ for OHOS**: [working-with-clang.md](./kmp-foundations/working-with-clang.md)  
 **Build OHOS HAP from CLI**: [building-ohos-hap-from-cli.md](./ohos-integration/building-ohos-hap-from-cli.md)  
 **Call OHOS native API**: [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md)  
-**View HiLog by tag**: `hdc shell hilog -T <TAG> -x` (see [calling-ohos-native-api.md](./ohos-integration/calling-ohos-native-api.md#viewing-hilog-on-device))  
+**HDC commands** (device, shell, hilog, install): [hdc-commands.md](./ohos-integration/hdc-commands.md)  
+**View HiLog by tag**: [hdc-commands.md#logs-hilog](./ohos-integration/hdc-commands.md#logs-hilog)  
 **Deploy to Device**: [running-exe-on-ohos.md](./ohos-integration/running-exe-on-ohos.md)  
 **Find .so on device**: [ohos-device-layout.md](./ohos-integration/ohos-device-layout.md)  
 **Build Kotlin Native**: [working-with-kotlin-native-compiler.md](./working-with-kotlin-native-compiler.md)  

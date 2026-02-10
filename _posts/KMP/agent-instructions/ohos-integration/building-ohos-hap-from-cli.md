@@ -8,7 +8,7 @@ For a reference implementation of the same flow in Gradle, see [kn_samples kotli
 
 ## Prerequisites
 
-- **DevEco Studio** installed (e.g. `/Applications/DevEco-Studio.app` on macOS). All commands use the tools bundled inside it: **node**, **ohpm**, **hvigor**, **hdc**.
+- **DevEco Studio** installed (e.g. `/Applications/DevEco-Studio.app` on macOS). All commands use the tools bundled inside it: **node**, **ohpm**, **hvigor**, **hdc** (see [hdc-commands.md](./hdc-commands.md)).
 - Your **Harmony/OHOS app** project on disk (the directory that contains `AppScope/`, `entry/` or your module(s), `build-profile.json5`, `hvigorfile.ts`, `oh-package.json5`, etc.).
 - If the app uses a **Kotlin/Native shared library**: build the `.so` and copy it (and any header) into the Harmony app’s expected paths **before** running the HAP build steps below. The commands here only build the HAP from the Harmony project.
 
@@ -110,9 +110,9 @@ On success, hvigor writes the HAP under the entry module’s build output (see b
 
 ---
 
-## Step 4 (optional): Install HAP to device via hdc
+## Step 4 (optional): Install HAP to device
 
-Connect the device, then install the HAP using **hdc** from the DevEco SDK:
+Connect the device, then install the HAP (HDC usage: [hdc-commands.md](./hdc-commands.md#app-install-and-launch)):
 
 ```bash
 # Typical HAP output directory (entry module name "entry" and product "default")
@@ -139,7 +139,7 @@ Adjust `HAP_DIR` / `entry-default-*.hap` if your module or product name differs 
 
 ## Step 5 (optional): Launch the app on the device
 
-After installing, start the ability by bundle and ability name:
+After installing, start the ability (see [hdc-commands.md](./hdc-commands.md#app-install-and-launch)):
 
 ```bash
 # Replace with your app’s bundle name and main ability name (e.g. from AppScope/app.json5 and module.json5)
@@ -209,5 +209,5 @@ echo "HAP output: $HARMONY_APP_DIR/$ENTRY_MODULE_DIR/build/default/outputs/defau
 
 - You do **not** need the Gradle task from [kn_samples](https://github.com/linhandev/kn_samples/blob/gcov/kotlinApp/build.gradle.kts#L33); that script is only a reference for the same sequence.
 - **Build HAP**: set `DEVECO_DIR`, `HARMONY_APP_DIR`, `BUILD_MODE`, `ENTRY_MODULE`, then run **Step 1** (ohpm install), **Step 2** (hvigor sync), **Step 3** (hvigor assembleHap). The HAP appears under the entry module’s `build/default/outputs/default/`.
-- **Install/run**: use **Step 4** (hdc install) and **Step 5** (hdc shell aa start) with your bundle and ability names.
+- **Install/run**: use **Step 4** and **Step 5** with your bundle and ability names (commands in [hdc-commands.md](./hdc-commands.md)).
 - If your app uses Kotlin/Native, build the shared library and copy the `.so` (and headers) into the Harmony project **before** running these steps.

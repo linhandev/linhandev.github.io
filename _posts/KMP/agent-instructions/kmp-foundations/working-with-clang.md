@@ -58,13 +58,7 @@ OHOS supports two architectures:
 - **x86_64-linux-ohos**: Used for x86 emulators
 - **aarch64-linux-ohos**: Used for ARM64 emulators and real devices
 
-To determine which architecture your device uses, run:
-
-```bash
-hdc shell uname -a
-```
-
-This will output system information including the architecture. Use the appropriate target architecture in your build commands:
+To determine which architecture your device uses, run `hdc shell uname -a`. Use the appropriate target architecture in your build commands:
 - For x86 emulators: `-target x86_64-linux-ohos`
 - For ARM64 emulators and real devices: `-target aarch64-linux-ohos`
 
