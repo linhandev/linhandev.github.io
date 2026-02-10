@@ -9,7 +9,7 @@ This guide describes how to discover, use, and debug OHOS (OpenHarmony/HarmonyOS
 **Where to look:** The OHOS NDK sysroot shipped with DevEco Studio.
 
 - **Typical sysroot path (macOS):**  
-  `$DEVECO_DIR/Contents/sdk/default/openharmony/native/sysroot`  
+  `$DEVECO_DIR/Contents/sdk/default/openharmony/native/sysroot` and `$DEVECO_DIR/Contents/sdk/default/hms/native/sysroot`
   e.g. `/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot`
 
 - **Headers:** `sysroot/usr/include/`  
@@ -18,6 +18,7 @@ This guide describes how to discover, use, and debug OHOS (OpenHarmony/HarmonyOS
 - **Libraries:** `sysroot/usr/lib/<arch>/`  
   - Architectures: `arm-linux-ohos`, `aarch64-linux-ohos`, `x86_64-linux-ohos`.  
   - NDK libs are usually named `lib<module>_ndk.z.so` (e.g. `libhilog_ndk.z.so`). The header’s `@library` may say `libhilog.so`; for app NDK development use the `*_ndk.z.so` variant.
+  - Note: The @library field in headers may be wrong, use nm to confim the lib actually contains a public symbol with expected name. If not, do a search globbing all so in the sysroot and use nm to list symbols provided by every so to identify which on you need to link to.
 
 **Example — OH_LOG_Print:**
 
@@ -26,19 +27,11 @@ This guide describes how to discover, use, and debug OHOS (OpenHarmony/HarmonyOS
   `int OH_LOG_Print(LogType type, LogLevel level, unsigned int domain, const char *tag, const char *fmt, ...);`
 - **Library:** Header says `@library libhilog.so`; in the NDK sysroot the actual file is **`libhilog_ndk.z.so`** (link this in CMake).
 
-Note: The @library field in headers may be wrong, use nm to confim the lib actually contains a public symbol with expected name. If not, do a search globbing all so in the sysroot and use nm to list symbols provided by a so.
-
-**System capability (optional):**  
-`native/ndk_system_capability.json` in the SDK maps NDK library names to `SystemCapability.*` (e.g. `hilog_ndk` → `SystemCapability.HiviewDFX.HiLog`). Useful for understanding permissions/capabilities.
-
 ---
 
 ## 2. Usage documents and examples
 
-- **Official API docs:**  
-  Huawei Developer:  
-  `https://developer.huawei.com/consumer/cn/doc/search?type=all&val=<api_name>`  
-  e.g. `val=oh_log_print` or `val=OH_LOG_Print`.
+Doc on official website takes precedence over header file content should they contradict.
 
 - **HarmonyOS doc URL convention (direct API page):**  
   Reference pages for native C APIs follow a predictable pattern.  
@@ -54,6 +47,11 @@ Note: The @library field in headers may be wrong, use nm to confim the lib actua
   **Full example:**  
   `https://developer.huawei.com/consumer/cn/doc/harmonyos-references/capi-native-interface-bundle-h#oh_nativebundle_getabilityresourceinfo`  
   (API `OH_NativeBundle_GetAbilityResourceInfo` from `native_interface_bundle.h`).
+
+- **Site wide search:**  
+  Huawei Developer:  
+  `https://developer.huawei.com/consumer/cn/doc/search?type=all&val=<api_name>`  
+  e.g. `val=oh_log_print` or `val=OH_LOG_Print`.
 
 - **In-header documentation:**  
   Headers use Doxygen-style `@brief`, `@param`, `@return`, `@since`, and often **sample code** in the file comment (e.g. in `hilog/log.h`: define `LOG_DOMAIN`, `LOG_TAG`, then call `OH_LOG_Print` or macros like `OH_LOG_INFO`).
@@ -78,12 +76,7 @@ Use the path as in the sysroot, without the sysroot prefix. The build is configu
 `LOG_DOMAIN` and `LOG_TAG` are optional but recommended; if not defined, the header defaults `LOG_TAG` to `NULL`.
 
 ```c
-#ifndef LOG_TAG
 #define LOG_TAG "MyModule"
-#endif
-#ifndef LOG_DOMAIN
-#define LOG_DOMAIN 0x0201   // hex, 0x0–0xFFFF
-#endif
 #include "hilog/log.h"
 ```
 
@@ -174,93 +167,9 @@ void TraceExample() {
     OH_HiTrace_EndChain();
 }
 ```
-
 ---
 
-## 6. Example: using OH_AVRecorder
-
-**Header:**
-```c
-#include <multimedia/player_framework/avrecorder.h>
-#include <multimedia/player_framework/avrecorder_base.h>
-#include <native_window/external_window.h>
-```
-
-**Library:** `libavrecorder.so`, `libnative_window.so`
-
-**Common APIs:**
-
-- `OH_AVRecorder_Create()`: Creates a recorder instance.
-- `OH_AVRecorder_Prepare(recorder, &config)`: Prepares the recorder with configuration.
-- `OH_AVRecorder_Start(recorder)`: Starts recording.
-- `OH_AVRecorder_GetInputSurface(recorder, &window)`: Gets the input surface for video recording.
-
-**Usage Example:**
-
-```c
-#include <multimedia/player_framework/avrecorder.h>
-#include <multimedia/player_framework/avrecorder_base.h>
-#include <native_window/external_window.h>
-#include <fcntl.h>
-
-void TestAVRecorder() {
-    // 1. Create Recorder
-    OH_AVRecorder *recorder = OH_AVRecorder_Create();
-    
-    // 2. Set Callbacks (optional but recommended)
-    OH_AVRecorder_SetStateCallback(recorder, OnStateChange, nullptr);
-    OH_AVRecorder_SetErrorCallback(recorder, OnError, nullptr);
-
-    // 3. Configure
-    OH_AVRecorder_Config config;
-    config.audioSourceType = AVRECORDER_MIC;
-    config.videoSourceType = AVRECORDER_SURFACE_YUV;
-    
-    // ... set profile settings (bitrate, codecs, etc.) ...
-    config.profile.audioBitrate = 48000;
-    config.profile.audioChannels = 2;
-    config.profile.audioCodec = AVRECORDER_AUDIO_AAC;
-    config.profile.audioSampleRate = 48000;
-    config.profile.audioChannels = 2; // Fixed duplicate in my thought, code is fine
-    config.profile.fileFormat = AVRECORDER_CFT_MPEG_4;
-    config.profile.videoBitrate = 1000000;
-    config.profile.videoCodec = AVRECORDER_VIDEO_AVC;
-    config.profile.videoFrameWidth = 640;
-    config.profile.videoFrameHeight = 480;
-    config.profile.videoFrameRate = 30;
-
-    // File URL: Use "fd://" pattern with a file descriptor
-    // Note: path must be writable by the app
-    int fd = open("/data/storage/el2/base/hap/entry/files/test.mp4", O_RDWR | O_CREAT | O_TRUNC, 0666);
-    char url[256];
-    snprintf(url, sizeof(url), "fd://%d", fd);
-    config.url = url;
-    config.fileGenerationMode = AVRECORDER_APP_CREATE;
-
-    // 4. Prepare
-    OH_AVErrCode ret = OH_AVRecorder_Prepare(recorder, &config);
-    if (ret == AV_ERR_OK) {
-        // 5. Get Input Surface (if video source is surface)
-        OHNativeWindow *window = nullptr;
-        OH_AVRecorder_GetInputSurface(recorder, &window);
-        
-        // 6. Start
-        OH_AVRecorder_Start(recorder);
-        
-        // ... record ...
-        
-        // 7. Stop and Release
-        OH_AVRecorder_Stop(recorder);
-    }
-    
-    OH_AVRecorder_Release(recorder);
-    if (fd >= 0) close(fd);
-}
-```
-
----
-
-## 5. Tips for Specific APIs
+## 5. Pitfalls
 
 ### Permission denied: two common causes
 
@@ -269,18 +178,5 @@ When an API returns a permission-denied (or similar) error:
 1. **Missing or wrong permission** — You may not have requested the correct permission in the app (e.g. in `module.json5` or the capability/sandbox config). Check the API docs for required permissions and add them.
 2. **Wrong device type** — Some APIs are intended only for certain device types (e.g. PC). Calling such an API on a different device (e.g. phone) can still return permission denied even when the correct permission is applied. If permissions look correct, try the same call on the target device type (e.g. PC emulator or device) to confirm.
 
-**Checking device API level / device type:** Use `hdc shell param get const.ohos.apiversion` and `hdc shell param get const.product.devicetype`. See [hdc-commands.md](./hdc-commands.md#device-properties-param).
-
-### BundleManager (OH_NativeBundle)
-
-*   **Permissions**: Some APIs like `OH_NativeBundle_GetAbilityResourceInfo` require system permissions (e.g., `ohos.permission.GET_ABILITY_INFO`). If called from a normal application, they may return error code `201` (`BUNDLE_MANAGER_ERROR_CODE_PERMISSION_DENIED`). That is not considered a successful call.
-*   **Opaque Structs**: For APIs returning opaque structs (e.g., `OH_NativeBundle_AbilityResourceInfo`), check if there is a `GetSize` function (e.g., `OH_NativeBundle_GetSize`). This size is needed to iterate over arrays of these structs if the API returns a pointer to the first element but specifies a count.
-    *   Example iteration:
-        ```c
-        int structSize = OH_NativeBundle_GetSize();
-        for (size_t i = 0; i < count; i++) {
-            OH_NativeBundle_AbilityResourceInfo* item = 
-                (OH_NativeBundle_AbilityResourceInfo*)((char*)array + i * structSize);
-            // Use item...
-        }
-        ```
+### API not availble during runtime
+All apis have @since docstring denoting since which api level they are availble. Use `hdc shell param get const.ohos.apiversion` to check runtime api level, if api level is lower than @since, app would crash.
