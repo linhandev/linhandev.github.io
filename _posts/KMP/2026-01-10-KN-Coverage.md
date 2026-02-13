@@ -18,7 +18,7 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
 - JaCoCo：https://www.jacoco.org/jacoco/trunk/doc/flow.html
     - java bytecode上插桩；只识别至少执行了一次，不记次数；byte array记录执行情况 + 离线分析
     - 文档声称影响：30% codesize，10%性能
-        ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:50:22.410Z-image.png)
+        ![alt text](/assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:50:22.410Z-image.png)
 - Kover：https://github.com/Kotlin/kotlinx-kover
     - Collection of code coverage through JVM tests (**JS and native targets are not supported yet**).
     - 随kotlin 1.6发布，卖点是更好的KMP集成和对kotlin inline之类的语法做了针对性优化
@@ -34,7 +34,7 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
         - https://llvm.org/docs/CoverageMappingFormat.html
         - https://llvm.org/docs/InstrProfileFormat.html
         - https://clang.llvm.org/docs/SourceBasedCodeCoverage.html
-            ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:16.811Z-image.png)
+            ![alt text](/assets/img/post/2026-01-10-KN-Coverage/2026-01-16T09:52:16.811Z-image.png)
         - 版本历史
             [这里](https://github.com/llvm/llvm-project/blob/main/llvm/include/llvm/ProfileData/Coverage/CoverageMapping.h#L1440)定义的版本枚举
 
@@ -70,7 +70,7 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
      - 源码对应关系是和dwarf独立的另一套数据，便于针对 Kotlin 语法进行调整
    - 缺点
      - 需要实现根据 Kotlin IR 给 LLVM IR 添加 __llvm_coverage_mapping ，工作量大，升级 LLVM 复杂
-        ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/image.png)
+        ![alt text](/assets/img/post/2026-01-10-KN-Coverage/image.png)
         https://excalidraw.com/#json=aaQDMU02N7k53sisqFP_Z,HG6qXqnoE3cvnF9dwZHk1Q
 
 - Kover作为JB专门为KMP开发的框架也没做到Kotlin IR上，Kotlin IR上实现难度应该较高
@@ -87,7 +87,7 @@ description: 探索 Kotlin/Native 代码覆盖率实现方案，对比 Kotlin IR
     freeCompilerArgs += "-Xbinary=coverage=true"
     ```
 - 大规模项目编译时，bc到o代码生成阶段gcov相关的函数寄存器优化耗时极长，跳过相关步骤后构建耗时大致为不开插桩时的一倍
-    ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/image-1.png)
+    ![alt text](/assets/img/post/2026-01-10-KN-Coverage/image-1.png)
 
 ## LLVM gcov 原理
 
@@ -297,7 +297,7 @@ python -m gcovr --html --html-details --output out/coverage.html --root [项目�
   --gcov-ignore-errors=output_error \
   --gcov-ignore-errors=no_working_dir_found [包含gcno，gcda文件的路径]
 ```
-![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-27T19:03:42.631Z-image.png)
+![alt text](/assets/img/post/2026-01-10-KN-Coverage/2026-01-27T19:03:42.631Z-image.png)
 
 json报告中有行/分支/函数覆盖率
 
@@ -574,7 +574,7 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
 
 - inline
   https://youtu.be/jNu5LY9HIbw?t=278 （jacoco 24年已经[支持了](https://github.com/jacoco/jacoco/pull/1670)）
-  ![alt text](../../assets/img/post/2026-01-10-KN-Coverage/2026-01-16T10:02:31.117Z-image.png)
+  ![alt text](/assets/img/post/2026-01-10-KN-Coverage/2026-01-16T10:02:31.117Z-image.png)
 
 - 异常
 
@@ -587,4 +587,4 @@ lcov --gcov-tool /tmp/llvm_cov_wrapper.sh \
 - 补全edge case，分析原因，解决方法
 
 ## Related
-- [2023 LLVM Dev Mtg - Using Clang's source-based code coverage at scale]([text](https://www.youtube.com/watch?v=RlySdMe3Eg0))
+- [2023 LLVM Dev Mtg - Using Clang's source-based code coverage at scale](https://www.youtube.com/watch?v=RlySdMe3Eg0)
