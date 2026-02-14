@@ -177,6 +177,26 @@ libraryPaths = src/nativeInterop/add
 linkerOpts = --exclude-libs=libadd.a
 ```
 
+这个选项在最终出so的ld步骤上生效，简单尝试时也可以在编出so的应用工程中添加
+
+```kotlin
+kotlin {
+    ohosArm64("ohosArm64") {
+        compilations.getByName("main") {
+            defaultSourceSet.dependencies {
+                implementation("com.example:add-ohosarm64:1.0-SNAPSHOT")
+            }
+        }
+        binaries {
+            sharedLib {
+                baseName = "c2k"
++                linkerOpts("--exclude-libs=libadd.a")
+            }
+        }
+    }
+}
+```
+
 在 dynsym 中看不到 addCFun 和 deadFun 后，会发现他们仍在 symtab 中，deadFun 仍没被删除。这是因为在静态库中这两个符号被打包到了同一个.text section中，这样 addCFun 有用就是这个section有用，保留这个 section 就导致 deadFun 被保留。针对这种情况需要在编译静态库时添加 -ffunction-sections 和 -fdata-sections，让所有函数和一些全局/静态变量被打进独立的section，可以独立进行删除。
 
 ```diff
@@ -188,6 +208,27 @@ cd add/src/nativeInterop/add
     -O3 -fPIC \
 +    -ffunction-sections -fdata-sections \
     -c add.c -o add.o
+```
+
+开启两个section选项后可以看到有多个 .text.函数名 的section，说明选项生效
+
+```shell
+➜  kn_samples git:(static-cinterop-codesize) ✗ llvm-readelf -S '/Users/ohoskt/git/sample/kn_samples/add/src/nativeInterop/add/libadd.a'
+
+File: /Users/ohoskt/git/sample/kn_samples/add/src/nativeInterop/add/libadd.a(add.o)
+There are 9 section headers, starting at offset 0x1c0:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+  [ 1] .strtab           STRTAB          0000000000000000 000150 00006f 00      0   0  1
+  [ 2] .text             PROGBITS        0000000000000000 000040 000000 00  AX  0   0  4
+  [ 3] .text.addCFun     PROGBITS        0000000000000000 000040 000008 00  AX  0   0  4
+  [ 4] .text.deadFun     PROGBITS        0000000000000000 000048 000004 00  AX  0   0  4
+  [ 5] .comment          PROGBITS        0000000000000000 00004c 000059 01  MS  0   0  1
+  [ 6] .note.GNU-stack   PROGBITS        0000000000000000 0000a5 000000 00      0   0  1
+  [ 7] .llvm_addrsig     LLVM_ADDRSIG    0000000000000000 000150 000000 00   E  8   0  1
+  [ 8] .symtab           SYMTAB          0000000000000000 0000a8 0000a8 18      1   5  8
 ```
 
 cmake中选项通过 `target_compile_options(add PRIVATE -ffunction-sections -fdata-sections)` 添加

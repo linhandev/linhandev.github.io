@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Rewrite relative image paths in staged markdown to root-relative for Jekyll.
+# e.g. ](../../assets/img/post/...) -> ](/assets/img/post/...)
+set -e
+
+staged_md=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$' || true)
+[[ -z "$staged_md" ]] && exit 0
+
+for f in $staged_md; do
+  [[ -f "$f" ]] || continue
+  if grep -qE '\]\(\.\./.*assets/img/post/' "$f" 2>/dev/null; then
+    if sed -E 's|\]\((\.\./)+assets/|\](/assets/|g' "$f" > "${f}.tmp"; then
+      mv "${f}.tmp" "$f"
+      git add "$f"
+    fi
+  fi
+done
+exit 0
