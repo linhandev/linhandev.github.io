@@ -11,7 +11,7 @@ tags:
 description: 介绍 KN 通过 cinterop 引入静态库时如何避免死代码进入最终 so：用 --exclude-libs 不导出静态库符号，并用 -ffunction-sections/-fdata-sections 编译静态库以配合 --gc-sections 做链接期死代码删除。
 ---
 
-KN项目可以通过cinterop引入动态/静态库，引入的静态库会被链接进KN的产物so中，链接时能做的codesize优化比较有限，可能引入一些死代码。如果cinterop引入的静态库只提供给KN调用，可以使用不导出+gc-section的方式删除死代码。
+KN项目可以通过cinterop引入动态/静态库，引入的静态库会被链接进KN的产物so中，链接时能做的codesize优化比较有限，可能引入一些死代码。如果cinterop引入的静态库**只提供给Kotlin代码调用**，可以使用不导出+gc-section的方式删除死代码。
 
 ## demo项目
 
@@ -155,6 +155,19 @@ Symbol table '.dynsym' contains 199 entries:
 
 实际的场景 deadFun 可能是静态库中没有用到的一些功能，打进kn的so会增加包体积，相关的死代码和有被调用的代码进入一个page的话，会被一起交换进物理内存，增加内存占用
 
+## 检查优化机会
+
+有两个维度
+1. 静态库中有 .o 没有开启 -ffunction-sections， -fdata-sections
+2. 静态库中有 GLOBAL/WEAK DEFAULT 的符号
+
+检查步骤
+1. 出so的项目中添加 `freeCompilerArgs += "-Xverbose-phases=Linker"` ，打release so，过程中会打印ld命令输出
+    - ld命令中应当包含 --gc-sections
+2. 找到命令中所有的 .a，逐个使用[脚本](https://github.com/linhandev/kn_samples/blob/static-cinterop-codesize/check_archive.py)进行检查
+    python check_archive.py xx.a
+    - 脚本显示 No action required for the archive 说明以上两个维度都没有看到优化机会
+
 ## 优化方案
 
 > 优化方案的一个关键假设是这些静态库中提供给kotlin代码调用的方法**全都不需要**再从kn的so开放出去，给其他 c/cpp 调用。
@@ -167,7 +180,20 @@ Symbol table '.dynsym' contains 199 entries:
 1. 精确的gc root
 2. 尽可能小的elf section
 
-对一个so来说动态符号表中 GLOBAL/WEAK DEFAULT 的，开放给其他so调用的函数明显是要保留完整实现的，这些函数递归往下用到的所有其他函数和数据也都要保留。因此导出过多的符号会导致so中存在无效代码。当然也要注意正确性，如果实际用到了的符号没有导出，调用时会发生无法catch的崩溃。在cinterop静态库的场景下可以在def中添加 --exclude-libs 控制静态库中的符号不从最终的so中导出
+对一个so来说动态符号表中 GLOBAL/WEAK DEFAULT 的，开放给其他so调用的函数明显是要保留完整实现的，这些函数递归往下用到的所有其他函数和数据也都要保留。因此导出过多的符号会导致so中存在无效代码。当然也要注意正确性，如果实际用到了的符号没有导出，调用时会发生无法catch的崩溃。减少不必要的导出可以在编译时或链接时控制
+
+如果库是自己打出来的推荐在编译时间添加 -fvisibility=hidden，这样静态库中的符号会是 GLOBAL/WEAK LOCAL 的，LOCAL符号只对编译时一起静态链接的其他o可见，不对运行时动态链接一起加载的其他so可见，所以在出so时LOCAL符号就能看到全局，判断没用到就可以删除
+
+```shell
+"${LLVM_BIN}/clang" \
+      --sysroot "${SYSROOT}" \
+      --target=aarch64-linux-ohos \
+      -O3 -fPIC \
++      -fvisibility=hidden \
+      -c add.c -o add.o
+```
+
+如果不控制库的打包流程可以在链接时将静态库通过 --exclude-libs 设置为不导出
 
 ```
 package = add

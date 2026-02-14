@@ -43,7 +43,3 @@ llvm-as：ll -> bc
 
 clang bc -> o, cc1 显示pass信息 -mllvm -time-passes -mllvm -debug-pass=Executions
 
-仓库
-- kba：https://mirrors.tencent.com/nexus/repository/maven-tencent
-- oh：https://maven.eazytec-cloud.com/nexus/repository/maven-public
-- 腾讯代理：https://mirrors.tencent.com/nexus/repository/maven-public/
