@@ -101,6 +101,7 @@ mkdir code
 cd code
 git clone https://gitcode.com/CPF-KMP-CMP/kotlin.git
 
+cd kotlin
 bash scripts/build-ohos.sh 
 ```
 
@@ -114,4 +115,21 @@ tart export kt22 ./kotlin-2.2.21-macos-26.2-built.tvm
 # 从文件导入为新名字的 VM
 tart import ./kotlin-2.2.21-macos-26.2-built.tvm kotlin-2.2.21-macos-26.2-built
 tart list
+```
+
+
+## linux x64
+
+以arch linux为例
+
+```shell
+sudo pacman -S jdk8-openjdk jdk21-openjdk
+sudo pacman -S unzip # 没有unzip的话mavenw会下 tar.gz 的版本，md5对应不上
+
+mkdir code
+cd code
+git clone https://gitcode.com/CPF-KMP-CMP/kotlin.git
+
+cd kotlin
+bash scripts/build-ohos.sh 
 ```

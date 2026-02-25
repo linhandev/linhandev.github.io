@@ -18,7 +18,7 @@ KN构建过程中的任务份三个维度：
 
 有两种方式：[--profile --scan](https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_performance)
   - --profile：`./gradlew linkReleaseSharedOhosArm64 --profile`。不会上报数据到服务器，会生成一份本地的html报告。其中 UP-TO-DATE 代表任务的输入没变没被执行；FROM-CACHE 代表任务的输入变了，但是gradle前面有缓存过这个输入对应的输出，直接使用了缓存；SKIPPED表示不满足执行条件没有执行；任务后面如果是空的说明任务重新执行了。可以用来查看任务的执行情况和具体任务的耗时
-  ![alt text](../../assets/img/post/2025-11-07-KN-Build-Speed-Profiling/2026-01-26T06:46:58.243Z-image.png)
+  ![alt text](/assets/img/post/2025-11-07-KN-Build-Speed-Profiling/2026-01-26T06:46:58.243Z-image.png)
   - --scan：比 --profile 收集的信息更多，包括依赖版本，并行时间线，任务依赖关系等。但是会上传数据到develocity
 ### konan phase
 
@@ -170,11 +170,15 @@ if __name__ == '__main__':
 
 脚本的输出默认按phase第一次在log中出现的顺序，demo项目上按总耗时排序的效果。The whole compilation process是构建总耗时，一些phase有大量的
 
-![alt text](../../assets/img/post/2025-11-07-KN-Build-Speed-Profiling/2026-01-27T02:49:05.162Z-image.png)
+![alt text](/assets/img/post/2025-11-07-KN-Build-Speed-Profiling/2026-01-27T02:49:05.162Z-image.png)
 
 ### LLVM Pass
 
-kotlin的设计本意是开启 -Xprofile-phases 后同时打印 konan phase 和 llvm pass的耗时，但是直到 2.3.0 版本 llvm pass的耗时打印都是有问题的需要patch kotlin才能看到耗时。修改参考：https://github.com/linhandev/KuiklyBase-kotlin/commit/cc06373a51a1776d699f11778a93c4c5f1e153af，之后添加 -Xprofile-phases 选项后能看到调用LLVM管线中pass的耗时。部分phase，如 Mandatory llvm optimizations 使用了带耗时统计功能的phase实现但是时机没有调用llvm 的 pass，输出为空，正常的管线耗时统计，如一个demo的 LTO LLVM optimizations 管线耗时。这个profile结果提示深入研究为什么 Global Variable Optimizer #3 pass耗时占比这么高
+kotlin的设计本意是开启 -Xprofile-phases 后同时打印 konan phase 和 llvm pass的耗时，但是直到 2.3.0 版本 llvm pass的耗时打印都是有问题的需要patch kotlin才能看到耗时，2.3以前的版本需要patch。
+
+修改参考：https://github.com/linhandev/KuiklyBase-kotlin/commit/cc06373a51a1776d699f11778a93c4c5f1e153af 之后添加 -Xprofile-phases 选项后在运行 ./gradlew 命令时所在的目录会看到LLVM管线中pass的耗时结果文件，文件名是phase名。
+
+部分phase，如 Mandatory llvm optimizations 使用了带耗时统计功能的phase实现但是实际没有调用任何 llvm 的 pass，输出为空，正常的管线耗时统计，如一个 demo 的 LTO LLVM optimizations 管线耗时。这个profile结果提示深入研究为什么 Global Variable Optimizer #3 pass耗时占比这么高
 
 ```
 ===-------------------------------------------------------------------------===
