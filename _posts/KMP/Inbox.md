@@ -43,3 +43,15 @@ llvm-as：ll -> bc
 
 clang bc -> o, cc1 显示pass信息 -mllvm -time-passes -mllvm -debug-pass=Executions
 
+
+cursor ignore 
+
+```
+wasm
+js
+license
+analysis
+dependencies
+idea
+plulgins
+```

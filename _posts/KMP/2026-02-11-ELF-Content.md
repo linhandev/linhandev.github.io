@@ -1,5 +1,5 @@
 ---
-title: KN产物优化
+title: KN codesize 优化
 categories:
   - KMP
 tags:
@@ -9,7 +9,11 @@ description:
 published: false
 ---
 
+elf成分
+
 ## Sections
+
+elf文件中有什么内容
 
 ```shell
 llvm-readelf -S libkn-release.so
@@ -182,8 +186,49 @@ CLANG_LIB="/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/nati
 echo "Built: $(pwd)/main"
 ```
 
+## Segments
+
+elf文件运行时如何加载。只有LOAD类型的会mmap，MemSiz是实际mmap的大小，因为要对齐可能比so里实际的内容大
+
+```shell
+$ llvm-readelf --headers libkn-release.so
+
+... ...
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  PHDR           0x000040 0x0000000000000040 0x0000000000000040 0x0002a0 0x0002a0 R   0x8
+  LOAD           0x000000 0x0000000000000000 0x0000000000000000 0x059384 0x059384 R   0x10000
+  LOAD           0x059390 0x0000000000069390 0x0000000000069390 0x0a3240 0x0a3240 R E 0x10000
+  LOAD           0x0fc5d0 0x000000000011c5d0 0x000000000011c5d0 0x019298 0x019a30 RW  0x10000
+  LOAD           0x115868 0x0000000000145868 0x0000000000145868 0x001c60 0x0023d0 RW  0x10000
+  TLS            0x0fc5d0 0x000000000010c5d0 0x000000000010c5d0 0x000000 0x000030 R   0x8
+  DYNAMIC        0x114a18 0x0000000000134a18 0x0000000000134a18 0x0002a0 0x0002a0 RW  0x8
+  GNU_RELRO      0x0fc5d0 0x000000000011c5d0 0x000000000011c5d0 0x019298 0x019a30 R   0x1
+  GNU_EH_FRAME   0x03beac 0x000000000003beac 0x000000000003beac 0x0052f4 0x0052f4 R   0x4
+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x0
+  NOTE           0x0002e0 0x00000000000002e0 0x00000000000002e0 0x00001c 0x00001c R   0x8
+  NOTE           0x0002fc 0x00000000000002fc 0x00000000000002fc 0x000024 0x000024 R   0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .note.ohos.ident .note.gnu.build-id .dynsym .gnu.hash .dynstr .rela.dyn .rela.plt .gcc_except_table .rodata .eh_frame_hdr .eh_frame 
+   02     .text .init .fini .plt 
+   03     .fini_array .data.rel.ro .init_array .dynamic .got .relro_padding 
+   04     .data .got.plt .bss 
+   05     .tbss 
+   06     .dynamic 
+   07     .fini_array .data.rel.ro .init_array .dynamic .got .relro_padding 
+   08     .eh_frame_hdr 
+   09     
+   10     .note.ohos.ident 
+   11     .note.gnu.build-id 
+   None   .comment .symtab .shstrtab .strtab 
+```
 
 跨语言dce
 
 ## 参考资料
 [美团技术团队 - Android对so体积优化的探索与实践](https://tech.meituan.com/2022/06/02/meituans-technical-exploration-and-practice-of-android-so-volume-optimization.html)
+[Computer Science from the Bottom Up - ELF](https://bottomupcs.com/ch08s03.html)
