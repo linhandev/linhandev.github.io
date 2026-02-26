@@ -35,5 +35,5 @@ ovcomposeSample 上用前两个选项不 inline+oz 优化级别可以用运行�
 
 ## cinterop静态库相关最佳实践
 
-kn的so中如果有链进去静态库，建议参考[这篇](./2026-02-13-Static-Cinterop-Codesize.md)
+kn的so中如果有链进去静态库，建议参考[这篇](./Static-Cinterop-Codesize/)
 
