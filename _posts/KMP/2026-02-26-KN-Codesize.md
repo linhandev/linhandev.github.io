@@ -36,7 +36,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ovcomposeSample 上用前两个选项不 inline+oz 优化级别可以用运行性能换到 10% 的 codesize 下降，latin1选项还需要研究
 
 
-### -z pack-relative-relocs
+### --pack-dyn-relocs=relr
 
 编译时无法得知运行时 so 会被加载到什么地址，因此在 PIE 的 exe 和 so 中会有 relative relocation，大概就是编译器告诉链接器在 so 里的 x 位置我写的地址是一个相对 so 开头的地址，加载这个 so 的时候麻烦把这些地址换成 so 的加载基地址 + 我写的这个 offset。relo 还有其他情况不过这种居多。
 
