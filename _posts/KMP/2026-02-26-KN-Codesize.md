@@ -50,18 +50,93 @@ typedef struct {
 // RELA
 typedef struct {
   Elf64_Addr  r_offset; // where to apply relocation
-  Elf64_Xword r_info;   // type + symbol index
-  Elf64_Sxword r_addend;// addend
+  Elf64_Xword r_info;   // type + symbol index // 这里rela记录的type是固定枚举，index也固定是0
+  Elf64_Sxword r_addend;// addend // 和r_offset相同
 } Elf64_Rela;
 
 // RELR：只是一个word，没有结构体
 Elf64_Xword;
 ```
-RELR 格式中偶数记录是相对 so 开头的地址，奇数记录是一个 bitmap，代表偶数记录往后多少个 word 的位置是一个 relocation。
+RELR 格式中最低位是0的记录是相对 so 开头的地址，这个地址本身是一个relocation。最低位是1的记录是一个 bitmap，代表地址记录+多少个 word 的位置是一个 relocation。一个地址后面可以接多个bitmap，如
 
+【地址 A】 【bitmap 1】 【bitmap 2】 【地址 B】 【bitmap 3】
+
+对于非常稀疏的relocation也可以有连续地址
+
+【地址 A】 【地址 B】 【bitmap 3】
+
+llvm/lib/Object/ELF.cpp
+
+```cpp
+template <class ELFT>
+std::vector<typename ELFT::Rel>
+ELFFile<ELFT>::decode_relrs(Elf_Relr_Range relrs) const {
+  // This function decodes the contents of an SHT_RELR packed relocation
+  // section.
+  //
+  // Proposal for adding SHT_RELR sections to generic-abi is here:
+  //   https://groups.google.com/forum/#!topic/generic-abi/bX460iggiKg
+  //
+  // The encoded sequence of Elf64_Relr entries in a SHT_RELR section looks
+  // like [ AAAAAAAA BBBBBBB1 BBBBBBB1 ... AAAAAAAA BBBBBB1 ... ]
+  //
+  // i.e. start with an address, followed by any number of bitmaps. The address
+  // entry encodes 1 relocation. The subsequent bitmap entries encode up to 63
+  // relocations each, at subsequent offsets following the last address entry.
+  //
+  // The bitmap entries must have 1 in the least significant bit. The assumption
+  // here is that an address cannot have 1 in lsb. Odd addresses are not
+  // supported.
+  //
+  // Excluding the least significant bit in the bitmap, each non-zero bit in
+  // the bitmap represents a relocation to be applied to a corresponding machine
+  // word that follows the base address word. The second least significant bit
+  // represents the machine word immediately following the initial address, and
+  // each bit that follows represents the next word, in linear order. As such,
+  // a single bitmap can encode up to 31 relocations in a 32-bit object, and
+  // 63 relocations in a 64-bit object.
+  //
+  // This encoding has a couple of interesting properties:
+  // 1. Looking at any entry, it is clear whether it's an address or a bitmap:
+  //    even means address, odd means bitmap.
+  // 2. Just a simple list of addresses is a valid encoding.
+
+  Elf_Rel Rel;
+  Rel.r_info = 0;
+  Rel.setType(getRelativeRelocationType(), false);
+  std::vector<Elf_Rel> Relocs;
+
+  // Word type: uint32_t for Elf32, and uint64_t for Elf64.
+  using Addr = typename ELFT::uint;
+
+  Addr Base = 0;
+  for (Elf_Relr R : relrs) {
+    typename ELFT::uint Entry = R;
+    if ((Entry & 1) == 0) {
+      // Even entry: encodes the offset for next relocation.
+      Rel.r_offset = Entry;
+      Relocs.push_back(Rel);
+      // Set base offset for subsequent bitmap entries.
+      Base = Entry + sizeof(Addr);
+    } else {
+      // Odd entry: encodes bitmap for relocations starting at base.
+      for (Addr Offset = Base; (Entry >>= 1) != 0; Offset += sizeof(Addr))
+        if ((Entry & 1) != 0) {
+          Rel.r_offset = Offset;
+          Relocs.push_back(Rel);
+        }
+      Base += (CHAR_BIT * sizeof(Entry) - 1) * sizeof(Addr);
+    }
+  }
+
+  return Relocs;
+}
+```
 - 优化前：RELA 需要用 3 word 表达一个 relocation
-- 优化后：RELR 用两个 word 表达一个 relocation，这样优化到原来的 2 / 3 = 66%。如果有连续的 relocation，最极端是优化到 2 / (64 * 3) = 1%
+- 优化后：RELR 用两个 word 表达一个 relocation，这样优化到原来的 1 / 3 = 33%。如果有连续的 relocation，最极端压缩比趋近100%
 
+- 优化前：.rela.dyn 包含相对重定位和非相对重定位
+- 优化后：.rela.dyn 只包含非相对重定位，.relr.dyn包含所有相对重定位
 
 ## KN 导出优化
 
