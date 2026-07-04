@@ -36,7 +36,7 @@ nextcloud 默认在客户端和服务器上都跳过 symlink，开启跟随 siml
 
 从谷歌日历同步：https://help.nextcloud.com/t/sync-share-google-calendar-nextcloud-calendar/114131
 
-![image](https://user-images.githubusercontent.com/29757093/222927755-7e9322b3-22d4-40b3-bc40-36db3c440687.png)
+![image](/assets/img/post/2020-02-07-NextCloud/222927755-7e9322b3-22d4-40b3-bc40-36db3c440687.png)
 
 修改日历同步周期
 
@@ -44,7 +44,7 @@ sudo -u www-data php occ config:app:set dav calendarSubscriptionRefreshRate --va
 
 同步到安卓：https://docs.nextcloud.com/server/latest/user_manual/en/groupware/sync_android.html
 
-![image](https://user-images.githubusercontent.com/29757093/222928112-b525164c-e48d-41d0-be07-e7f49638de0c.png)
+![image](/assets/img/post/2020-02-07-NextCloud/222928112-b525164c-e48d-41d0-be07-e7f49638de0c.png)
 
 DAVx⁵ ICSx⁵ Etar
 
@@ -70,11 +70,11 @@ https://fqdn/index.php/settings/admin/richdocuments
 
 默认开启预览的文件格式应该是包括这些
 
-![image](https://user-images.githubusercontent.com/29757093/222930255-df742d02-9294-4a1a-af39-2f4de7bf81e8.png)
+![image](/assets/img/post/2020-02-07-NextCloud/222930255-df742d02-9294-4a1a-af39-2f4de7bf81e8.png)
 
 其他格式有
 
-![image](https://user-images.githubusercontent.com/29757093/222930290-643daf5c-aa90-48b8-85a2-5ec7c5c2a201.png)
+![image](/assets/img/post/2020-02-07-NextCloud/222930290-643daf5c-aa90-48b8-85a2-5ec7c5c2a201.png)
 
 设置给其他格式开启预览，修改 /var/www/nextcloud/config/configs.php
 

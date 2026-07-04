@@ -23,7 +23,7 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建
 
 下图是 `./gradlew :app:linkPlCheckDebugSharedOhosArm64 --profile` 结果
 
-![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:18:30.754Z-image.png)
+![alt text](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:18:30.754Z-image.png)
 
 其中Result列
 - 空白：task被执行了
@@ -36,7 +36,7 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建
 1. 尽可能少触发gradle任务
 
     Kotlin/Native 构建至少触发[两个gradle任务](https://github.com/JetBrains/kotlin/blob/master/docs/native/compilation-model.md) compileKotlin 和 link。按照KGP的规则，修改一个gradle子项目中的kotlin代码后所有依赖这个项目的其他子项目都会重新运行 compileKotlin 任务，且依赖会传递。如下图项目结构，修改模块C的代码后C，B和A的 compileKotlin 任务都会重新执行。有除此之外的gradle任务都是业务代码/项目依赖中配置的，可以检查下这些任务是否可以通过gradle cacheable task进行缓存。整改参考[gradle文档](https://docs.gradle.org/current/userguide/build_cache.html#sec:task_output_caching_details)和[gradle incremental build](https://docs.gradle.org/current/userguide/incremental_build.html#sec:stale_task_outputs)文档。
-    ![alt text](../../assets/img/post/2025-11-07-kn-debug-build-speedup/2025-12-07T11:02:08.196Z-image.png)
+    ![alt text](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-07T11:02:08.196Z-image.png)
     https://excalidraw.com/#json=BX4kEo4nkZLn3-0G6mM_i,0QDBIdOAHzVB-UsBwGf1Uw
 
 2. 常被触发的gradle任务优化耗时
@@ -49,7 +49,7 @@ description: 介绍KMP（Kotlin Multiplatform）项目中优化鸿蒙Debug构建
 
 增量编译开/关时的构建流程如下图
 
-![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:33:42.301Z-image.png)
+![alt text](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:33:42.301Z-image.png)
 
 https://excalidraw.com/#json=8ZS-lGRqJBFBqiRV1CgKW,KHva9hBjSKVuLbHfBl-mVg
 
@@ -70,21 +70,21 @@ https://excalidraw.com/#json=8ZS-lGRqJBFBqiRV1CgKW,KHva9hBjSKVuLbHfBl-mVg
 
 在kotlin仓库konan.properties文件cacheableTargets中添加ohos，表示ohos上支持缓存，默认启用缓存功能，会给工程依赖打per-klib缓存
 
-![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image.png)
+![image.png](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/image.png)
 
 per-klib缓存保存在kotlin编译器中，路径 `$KONAN_DATA_DIR/kotlin-native-prebuilt-macos-aarch64-[kotlin版本号]/klib/cache/ohos_arm64STATIC-pl`，其中KONAN_DATA_DIR如果没有设置默认为 ~/.konan。在上述文件夹中看到工程的依赖则项目则依赖klib缓存开启成功
 
-![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:41:41.173Z-image.png)
+![alt text](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T09:41:41.173Z-image.png)
 
 #### 工程源码缓存
 
 在应用工程根目录的gradle.properties中添加 `kotlin.incremental.native=true` 配置，会在打包所有支持增量构建的target时（如上面截图中ios_arm64和ohos_arm64都配置了支持增量构建）给项目中的源码打per-file缓存
 
-![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image-1.png)
+![image.png](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/image-1.png)
 
 per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native-ic-cache/debugShared/ohos_arm64-gSTATIC-pl` 中，每个文件夹是一个gradle子项目，子项目文件夹中有对应每个文件的文件夹
 
-![alt text](../../assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T10:09:48.035Z-image.png)
+![alt text](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/2025-12-20T10:09:48.035Z-image.png)
 
 #### 进阶配置
 
@@ -156,7 +156,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
     控制是否要建cache的代码在下图位置，可以debug观察哪个条件没满足
 
-    ![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image-2.png)
+    ![image.png](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/image-2.png)
 
 9. 一些更详细的控制选项：org.jetbrains.kotlin.incremental.IncrementalCompilationFeatures
 
@@ -180,6 +180,6 @@ android build：
 - [https://www.youtube.com/watch?v=C77WssXZEvo](https://www.youtube.com/watch?v=C77WssXZEvo)
 - [https://medium.com/androiddevnotes/the-internals-of-android-apk-build-process-article-5b68c385fb20](https://medium.com/androiddevnotes/the-internals-of-android-apk-build-process-article-5b68c385fb20)
 - [https://stuff.mit.edu/afs/sipb/project/android/docs/tools/building/index.html](https://stuff.mit.edu/afs/sipb/project/android/docs/tools/building/index.html)
-- ![image.png](/assets/img/post/2025-11-07-kn-debug-build-speedup/image-3.png)
+- ![image.png](/assets/img/post/2025-11-07-KN-Debug-Build-Speedup/image-3.png)
 -->
 

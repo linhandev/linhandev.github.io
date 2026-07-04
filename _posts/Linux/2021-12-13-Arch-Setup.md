@@ -13,7 +13,7 @@ tags:
 
 如果用了 btrfs 可以考虑保留一个刚安装完系统的快照。这里默认子卷的结构按照[安装教程](https://linhandev.github.io/posts/Arch-Install/#btrfs)。snapper 默认要用 dbus，如果还在 chroot 里需要重启进系统跑下面的命令。
 
-![image](https://user-images.githubusercontent.com/29757093/155235420-f2d24eec-2e0c-4bc3-a0f6-e789eba1e6d8.png)
+![image](/assets/img/post/2021-12-13-Arch-Setup/155235420-f2d24eec-2e0c-4bc3-a0f6-e789eba1e6d8.png)
 
 ```shell
 su root
@@ -39,7 +39,7 @@ snapper -c root create --description BeforeGui
 
 快照会创建在/.snapshot 路径下，下面文件夹名字是这个快照的编号
 
-![image](https://user-images.githubusercontent.com/29757093/155236257-7c9becf3-2ab6-42a2-b561-25a742fc9ffa.png)
+![image](/assets/img/post/2021-12-13-Arch-Setup/155236257-7c9becf3-2ab6-42a2-b561-25a742fc9ffa.png)
 
 可以看到虽然快照下有 home 目录，/home 里面也有东西，但是快照里 home 是空的。
 
@@ -151,7 +151,7 @@ doas systemctl daemon-reload
 doas systemctl status reflector.timer # Trigger: 可以看到还有多久下次执行
 ```
 
-![image](https://user-images.githubusercontent.com/29757093/152112943-c3214b28-4915-46d7-9f3d-e5ba63e33584.png)
+![image](/assets/img/post/2021-12-13-Arch-Setup/152112943-c3214b28-4915-46d7-9f3d-e5ba63e33584.png)
 
 ## 密码管理
 

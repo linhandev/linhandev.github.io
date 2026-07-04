@@ -31,7 +31,7 @@ tags:
       
       - $B_0$：外加磁场强度
 
-### <video src="https://user-images.githubusercontent.com/29757093/205147188-a3716fc9-16bb-41f4-a767-c152042ff8c1.mp4"></video>
+### <video src="../../assets/img/post/2022-12-01-Medical-Imaging/205147188-a3716fc9-16bb-41f4-a767-c152042ff8c1.mp4"></video>
 
 - MR检测到的信号是在横断面旋进的净磁化向量转动时产生的电场，信号的频率是Larmor freq。
 
@@ -41,11 +41,11 @@ tags:
   
   - Lab frame：振幅逐渐变小，频率$\frac{1}{\delta}$，$\delta$应该是Larmor和RF频率的差
     
-    - <video src="https://user-images.githubusercontent.com/29757093/205153585-ec296329-49e4-4b34-90a2-246719b2a8e3.mp4"></video>
+    - <video src="../../assets/img/post/2022-12-01-Medical-Imaging/205153585-ec296329-49e4-4b34-90a2-246719b2a8e3.mp4"></video>
   
   - Rotating frame：强度指数变小
     
-    - <video src="https://user-images.githubusercontent.com/29757093/205154065-582611d2-ceee-44ed-95da-a598534ef918.mp4"></video>
+    - <video src="../../assets/img/post/2022-12-01-Medical-Imaging/205154065-582611d2-ceee-44ed-95da-a598534ef918.mp4"></video>
 
 
 
