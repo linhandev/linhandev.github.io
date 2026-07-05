@@ -7,6 +7,7 @@ tags:
   - KN
   - LLVM
 description: 使用 Kotlin Native 项目的构建脚本编译 LLVM。包含 Mac Arm 和 Linux 平台的两阶段构建流程，涵盖 LLVM 12 (OpenHarmony master-llvm12-backup 分支) 和 LLVM 19 版本，以及多 Xcode 环境适配、增量构建、Debug 版本配置等技巧。
+published: false
 ---
 
 KN的LLVM通过[Kotlin项目自己写的脚本](https://github.com/JetBrains/kotlin/tree/master/kotlin-native/tools/llvm_builder)构建
@@ -171,8 +172,6 @@ docker run --platform linux/amd64 --rm -it -v .:/output -v $LLVM_FOLDER:/llvm ko
 ### Linux
 
 ```shell
-cd
-
 apt update
 apt upgrade -y
 apt install -y git docker ca-certificates curl
@@ -214,3 +213,117 @@ cd output
 DISTRIBUTION_COMPONENTS="clang libclang lld llvm-cov llvm-profdata llvm-ar clang-resource-headers compiler-rt"
 docker run --platform linux/amd64 --rm -it -v ./output:/output -v $LLVM_FOLDER:/llvm/ kotlin-llvm-builder --llvm-sources /llvm --install-path /output/ --save-temporary-files # --pack
 ```
+
+### Mac
+
+```shell
+brew install ninja cmake
+
+xcode-select -p
+# /Applications/Xcode-26.2.app/Contents/Developer
+
+LLVM_FOLDER=/Users/ohoskt/git/llvm/kotlin-llvm
+git clone --branch kotlin/llvm-19-apple --depth 3 --single-branch https://gitcode.com/linhandev/kotlin-llvm-project.git $LLVM_FOLDER
+cd $LLVM_FOLDER
+git checkout fb492d2475910b83cda3a68b4eee9e87d7e221c1
+cd -
+
+cd kotlin-native/tools/llvm_builder
+DISTRIBUTION_COMPONENTS=(clang libclang lld llvm-cov llvm-profdata llvm-ar clang-resource-headers compiler-rt)
+python3 package.py \
+  --llvm-sources $LLVM_FOLDER \
+  --build-targets install-distribution \
+  --distribution-components "${DISTRIBUTION_COMPONENTS[@]}" \
+  --save-temporary-files
+# 打发布包可加: --pack
+# 指定输出目录可加: --install-path /path/to/llvm-distribution
+```
+
+增量构建（保留过 `--save-temporary-files` 且未删中间目录时）：
+
+```shell
+cd $LLVM_FOLDER/llvm-stage-2-build
+ninja install-distribution
+```
+
+## cpf llvm-19.1.4
+
+### mac
+
+构建指导：https://gitcode.com/CPF-KMP-CMP/llvm-project-kmp/blob/kmp-llvm-19.1.4/llvm-build/README.md
+
+```shell
+mkdir cpf-llvm
+cd cpf-llvm
+
+# repo 工具
+curl https://gitee.com/oschina/repo/raw/fork_flow/repo-py3 > ./repo
+chmod a+x repo
+pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+repo --version
+
+# 暂时使用patch过的manifest
+./repo init -u https://gitcode.com/linhandev/manifest.git -b master -m llvm-toolchain.xml
+./repo sync -c 
+./repo forall -c 'git lfs pull'
+
+# 下一些依赖，跑一次就行
+bash -x toolchain/llvm-project/llvm-build/env_prepare.sh
+
+# 装依赖
+brew install swig git-lfs coreutils wget # 指导中还有个java，kn开发大概率有了
+
+# 构建
+bash ./toolchain/llvm-project/llvm-build/build.sh
+```
+
+### mac, kn 2.2 脚本
+
+```shell
+LLVM_FOLDER=/Users/ohoskt/git/llvm/cpf-llvm/toolchain/llvm-project
+DISTRIBUTION_COMPONENTS=(clang libclang lld llvm-cov llvm-profdata llvm-ar clang-resource-headers)
+python3 package.py \
+  --distribution-components $DISTRIBUTION_COMPONENTS \
+  --llvm-sources $LLVM_FOLDER \
+  --save-temporary-files # --pack
+```
+
+### Linux
+
+```shell
+docker run -it swr.cn-north-4.myhuaweicloud.com/ci-service/openharmony-release-build-env-jnlp /bin/bash
+
+# repo 工具
+mkdir -p ~/.local/bin
+curl https://gitee.com/oschina/repo/raw/fork_flow/repo-py3 > ~/.local/bin/repo
+chmod a+x ~/.local/bin/repo
+pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+repo --version
+
+# 拉代码
+mkdir cpf-llvm
+cd cpf-llvm
+repo init -u https://gitcode.com/linhandev/manifest.git -b master -m llvm-toolchain.xml # 暂时使用patch过的manifest
+repo sync -c 
+repo forall -c 'git lfs pull'
+
+# 下一些依赖，跑一次就行
+bash -x toolchain/llvm-project/llvm-build/env_prepare.sh
+
+# 装依赖
+export DEBIAN_FRONTEND=noninteractive
+apt update
+apt install -y build-essential swig python3-dev libedit-dev libncurses5-dev binutils-dev gcc-multilib abigail-tools elfutils pkg-config autoconf autoconf-archive libxml2
+
+# 本地用户名和docker中的不一样git会拒绝操作
+git config --global --add safe.directory /llvm/build
+git config --global --add safe.directory /llvm/third_party/musl
+git config --global user.email "ci@ci.ci"
+git config --global user.name "ci"
+
+# 构建
+cd /llvm
+bash ./toolchain/llvm-project/llvm-build/build.sh
+```
+
+ln -s /usr/bin/python3 /usr/bin/python 

@@ -55,3 +55,29 @@ dependencies
 idea
 plulgins
 ```
+
+
+打印
+kotlin.internal.compiler.arguments.log.level=warning
+
+
+# Maven wrapper requires unzip: without it, it downloads .tar.gz but validates with the .zip checksum → failure
+if ! command -v unzip >/dev/null 2>&1; then
+  echo "❌ Error: unzip is required."
+  echo "   Please install unzip and re-run."
+  exit 1
+fi
+
+
+清预装
+
+hdc wait-for-device shell whoami
+hdc target mount
+hdc shell mount -o remount,rw /
+
+hdc shell rm -rf /system/app/
+
+
+
+docker run -d --name nexus -p 8081:8081 sonatype/nexus3
+docker exec nexus cat /nexus-data/admin.password

@@ -16,10 +16,11 @@ KN构建过程中的任务份三个维度：
 
 ### gradle任务
 
-有两种方式：[--profile --scan](https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_performance)
+有两种方式：[--profile / --scan](https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_performance)
   - --profile：`./gradlew linkReleaseSharedOhosArm64 --profile`。不会上报数据到服务器，会生成一份本地的html报告。其中 UP-TO-DATE 代表任务的输入没变没被执行；FROM-CACHE 代表任务的输入变了，但是gradle前面有缓存过这个输入对应的输出，直接使用了缓存；SKIPPED表示不满足执行条件没有执行；任务后面如果是空的说明任务重新执行了。可以用来查看任务的执行情况和具体任务的耗时
   ![alt text](/assets/img/post/2025-11-07-KN-Build-Speed-Profiling/2026-01-26T06:46:58.243Z-image.png)
   - --scan：比 --profile 收集的信息更多，包括依赖版本，并行时间线，任务依赖关系等。但是会上传数据到develocity
+
 ### konan phase
 
 freeCompilerArgs 添加 -Xprofile-phases，命令行会输出类似 `Inline class property accessors: 1 msec` 具体 konan phase 耗时的信息，这些phase主要是对kotlin ir进行转换和优化。一些 phase 在 kt 文件范围执行会跑很多次，可以使用脚本统计总耗时。通常优化相关的phase耗时较长
@@ -358,8 +359,39 @@ kotlin的设计本意是开启 -Xprofile-phases 后同时打印 konan phase 和 
 
 ## 代码量统计
 
-kotlin构建有两个gradle任务，首先 compileKotlin 任务接一批kt文件，输出针对某一target的klib，之后 link 任务接一批klib输入，输出最终的pod/so。准确的统计kt代码量有两点困难
+Kotlin/Native 在 Gradle 里通常拆成两步：**`compileKotlin*`** 把本模块的 `.kt` 编成 **klib**，**`link*`** 再拿多个 klib（含依赖）去生成 **so / framework**。要算「当前这次编译里 Kotlin 源码有多少行」，必须先搞清楚**统计的是哪一次 konan 调用**。
 
-1. kt文件中不光是代码，还有注释空行等，不应该简单认为行数就是代码量
-2. 最终进到so的产物中部分，甚至可能大部分都是klib，本地不一定有对应的源码
+### 编译器自带的统计方式（推荐）
+
+Kotlin 通用参数里有性能相关选项（与 JVM/JS 同源，不是 `-Xbinary=`）：
+
+| 选项 | 作用 |
+|------|------|
+| **`-Xreport-perf`** | 编译结束后输出 `PERF:` 开头的摘要，其中包含**文件数**和**行数**。 |
+| **`-verbose`** | 在 Gradle **进程内**跑 konan 时，建议一并打开，否则 `PERF` 里部分 **LOGGING** 级别信息可能默认不落到你能看到的日志里。 |
+| **`-Xdump-perf=<路径>`** | 把统计写到文件（扩展名决定格式：`.json` / `.md` / `.log`）；**没有默认路径**，必须自己指定文件或目录。官方说明里还支持目录、`path/*.json` 这类占位生成带时间戳的文件名。 |
+
+**行数怎么来的（和 cloc 的区别）**  
+编译器用的是前端里的 `KtFile` 文本：按**换行**统计的物理行数（最后一行若无换行也会算一行），**不是**去掉注释/空行后的「逻辑代码行」。若要做工程治理级别的 SLOC，仍需 cloc、tokei 等工具；这里的数字适合和 **编译耗时、loc/s** 对照看。
+
+### Gradle 里加在哪里才算「本模块源码」
+
+- **`compileKotlin<目标>`**（例如 `compileKotlinOhosArm64`）这一次 konan **会打开本 compilation 的 `.kt`**，在这里给 **`main` compilation** 配 `compilerOptions.freeCompilerArgs`（或等价方式）加上 `-verbose`、`-Xreport-perf`，日志里会出现类似：  
+  `PERF: … N files (M lines)` —— **这里的 M 才是你关心的本模块 Kotlin 源码行数**（在该次 compilation 范围内）。
+- **`link*Shared*` / `link*Framework*`** 这一次多半是在链 klib、跑后端，**当前这次调用的源码列表常常是空的**，你会看到 **`0 files (0 lines)`**。这不是选项没生效，而是**这一阶段本来就没有 `.kt` 进前端**。
+
+若把上述参数只写在 `binaries { sharedLib { freeCompilerArgs … } }` 里，往往就绑在 **link** 上，容易出现「有 PERF 但行数是 0」的错觉。
+
+### 使用 `-Xdump-perf` 的注意点（Gradle）
+
+较新的 Kotlin Gradle 插件在跑 Kotlin/Native 时，会为构建度量**再追加**一个 **`-Xdump-perf=…` 指向临时 JSON**；编译器参数里**后出现者生效**。因此在 **`freeCompilerArgs` 里自己写 `-Xdump-perf=/你想留的路径`** 时，可能被插件覆盖，**不一定**能在你指定路径看到文件。若需要**稳定落盘的 JSON**（里面有 `filesCount`、`linesCount` 等字段），更稳妥的是对 **`kotlinc-native` 命令行**直接传入 `-Xdump-perf=out.json`，或接受插件写入临时文件后再自行拷贝（依赖版本行为以当前插件为准）。
+
+### 和「产物里有多少来自源码」的关系
+
+前面两点困难仍然成立：
+
+1. **行数 ≠ 有效代码量**：注释、空行、纯格式都会进「物理行」。
+2. **链进 so 的不全是本仓库 `.kt`**：大量是依赖 klib、runtime、平台库；要分析**二进制里各类代码占比**是另一条线（体积、符号、bloaty 等），和编译器这次统计的「本趟编译看到的 `.kt`」不是同一指标。
+
+**小结**：算「这次 KN 编译前端处理的 LOC」→ 在 **`compileKotlin*` 对应 compilation** 上加 **`-verbose` + `-Xreport-perf`**，读 **`PERF: … files (lines)`**；要机器可读且路径可控 → 优先 **`kotlinc-native -Xdump-perf=…`**，并知悉 **Gradle 下可能与插件注入的 dump 路径冲突**。
 

@@ -133,3 +133,29 @@ git clone https://gitcode.com/CPF-KMP-CMP/kotlin.git
 cd kotlin
 bash scripts/build-ohos.sh 
 ```
+
+ubuntu docker
+
+```shell
+docker run -it -v .:/kmp/ --add-host=host.docker.internal:host-gateway ubuntu:24.04 /bin/bash
+
+# 为了方便换的http的源，最好用https的，这里就demo下流程
+sed -i 's#http://archive.ubuntu.com#http://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list.d/ubuntu.sources
+sed -i 's#http://security.ubuntu.com#http://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list.d/ubuntu.sources
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt update
+apt install openjdk-8-jdk openjdk-21-jdk unzip -y
+
+cd /kmp
+
+# 如果有代理下依赖可能更快
+export http_proxy=http://host.docker.internal:7897
+export https_proxy=http://host.docker.internal:7897
+
+export JDK_18=$(readlink -f $(which java) | sed 's#/bin/java##')
+
+bash scripts/build-ohos.sh
+```
+
