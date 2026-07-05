@@ -12,6 +12,8 @@ ASSETS_IMG_DIR = os.path.join(WORKSPACE_ROOT, 'assets', 'img', 'post')
 MD_IMG_REGEX = re.compile(r'!\[.*?\]\((.*?)(?:\s+".*?")?\)')
 # Regex for HTML images: <img src="url" ... />
 HTML_IMG_REGEX = re.compile(r'<img\s+[^>]*src=["\'](.*?)["\'][^>]*>')
+# Regex for video/source/embed tags: <video src="url" ...>, <source src="url" ...>
+HTML_MEDIA_REGEX = re.compile(r'<(?:video|source|embed)\s+[^>]*src=["\'](.*?)["\'][^>]*>')
 
 def get_referenced_images():
     referenced_images = set()
@@ -25,6 +27,7 @@ def get_referenced_images():
                 urls = []
                 urls.extend(MD_IMG_REGEX.findall(content))
                 urls.extend(HTML_IMG_REGEX.findall(content))
+                urls.extend(HTML_MEDIA_REGEX.findall(content))
                 
                 for url in urls:
                     url = url.strip()
