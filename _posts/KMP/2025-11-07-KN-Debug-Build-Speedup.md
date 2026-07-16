@@ -116,7 +116,7 @@ per-file缓存保存在构建命令所在gradle子项目的 `build/kotlin-native
 
 3. 链接命令失败，报 error: duplicate symbol: kfun: xxx，这个符号在两个 .a 中被重复定义
 
-    上游社区已知问题 [KT-81760](https://youtrack.jetbrains.com/issue/KT-81760)。K/N编译出的函数名中中包含kotlin代码package名，函数名，参数和返回值，出现这一问题应该是在同一个package下重复定义相同的函数，这种写法使用哪个实现在不开启增量缓存时依赖声明依赖的顺序，哪个先被声明哪个生效，容易出错，上游社区也可能在新版本中加强校验。如果在项目工程源码中存在这种情况建议整改，如果引入的库之间有符号名冲突不好修改可以添加 [--allow-multiple-definition](https://www.man7.org/linux/man-pages/man1/ld.1.html) 链接选项使用链接时第一个遇到的定义，将相关的正确性校验延后到不开启cache的debug build或release build进行。更多冲突情况下的细节可以查看[这个demo](https://github.com/linhandev/kn_samples/tree/clashingDeclarations)
+    上游社区已知问题 [KT-81760](https://youtrack.jetbrains.com/issue/KT-81760)。K/N编译出的函数名中中包含kotlin代码package名，函数名，参数和返回值，出现这一问题应该是在同一个package下重复定义相同的函数，这种写法使用哪个实现在不开启增量缓存时依赖声明依赖的顺序，哪个先被声明哪个生效，容易出错，上游社区也可能在新版本中加强校验。如果在项目工程源码中存在这种情况建议整改，如果引入的库之间有符号名冲突不好修改可以添加 [\-\-allow-multiple-definition](https://www.man7.org/linux/man-pages/man1/ld.1.html) 链接选项使用链接时第一个遇到的定义，将相关的正确性校验延后到不开启cache的debug build或release build进行。更多冲突情况下的细节可以查看[这个demo](https://github.com/linhandev/kn_samples/tree/clashingDeclarations)
 
 4. cache文件夹有pl结尾和没有pl结尾两个，有什么区别
 
